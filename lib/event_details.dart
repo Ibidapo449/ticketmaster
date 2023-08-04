@@ -19,7 +19,7 @@ class _EventDetailsState extends State<EventDetails> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
-        leading: const Icon(Icons.cancel_sharp),
+        leading: const Icon(Icons.cancel_sharp, color: Colors.black,),
         title: const Padding(
           padding: EdgeInsets.only(left: 100),
           child: Row(
@@ -64,7 +64,7 @@ class _EventDetailsState extends State<EventDetails> {
                             color: Colors.blue.shade900,
                             child: const Center(
                               child: Text(
-                                "TaylorSwiftTix Presale powered by Verified Fan",
+                                "SILVER PREMIUM TICKET PACKAGE",
                                 style: TextStyle(
                                   fontWeight: FontWeight.w400,
                                   color: Colors.white,
@@ -93,7 +93,7 @@ class _EventDetailsState extends State<EventDetails> {
                                       height: 3,
                                     ),
                                     Text(
-                                      "F5",
+                                      "D",
                                       style: TextStyle(
                                           color: Colors.white,
                                           fontSize: 25,
@@ -114,7 +114,7 @@ class _EventDetailsState extends State<EventDetails> {
                                       height: 3,
                                     ),
                                     Text(
-                                      "6",
+                                      "8",
                                       style: TextStyle(
                                           color: Colors.white,
                                           fontSize: 25,
@@ -151,8 +151,11 @@ class _EventDetailsState extends State<EventDetails> {
                             height: MediaQuery.of(context).size.height * 0.31,
                             decoration: const BoxDecoration(
                               image: DecorationImage(
-                                  image: AssetImage('assets/images/event.jpg'),
-                                  fit: BoxFit.cover),
+                fit: BoxFit.cover,
+                image: NetworkImage(
+                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSs6uOkARyMvSA4MJUzIa-8KnWZeDn_VT4Zcg&usqp=CAU', // Replace with your image URL
+                ),
+              ),
                             ),
                             child: Container(
                               width: MediaQuery.of(context).size.width,
@@ -181,7 +184,7 @@ class _EventDetailsState extends State<EventDetails> {
                                     height: 10,
                                   ),
                                   const Text(
-                                    "Sat, Oct 31,6:30pm. Madison Square Garden",
+                                    "Sat, Aug 5, 6:30pm. Sofi Stadium",
                                     style: TextStyle(
                                         fontSize: 15,
                                         fontWeight: FontWeight.w500,
@@ -205,7 +208,7 @@ class _EventDetailsState extends State<EventDetails> {
                                       MainAxisAlignment.spaceEvenly,
                                   children: [
                                     const Text(
-                                      "FLOOR F5",
+                                      "FLOOR SEATING",
                                       style: TextStyle(
                                           fontWeight: FontWeight.w700),
                                     ),

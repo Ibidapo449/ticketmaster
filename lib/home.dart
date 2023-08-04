@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ticketmaster/event_details.dart';
+import 'package:ticketmaster/ticket_generator_form.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -13,13 +14,20 @@ class HomePage extends StatelessWidget {
           Icons.ac_unit,
           color: Colors.black,
         ),
-        title: const Padding(
-          padding: EdgeInsets.only(left: 100),
+        title: Padding(
+          padding: const EdgeInsets.only(left: 100),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text("My Events"),
-              Text("Help"),
+              const Text("My Events"),
+              GestureDetector(
+               onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const TicketGeneratorForm(),
+                ));
+              },
+                child: const Text("Help"),
+                ),
             ],
           ),
         ),
@@ -38,21 +46,24 @@ class HomePage extends StatelessWidget {
                 height: MediaQuery.of(context).size.height * 0.25,
                 decoration: const BoxDecoration(
                   image: DecorationImage(
-                      image: AssetImage('assets/images/event.jpg'),
-                      fit: BoxFit.cover),
+                fit: BoxFit.cover,
+                image: NetworkImage(
+                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSs6uOkARyMvSA4MJUzIa-8KnWZeDn_VT4Zcg&usqp=CAU', // Replace with your image URL
+                ),
+              ),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
                       height: MediaQuery.of(context).size.height * 0.025,
-                      color: Colors.purple,
+                      color: Colors.transparent,
                       child: const Center(
                           child: Text(
                         "NEW DATE",
                         style: TextStyle(
                             fontSize: 12,
-                            color: Colors.white,
+                            color: Colors.transparent,
                             fontWeight: FontWeight.w500),
                       )),
                     ),
@@ -75,7 +86,7 @@ class HomePage extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const Text(
-                              "The Courteeners",
+                              "The Eras Tour",
                               style:
                                   TextStyle(fontSize: 25, color: Colors.white),
                             ),
@@ -83,7 +94,7 @@ class HomePage extends StatelessWidget {
                               height: 4,
                             ),
                             const Text(
-                              "Sun, Oct 31, 4:00pm. Madison Square Garden ",
+                              "Sun, Aug 5, 6:30pm. SoFi Stadium",
                               style: TextStyle(
                                   fontSize: 13,
                                   fontWeight: FontWeight.w500,
