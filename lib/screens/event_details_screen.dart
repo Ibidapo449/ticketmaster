@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ticketmaster/ticket_details.dart';
+import 'package:ticketmaster/screens/ticket_details_screen.dart';
 
 class EventDetails extends StatefulWidget {
   const EventDetails({super.key});
