@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:ticketmaster/screens/event_details_screen.dart';
 import 'package:ticketmaster/home.dart';
 
 class HomeNavBar extends StatefulWidget {

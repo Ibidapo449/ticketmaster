@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ticketmaster/screens/event_details_screen.dart';
@@ -117,7 +115,7 @@ class _HomePageState extends State<HomePage> {
                                     height: 4,
                                   ),
                                   Text(
-                                    event.title,
+                                    event.name,
                                     // "Sun, Aug 5, 6:30pm. SoFi Stadium",
                                     style: const TextStyle(
                                         fontSize: 13,

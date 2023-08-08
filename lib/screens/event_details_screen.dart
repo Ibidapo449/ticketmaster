@@ -229,7 +229,7 @@ class _EventDetailsState extends State<EventDetails> {
                                             height: 30,
                                             decoration:  BoxDecoration(
                                               borderRadius: BorderRadius.circular(5),
-                                              image: DecorationImage(
+                                              image: const DecorationImage(
                                                   image: AssetImage(
                                                     'assets/images/applewallet.png',
                                                   ),
