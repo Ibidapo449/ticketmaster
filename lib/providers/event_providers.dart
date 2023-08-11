@@ -19,3 +19,23 @@ class EventProvider extends ChangeNotifier {
     notifyListeners();
   }
 }
+
+class FormDataProvider extends ChangeNotifier {
+  FormData _formData = FormData(
+    artistName: '',
+    eventName: '', 
+    section: '',
+    row: '',
+    seat: '',
+    date: '',
+    location: '',
+    time: '',
+  );
+
+  FormData get formData => _formData;
+
+  void updateFormData(FormData newFormData) {
+    _formData = newFormData;
+    notifyListeners();
+  }
+}

@@ -1434,3 +1434,27 @@ class EnumValues<T> {
     return reverseMap;
   }
 }
+
+class FormData {
+  String artistName;
+  String eventName;
+  String section;
+  String row;
+  String seat;
+  String date;
+  String location;
+  String time;
+  // String email;
+
+  FormData({
+    required this.artistName, 
+    required this.eventName,
+    required this.section,
+    required this.row,
+    required this.seat,
+    required this.date,
+    required this.location,
+    required this.time,
+  // required this.email
+  });
+}

@@ -1,4 +1,7 @@
+// ignore_for_file: prefer_interpolation_to_compose_strings
+
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ticketmaster/screens/ticket_details_screen.dart';
 
 class EventDetails extends StatefulWidget {
@@ -14,12 +17,45 @@ class _EventDetailsState extends State<EventDetails> {
     'assets/images/event.jpg',
     'assets/images/event.jpg',
   ];
+  String _artistName = '';
+  String _eventName = '';
+  String _section = '';
+  String _row = '';
+  String _seat = '';
+  String _date = '';
+  String _location = '';
+  String _time = '';
+
+
+  @override
+  void initState() {
+    super.initState();
+    _loadSavedData();
+  }
+
+  Future<void> _loadSavedData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _artistName = prefs.getString('artistName') ?? 'N/A';
+      _eventName = prefs.getString('eventName') ?? 'N/A';
+      _section = prefs.getString('section') ?? 'N/A';
+      _row = prefs.getString('row') ?? 'N/A';
+      _seat = prefs.getString('seat') ?? 'N/A';
+      _date = prefs.getString('date') ?? 'N/A';
+      _location = prefs.getString('location') ?? 'N/A';
+      _time = prefs.getString('time') ?? 'N/A';
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
-        leading: const Icon(Icons.cancel_sharp, color: Colors.black,),
+        leading: const Icon(
+          Icons.cancel_sharp,
+          color: Colors.black,
+        ),
         title: const Padding(
           padding: EdgeInsets.only(left: 100),
           child: Row(
@@ -76,25 +112,25 @@ class _EventDetailsState extends State<EventDetails> {
                             width: MediaQuery.of(context).size.width,
                             height: MediaQuery.of(context).size.height * 0.12,
                             color: Colors.blue.shade800,
-                            child: const Row(
+                            child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text(
+                                    const Text(
                                       "SEC",
                                       style: TextStyle(
                                         color: Colors.white,
                                       ),
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 3,
                                     ),
                                     Text(
-                                      "D",
-                                      style: TextStyle(
+                                      _section,
+                                      style: const TextStyle(
                                           color: Colors.white,
                                           fontSize: 25,
                                           fontWeight: FontWeight.w600),
@@ -104,18 +140,18 @@ class _EventDetailsState extends State<EventDetails> {
                                 Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text(
+                                    const Text(
                                       "ROW",
                                       style: TextStyle(
                                         color: Colors.white,
                                       ),
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 3,
                                     ),
                                     Text(
-                                      "8",
-                                      style: TextStyle(
+                                      _row,
+                                      style: const TextStyle(
                                           color: Colors.white,
                                           fontSize: 25,
                                           fontWeight: FontWeight.w600),
@@ -125,18 +161,18 @@ class _EventDetailsState extends State<EventDetails> {
                                 Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text(
+                                    const Text(
                                       "SEAT",
                                       style: TextStyle(
                                         color: Colors.white,
                                       ),
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 3,
                                     ),
                                     Text(
-                                      "6",
-                                      style: TextStyle(
+                                      _seat,
+                                      style: const TextStyle(
                                           color: Colors.white,
                                           fontSize: 25,
                                           fontWeight: FontWeight.w600),
@@ -151,11 +187,11 @@ class _EventDetailsState extends State<EventDetails> {
                             height: MediaQuery.of(context).size.height * 0.31,
                             decoration: const BoxDecoration(
                               image: DecorationImage(
-                fit: BoxFit.cover,
-                image: NetworkImage(
-                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSs6uOkARyMvSA4MJUzIa-8KnWZeDn_VT4Zcg&usqp=CAU', // Replace with your image URL
-                ),
-              ),
+                                fit: BoxFit.cover,
+                                image: NetworkImage(
+                                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSs6uOkARyMvSA4MJUzIa-8KnWZeDn_VT4Zcg&usqp=CAU', // Replace with your image URL
+                                ),
+                              ),
                             ),
                             child: Container(
                               width: MediaQuery.of(context).size.width,
@@ -175,17 +211,17 @@ class _EventDetailsState extends State<EventDetails> {
                                     height: MediaQuery.of(context).size.height *
                                         0.23,
                                   ),
-                                  const Text(
-                                    "Taylor Swift | The Eras Tour",
-                                    style: TextStyle(
+                                  Text(
+                                    _artistName + " | " + _eventName,
+                                    style: const TextStyle(
                                         fontSize: 25, color: Colors.white),
                                   ),
                                   const SizedBox(
                                     height: 10,
                                   ),
-                                  const Text(
-                                    "Sat, Aug 5, 6:30pm. Sofi Stadium",
-                                    style: TextStyle(
+                                  Text(
+                                    _date + " " + _time + " " + _location,
+                                    style: const TextStyle(
                                         fontSize: 15,
                                         fontWeight: FontWeight.w500,
                                         color: Colors.white),
@@ -222,13 +258,15 @@ class _EventDetailsState extends State<EventDetails> {
                                               BorderRadius.circular(10)),
                                       child: Center(
                                           child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
                                         children: [
                                           Container(
                                             width: 40,
                                             height: 30,
-                                            decoration:  BoxDecoration(
-                                              borderRadius: BorderRadius.circular(5),
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(5),
                                               image: const DecorationImage(
                                                   image: AssetImage(
                                                     'assets/images/applewallet.png',
@@ -236,7 +274,9 @@ class _EventDetailsState extends State<EventDetails> {
                                                   fit: BoxFit.cover),
                                             ),
                                           ),
-                                          const SizedBox(width: 10,),
+                                          const SizedBox(
+                                            width: 10,
+                                          ),
                                           const Text(
                                             "Add to Apple Wallet",
                                             style:
@@ -294,7 +334,9 @@ class _EventDetailsState extends State<EventDetails> {
                                           fit: BoxFit.cover),
                                     ),
                                   ),
-                                  const SizedBox(width: 5,),
+                                  const SizedBox(
+                                    width: 5,
+                                  ),
                                   const Text(
                                     "ticketmaster.verified",
                                     style: TextStyle(

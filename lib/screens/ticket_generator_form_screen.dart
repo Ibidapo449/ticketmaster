@@ -172,6 +172,24 @@ class _TicketGeneratorFormState extends State<TicketGeneratorForm> {
                     keyboardType: TextInputType.text),
               ],
             ),
+          const SizedBox(height: 15,),
+            Center(
+              child: Container(
+                height: 50,
+                width: MediaQuery.of(context).size.width * 0.7,
+                decoration:  BoxDecoration(
+                  color: Colors.grey,
+                  borderRadius: BorderRadius.circular(10)
+                ),
+                child: const Center(child: Text("Generate Ticket",
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600
+                        ),
+                )),
+              ),
+            )
           ],
         ),
       ),
