@@ -3,7 +3,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ticketmaster/model/event_model.dart';
-import 'package:ticketmaster/providers/event_providers.dart';// Import the provider class you created
+import 'package:ticketmaster/providers/event_providers.dart'; // Import the provider class you created
 
 class FormScreen extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
@@ -20,9 +20,9 @@ class FormScreen extends StatelessWidget {
   FormScreen({super.key});
 
   void _submitForm(BuildContext context) async {
-    
     if (_formKey.currentState!.validate()) {
       // Form is valid, update form data using the provider
+
       FormData newFormData = FormData(
         artistName: _artistNameController.text,
         eventName: _eventNameController.text,
@@ -32,30 +32,41 @@ class FormScreen extends StatelessWidget {
         date: _dateController.text,
         location: _locationController.text,
         time: _timeController.text,
-        
 
         // email: _emailController.text,
       );
-      FormDataProvider formDataProvider = Provider.of<FormDataProvider>(context, listen: false);
+      await context
+          .read<EventProvider>()
+          .getAllEvents(_eventNameController.text);
+      FormDataProvider formDataProvider =
+          Provider.of<FormDataProvider>(context, listen: false);
       formDataProvider.updateFormData(newFormData);
+      print(Provider.of<EventProvider>(context, listen: false)
+          .events[0]
+          .images[0]
+          .url);
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString('artistName', newFormData.artistName);
+      prefs.setString('eventName', newFormData.eventName);
+      prefs.setString('section', newFormData.section);
+      prefs.setString('row', newFormData.row);
+      prefs.setString('seat', newFormData.seat);
+      prefs.setString('date', newFormData.date);
+      prefs.setString('location', newFormData.location);
+      prefs.setString('time', newFormData.time);
+      prefs.setString(
+          'image',
+          Provider.of<EventProvider>(context, listen: false)
+              .events[0]
+              .images[0]
+              .url);
 
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString('artistName', newFormData.artistName);
-    prefs.setString('eventName', newFormData.eventName);
-    prefs.setString('section', newFormData.section);
-    prefs.setString('row', newFormData.row);
-    prefs.setString('seat', newFormData.seat);
-    prefs.setString('date', newFormData.date);
-    prefs.setString('location', newFormData.location);
-    prefs.setString('time', newFormData.time);
-
-    // Show a toast notification
-    Fluttertoast.showToast(
-      msg: "Event Added successfully!",
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.BOTTOM,
-    );
-
+      // Show a toast notification
+      Fluttertoast.showToast(
+        msg: "Event Added successfully!",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+      );
     }
   }
 
@@ -69,32 +80,30 @@ class FormScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-               const Text(
-              "Ticket Generator Form",
-              style: TextStyle(fontSize: 21, fontWeight: FontWeight.w800),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            const Wrap(children: [
-              Text(
-                'Please fill the form for each ticket item and make sure to click on "Generate Ticket" to add each ticket item.',
-                style:
-                    TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
-              )
-            ]),
-            const SizedBox(
-              height: 20,
-            ),
+              const Text(
+                "Ticket Generator Form",
+                style: TextStyle(fontSize: 21, fontWeight: FontWeight.w800),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              const Wrap(children: [
+                Text(
+                  'Please fill the form for each ticket item and make sure to click on "Generate Ticket" to add each ticket item.',
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+                )
+              ]),
+              const SizedBox(
+                height: 20,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Container(
                     width: MediaQuery.of(context).size.width * 0.42,
                     decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black54),
-                      borderRadius: BorderRadius.circular(5)
-                    ),
+                        border: Border.all(color: Colors.black54),
+                        borderRadius: BorderRadius.circular(5)),
                     child: TextFormField(
                       controller: _artistNameController,
                       validator: (value) {
@@ -104,49 +113,47 @@ class FormScreen extends StatelessWidget {
                         return null;
                       },
                       decoration: const InputDecoration(
-                        contentPadding: EdgeInsets.symmetric(horizontal: 5),
-                        labelText: 'Artist Name',
-                        border: InputBorder.none,
-                        fillColor: Colors.black54,
-                        focusColor: Colors.black54
-                        ),
+                          contentPadding: EdgeInsets.symmetric(horizontal: 5),
+                          labelText: 'Artist Name',
+                          border: InputBorder.none,
+                          fillColor: Colors.black54,
+                          focusColor: Colors.black54),
                     ),
                   ),
                   Container(
-                 width: MediaQuery.of(context).size.width * 0.42,
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black54),
-                  borderRadius: BorderRadius.circular(5)
-                ),
-                child: TextFormField(
-                  controller: _eventNameController,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter a valid event name';
-                    }
-                    return null;
-                  },
-                  decoration: const InputDecoration(
-                    contentPadding: EdgeInsets.symmetric(horizontal: 5),
-                    labelText: 'Event Name',
-                    border: InputBorder.none,
-                    fillColor: Colors.black54,
-                    focusColor: Colors.black54
+                    width: MediaQuery.of(context).size.width * 0.42,
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Colors.black54),
+                        borderRadius: BorderRadius.circular(5)),
+                    child: TextFormField(
+                      controller: _eventNameController,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter a valid event name';
+                        }
+                        return null;
+                      },
+                      decoration: const InputDecoration(
+                          contentPadding: EdgeInsets.symmetric(horizontal: 5),
+                          labelText: 'Event Name',
+                          border: InputBorder.none,
+                          fillColor: Colors.black54,
+                          focusColor: Colors.black54),
                     ),
-                ),
-              ),
+                  ),
                 ],
               ),
-              const SizedBox(height: 10,),
-                Row(
+              const SizedBox(
+                height: 10,
+              ),
+              Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Container(
                     width: MediaQuery.of(context).size.width * 0.42,
                     decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black54),
-                      borderRadius: BorderRadius.circular(5)
-                    ),
+                        border: Border.all(color: Colors.black54),
+                        borderRadius: BorderRadius.circular(5)),
                     child: TextFormField(
                       controller: _sectionController,
                       validator: (value) {
@@ -156,49 +163,47 @@ class FormScreen extends StatelessWidget {
                         return null;
                       },
                       decoration: const InputDecoration(
-                        contentPadding: EdgeInsets.symmetric(horizontal: 5),
-                        labelText: 'Section',
-                        border: InputBorder.none,
-                        fillColor: Colors.black54,
-                        focusColor: Colors.black54
-                        ),
+                          contentPadding: EdgeInsets.symmetric(horizontal: 5),
+                          labelText: 'Section',
+                          border: InputBorder.none,
+                          fillColor: Colors.black54,
+                          focusColor: Colors.black54),
                     ),
                   ),
                   Container(
-                 width: MediaQuery.of(context).size.width * 0.42,
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black54),
-                  borderRadius: BorderRadius.circular(5)
-                ),
-                child: TextFormField(
-                  controller: _rowController,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter a valid row';
-                    }
-                    return null;
-                  },
-                  decoration: const InputDecoration(
-                    contentPadding: EdgeInsets.symmetric(horizontal: 5),
-                    labelText: 'Row',
-                    border: InputBorder.none,
-                    fillColor: Colors.black54,
-                    focusColor: Colors.black54
+                    width: MediaQuery.of(context).size.width * 0.42,
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Colors.black54),
+                        borderRadius: BorderRadius.circular(5)),
+                    child: TextFormField(
+                      controller: _rowController,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter a valid row';
+                        }
+                        return null;
+                      },
+                      decoration: const InputDecoration(
+                          contentPadding: EdgeInsets.symmetric(horizontal: 5),
+                          labelText: 'Row',
+                          border: InputBorder.none,
+                          fillColor: Colors.black54,
+                          focusColor: Colors.black54),
                     ),
-                ),
-              ),
+                  ),
                 ],
               ),
-           const SizedBox(height: 10,),
+              const SizedBox(
+                height: 10,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Container(
                     width: MediaQuery.of(context).size.width * 0.42,
                     decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black54),
-                      borderRadius: BorderRadius.circular(5)
-                    ),
+                        border: Border.all(color: Colors.black54),
+                        borderRadius: BorderRadius.circular(5)),
                     child: TextFormField(
                       controller: _seatController,
                       validator: (value) {
@@ -208,49 +213,47 @@ class FormScreen extends StatelessWidget {
                         return null;
                       },
                       decoration: const InputDecoration(
-                        contentPadding: EdgeInsets.symmetric(horizontal: 5),
-                        labelText: 'Seat',
-                        border: InputBorder.none,
-                        fillColor: Colors.black54,
-                        focusColor: Colors.black54
-                        ),
+                          contentPadding: EdgeInsets.symmetric(horizontal: 5),
+                          labelText: 'Seat',
+                          border: InputBorder.none,
+                          fillColor: Colors.black54,
+                          focusColor: Colors.black54),
                     ),
                   ),
                   Container(
-                 width: MediaQuery.of(context).size.width * 0.42,
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black54),
-                  borderRadius: BorderRadius.circular(5)
-                ),
-                child: TextFormField(
-                  controller: _dateController,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter a valid date';
-                    }
-                    return null;
-                  },
-                  decoration: const InputDecoration(
-                    contentPadding: EdgeInsets.symmetric(horizontal: 5),
-                    labelText: 'date',
-                    border: InputBorder.none,
-                    fillColor: Colors.black54,
-                    focusColor: Colors.black54
+                    width: MediaQuery.of(context).size.width * 0.42,
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Colors.black54),
+                        borderRadius: BorderRadius.circular(5)),
+                    child: TextFormField(
+                      controller: _dateController,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter a valid date';
+                        }
+                        return null;
+                      },
+                      decoration: const InputDecoration(
+                          contentPadding: EdgeInsets.symmetric(horizontal: 5),
+                          labelText: 'date',
+                          border: InputBorder.none,
+                          fillColor: Colors.black54,
+                          focusColor: Colors.black54),
                     ),
-                ),
-              ),
+                  ),
                 ],
               ),
-               const SizedBox(height: 10,),
-               Row(
+              const SizedBox(
+                height: 10,
+              ),
+              Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Container(
                     width: MediaQuery.of(context).size.width * 0.42,
                     decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black54),
-                      borderRadius: BorderRadius.circular(5)
-                    ),
+                        border: Border.all(color: Colors.black54),
+                        borderRadius: BorderRadius.circular(5)),
                     child: TextFormField(
                       controller: _locationController,
                       validator: (value) {
@@ -260,40 +263,39 @@ class FormScreen extends StatelessWidget {
                         return null;
                       },
                       decoration: const InputDecoration(
-                        contentPadding: EdgeInsets.symmetric(horizontal: 5),
-                        labelText: 'Location',
-                        border: InputBorder.none,
-                        fillColor: Colors.black54,
-                        focusColor: Colors.black54
-                        ),
+                          contentPadding: EdgeInsets.symmetric(horizontal: 5),
+                          labelText: 'Location',
+                          border: InputBorder.none,
+                          fillColor: Colors.black54,
+                          focusColor: Colors.black54),
                     ),
                   ),
                   Container(
-                 width: MediaQuery.of(context).size.width * 0.42,
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black54),
-                  borderRadius: BorderRadius.circular(5)
-                ),
-                child: TextFormField(
-                  controller: _timeController,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter a valid time';
-                    }
-                    return null;
-                  },
-                  decoration: const InputDecoration(
-                    contentPadding: EdgeInsets.symmetric(horizontal: 5),
-                    labelText: 'time',
-                    border: InputBorder.none,
-                    fillColor: Colors.black54,
-                    focusColor: Colors.black54
+                    width: MediaQuery.of(context).size.width * 0.42,
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Colors.black54),
+                        borderRadius: BorderRadius.circular(5)),
+                    child: TextFormField(
+                      controller: _timeController,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter a valid time';
+                        }
+                        return null;
+                      },
+                      decoration: const InputDecoration(
+                          contentPadding: EdgeInsets.symmetric(horizontal: 5),
+                          labelText: 'time',
+                          border: InputBorder.none,
+                          fillColor: Colors.black54,
+                          focusColor: Colors.black54),
                     ),
-                ),
-              ),
+                  ),
                 ],
               ),
-              const SizedBox(height: 20,),
+              const SizedBox(
+                height: 20,
+              ),
               Center(
                 child: ElevatedButton(
                   onPressed: () => _submitForm(context),

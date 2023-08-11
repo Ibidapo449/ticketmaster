@@ -8,11 +8,11 @@ class EventProvider extends ChangeNotifier {
   List<Event> _events = [];
   List<Event> get events => _events;
 
-  Future<void> getAllEvents() async {
+  Future<void> getAllEvents(keyword) async {
     isLoading = true;
     notifyListeners();
 
-    final response = await _service.getAll();
+    final response = await _service.getAll(keyword);
 
     _events = response;
     isLoading = false;

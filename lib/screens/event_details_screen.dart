@@ -25,7 +25,7 @@ class _EventDetailsState extends State<EventDetails> {
   String _date = '';
   String _location = '';
   String _time = '';
-
+  String _image = '';
 
   @override
   void initState() {
@@ -44,6 +44,7 @@ class _EventDetailsState extends State<EventDetails> {
       _date = prefs.getString('date') ?? 'N/A';
       _location = prefs.getString('location') ?? 'N/A';
       _time = prefs.getString('time') ?? 'N/A';
+      _image = prefs.getString('image') ?? '';
     });
   }
 
@@ -185,11 +186,11 @@ class _EventDetailsState extends State<EventDetails> {
                           Container(
                             width: MediaQuery.of(context).size.width,
                             height: MediaQuery.of(context).size.height * 0.31,
-                            decoration: const BoxDecoration(
+                            decoration: BoxDecoration(
                               image: DecorationImage(
                                 fit: BoxFit.cover,
                                 image: NetworkImage(
-                                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSs6uOkARyMvSA4MJUzIa-8KnWZeDn_VT4Zcg&usqp=CAU', // Replace with your image URL
+                                  _image, // Replace with your image URL
                                 ),
                               ),
                             ),

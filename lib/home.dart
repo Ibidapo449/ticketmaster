@@ -19,16 +19,14 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     _loadSavedData();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      Provider.of<EventProvider>(context, listen: false).getAllEvents();
-    });
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {});
   }
-   String _date = '';
+
+  String _date = '';
   String _eventName = '';
   String _time = '';
   String _location = '';
-  // String _email = '';
-
+  String _image = '';
 
   Future<void> _loadSavedData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -37,7 +35,7 @@ class _HomePageState extends State<HomePage> {
       _eventName = prefs.getString('eventName') ?? 'N/A';
       _time = prefs.getString('eventName') ?? 'N/A';
       _location = prefs.getString('location') ?? 'N/A';
-      // _email = prefs.getString('email') ?? 'N/A';
+      _image = prefs.getString('image') ?? '';
     });
   }
 
@@ -68,110 +66,114 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
-      body: 
-                   GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const EventDetails(),
-                      ));
-                    },
-        child: Container(
-          height: MediaQuery.of(context).size.height * 0.25,
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              fit: BoxFit.cover,
-              image: NetworkImage(
-                'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSs6uOkARyMvSA4MJUzIa-8KnWZeDn_VT4Zcg&usqp=CAU', // Replace with your image URL
-              ),
-            ),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                height: MediaQuery.of(context).size.height * 0.025,
-                color: Colors.transparent,
-                child: const Center(
-                    child: Text(
-                  "NEW DATE",
-                  style: TextStyle(
-                      fontSize: 12,
-                      color: Colors.transparent,
-                      fontWeight: FontWeight.w500),
-                )),
-              ),
-              const Spacer(),
-              Container(
-                width: MediaQuery.of(context).size.width,
-                decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                  colors: [
-                    Colors.transparent,
-                    Colors.black,
-                  ],
-                  stops: [0.0, 1.0],
-                  begin: FractionalOffset.topCenter,
-                  end: FractionalOffset.bottomCenter,
-                )),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        _eventName,
-                        style: const TextStyle(fontSize: 25, color: Colors.white),
-                      ),
-                      const SizedBox(
-                        height: 4,
-                      ),
-                        Text(
-                        // event.name,
-                         _date + " " + _time +  " " + _location,
-                        style: const TextStyle(
-                            fontSize: 13,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.white),
-                      ),
-                      const SizedBox(
-                        height: 3,
-                      ),
-                      Row(
-                        children: [
-                          Container(
-                            width: 13,
-                            height: 13,
-                            decoration: const BoxDecoration(
-                              image: DecorationImage(
-                                  image: AssetImage(
-                                    'assets/images/ticket.png',
-                                  ),
-                                  fit: BoxFit.cover),
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 5,
-                          ),
-                          const Text(
-                            "1",
-                            style:  TextStyle(
-                                fontSize: 13,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.white),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      )
-                    ],
+      body: _image == ''
+          ? Container(
+              child: const Center(child: Text('Empty List')),
+            )
+          : GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const EventDetails(),
+                ));
+              },
+              child: Container(
+                height: MediaQuery.of(context).size.height * 0.25,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    fit: BoxFit.cover,
+                    image: NetworkImage(
+                      _image, // Replace with your image URL
+                    ),
                   ),
                 ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      height: MediaQuery.of(context).size.height * 0.025,
+                      color: Colors.transparent,
+                      child: const Center(
+                          child: Text(
+                        "NEW DATE",
+                        style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.transparent,
+                            fontWeight: FontWeight.w500),
+                      )),
+                    ),
+                    const Spacer(),
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      decoration: const BoxDecoration(
+                          gradient: LinearGradient(
+                        colors: [
+                          Colors.transparent,
+                          Colors.black,
+                        ],
+                        stops: [0.0, 1.0],
+                        begin: FractionalOffset.topCenter,
+                        end: FractionalOffset.bottomCenter,
+                      )),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 15),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              _eventName,
+                              style: const TextStyle(
+                                  fontSize: 25, color: Colors.white),
+                            ),
+                            const SizedBox(
+                              height: 4,
+                            ),
+                            Text(
+                              // event.name,
+                              _date + " " + _time + " " + _location,
+                              style: const TextStyle(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.white),
+                            ),
+                            const SizedBox(
+                              height: 3,
+                            ),
+                            Row(
+                              children: [
+                                Container(
+                                  width: 13,
+                                  height: 13,
+                                  decoration: const BoxDecoration(
+                                    image: DecorationImage(
+                                        image: AssetImage(
+                                          'assets/images/ticket.png',
+                                        ),
+                                        fit: BoxFit.cover),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 5,
+                                ),
+                                const Text(
+                                  "1",
+                                  style: TextStyle(
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.white),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ],
-          ),
-        ),
-      ),
+            ),
       // body: Consumer<EventProvider>(
       //   builder: (context, value, child) {
       //     final events = value.events;
