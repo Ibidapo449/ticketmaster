@@ -21,7 +21,7 @@ class _HomeNavBarState extends State<HomeNavBar> {
     return Scaffold(
       body: tabs[_currentIndex],
       bottomNavigationBar: SizedBox(
-        height: 80,
+        height: 90,
         child: BottomNavigationBar(
           showUnselectedLabels: true,
           showSelectedLabels: true,
@@ -55,43 +55,51 @@ class _HomeNavBarState extends State<HomeNavBar> {
                 height: 30,
                 decoration: const BoxDecoration(
                   image: DecorationImage(
-                      image: AssetImage('assets/images/search.png',),
+                      image: AssetImage(
+                        'assets/images/search.png',
+                      ),
                       fit: BoxFit.cover),
                 ),
               ),
               label: 'Discover',
             ),
             BottomNavigationBarItem(
-               icon: Container(
+              icon: Container(
                 width: 30,
                 height: 30,
                 decoration: const BoxDecoration(
                   image: DecorationImage(
-                      image: AssetImage('assets/images/love.png',),
+                      image: AssetImage(
+                        'assets/images/love.png',
+                      ),
                       fit: BoxFit.cover),
                 ),
               ),
               label: 'Favourites',
             ),
             BottomNavigationBarItem(
-               icon: Container(
+              icon: Container(
                 width: 30,
                 height: 30,
                 decoration: const BoxDecoration(
                   image: DecorationImage(
-                      image: AssetImage('assets/images/myevent.png',),
+                      image: AssetImage(
+                        'assets/images/myevent.png',
+                      ),
                       fit: BoxFit.cover),
                 ),
               ),
               label: 'My Events',
             ),
             BottomNavigationBarItem(
-               icon: Container(
+              icon: Container(
                 width: 30,
                 height: 30,
                 decoration: const BoxDecoration(
                   image: DecorationImage(
-                      image: AssetImage('assets/images/person.png',),
+                      image: AssetImage(
+                        'assets/images/person.png',
+                      ),
                       fit: BoxFit.cover),
                 ),
               ),

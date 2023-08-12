@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -22,7 +23,7 @@ class FormScreen extends StatelessWidget {
   void _submitForm(BuildContext context) async {
     if (_formKey.currentState!.validate()) {
       // Form is valid, update form data using the provider
-
+      SmartDialog.showLoading();
       FormData newFormData = FormData(
         artistName: _artistNameController.text,
         eventName: _eventNameController.text,
@@ -60,7 +61,8 @@ class FormScreen extends StatelessWidget {
               .events[0]
               .images[0]
               .url);
-
+      SmartDialog.dismiss();
+      context.read<EventProvider>().loadSavedData();
       // Show a toast notification
       Fluttertoast.showToast(
         msg: "Event Added successfully!",

@@ -18,29 +18,14 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    _loadSavedData();
+
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {});
-  }
-
-  String _date = '';
-  String _eventName = '';
-  String _time = '';
-  String _location = '';
-  String _image = '';
-
-  Future<void> _loadSavedData() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      _date = prefs.getString('date') ?? 'N/A';
-      _eventName = prefs.getString('eventName') ?? 'N/A';
-      _time = prefs.getString('eventName') ?? 'N/A';
-      _location = prefs.getString('location') ?? 'N/A';
-      _image = prefs.getString('image') ?? '';
-    });
+    context.read<EventProvider>().loadSavedData();
   }
 
   @override
   Widget build(BuildContext context) {
+    final eventprovider = context.watch<EventProvider>();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
@@ -66,7 +51,7 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
-      body: _image == ''
+      body: eventprovider.image == ''
           ? Container(
               child: const Center(child: Text('Empty List')),
             )
@@ -82,7 +67,7 @@ class _HomePageState extends State<HomePage> {
                   image: DecorationImage(
                     fit: BoxFit.cover,
                     image: NetworkImage(
-                      _image, // Replace with your image URL
+                      eventprovider.image, // Replace with your image URL
                     ),
                   ),
                 ),
@@ -120,7 +105,7 @@ class _HomePageState extends State<HomePage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              _eventName,
+                              eventprovider.eventName,
                               style: const TextStyle(
                                   fontSize: 25, color: Colors.white),
                             ),
@@ -129,7 +114,11 @@ class _HomePageState extends State<HomePage> {
                             ),
                             Text(
                               // event.name,
-                              _date + " " + _time + " " + _location,
+                              eventprovider.date +
+                                  " " +
+                                  eventprovider.time +
+                                  " " +
+                                  eventprovider.location,
                               style: const TextStyle(
                                   fontSize: 13,
                                   fontWeight: FontWeight.w500,
