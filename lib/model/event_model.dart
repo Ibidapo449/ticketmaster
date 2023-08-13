@@ -101,6 +101,8 @@ class FormData {
   String date;
   String location;
   String time;
+  String ticketType;
+  String level;
   // String email;
 
   FormData({
@@ -112,6 +114,9 @@ class FormData {
     required this.date,
     required this.location,
     required this.time,
+    required this.ticketType,
+    required this.level,
+
     // required this.email
   });
 }

@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously, avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -16,6 +18,10 @@ class FormScreen extends StatelessWidget {
   final TextEditingController _dateController = TextEditingController();
   final TextEditingController _locationController = TextEditingController();
   final TextEditingController _timeController = TextEditingController();
+   final TextEditingController _ticketTypeController = TextEditingController();
+    final TextEditingController _levelController = TextEditingController();
+  
+  
   // final TextEditingController _emailController = TextEditingController();
 
   FormScreen({super.key});
@@ -33,6 +39,8 @@ class FormScreen extends StatelessWidget {
         date: _dateController.text,
         location: _locationController.text,
         time: _timeController.text,
+        ticketType: _ticketTypeController.text,
+        level: _levelController.text,
 
         // email: _emailController.text,
       );
@@ -55,6 +63,8 @@ class FormScreen extends StatelessWidget {
       prefs.setString('date', newFormData.date);
       prefs.setString('location', newFormData.location);
       prefs.setString('time', newFormData.time);
+      prefs.setString('ticketType', newFormData.ticketType);
+      prefs.setString('level', newFormData.level);
       prefs.setString(
           'image',
           Provider.of<EventProvider>(context, listen: false)
@@ -288,6 +298,54 @@ class FormScreen extends StatelessWidget {
                       decoration: const InputDecoration(
                           contentPadding: EdgeInsets.symmetric(horizontal: 5),
                           labelText: 'time',
+                          border: InputBorder.none,
+                          fillColor: Colors.black54,
+                          focusColor: Colors.black54),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 10,),
+               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.42,
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Colors.black54),
+                        borderRadius: BorderRadius.circular(5)),
+                    child: TextFormField(
+                      controller: _ticketTypeController,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter a valid ticket Type';
+                        }
+                        return null;
+                      },
+                      decoration: const InputDecoration(
+                          contentPadding: EdgeInsets.symmetric(horizontal: 5),
+                          labelText: 'Ticket Type',
+                          border: InputBorder.none,
+                          fillColor: Colors.black54,
+                          focusColor: Colors.black54),
+                    ),
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.42,
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Colors.black54),
+                        borderRadius: BorderRadius.circular(5)),
+                    child: TextFormField(
+                      controller: _levelController,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter a valid level';
+                        }
+                        return null;
+                      },
+                      decoration: const InputDecoration(
+                          contentPadding: EdgeInsets.symmetric(horizontal: 5),
+                          labelText: 'level',
                           border: InputBorder.none,
                           fillColor: Colors.black54,
                           focusColor: Colors.black54),

@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ticketmaster/screens/event_details_screen.dart';
 import 'package:ticketmaster/providers/event_providers.dart';
 import 'package:ticketmaster/screens/form_screen.dart';
@@ -34,7 +33,7 @@ class _HomePageState extends State<HomePage> {
           color: Colors.black,
         ),
         title: Padding(
-          padding: const EdgeInsets.only(left: 100),
+          padding: const EdgeInsets.only(left: 130),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -52,9 +51,19 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       body: eventprovider.image == ''
-          ? Container(
-              child: const Center(child: Text('Empty List')),
-            )
+          ? Padding(
+            padding: const EdgeInsets.all(15),
+            child: Container(
+              height: MediaQuery.of(context).size.height * 0.3,
+              width: MediaQuery.of(context).size.width,
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.black54),
+                borderRadius: BorderRadius.circular(10)
+              ),
+              child: const Center(child: Text("No event added yet !")),
+                // child: const Center(child: Text('Empty List')),
+              ),
+          )
           : GestureDetector(
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
@@ -105,24 +114,43 @@ class _HomePageState extends State<HomePage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              eventprovider.eventName,
+                               eventprovider.artistName + " | " + eventprovider.eventName,
                               style: const TextStyle(
                                   fontSize: 25, color: Colors.white),
                             ),
                             const SizedBox(
                               height: 4,
                             ),
-                            Text(
-                              // event.name,
-                              eventprovider.date +
-                                  " " +
-                                  eventprovider.time +
-                                  " " +
-                                  eventprovider.location,
-                              style: const TextStyle(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.white),
+                            Row(
+                              children: [
+                                Text(
+                                  // event.name,
+                                  eventprovider.date +
+                                      " " +
+                                      eventprovider.time +
+                                      " " ,
+                                  style: const TextStyle(
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.white),
+                                ),
+                                const SizedBox(width: 10,),
+                                Container(
+                                  height: 5,
+                                  width: 5,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(2.5)
+                                  ),
+                                ),
+                                const SizedBox(width: 10,),
+                                Text(eventprovider.location,
+                                  style: const TextStyle(
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.white),
+                                ),
+                              ],
                             ),
                             const SizedBox(
                               height: 3,
@@ -144,7 +172,7 @@ class _HomePageState extends State<HomePage> {
                                   width: 5,
                                 ),
                                 const Text(
-                                  "1",
+                                  "2",
                                   style: TextStyle(
                                       fontSize: 13,
                                       fontWeight: FontWeight.w500,

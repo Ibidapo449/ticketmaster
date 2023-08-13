@@ -15,6 +15,7 @@ class _HomeNavBarState extends State<HomeNavBar> {
     Container(),
     const HomePage(),
     Container(),
+    Container(),
   ];
   @override
   Widget build(BuildContext context) {
@@ -90,6 +91,20 @@ class _HomeNavBarState extends State<HomeNavBar> {
                 ),
               ),
               label: 'My Events',
+            ),
+            BottomNavigationBarItem(
+              icon: Container(
+                width: 30,
+                height: 30,
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage(
+                        'assets/images/search.png',
+                      ),
+                      fit: BoxFit.cover),
+                ),
+              ),
+              label: 'Sell',
             ),
             BottomNavigationBarItem(
               icon: Container(

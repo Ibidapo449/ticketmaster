@@ -10,9 +10,12 @@ class EventProvider extends ChangeNotifier {
   List<Event> get events => _events;
   String date = '';
   String eventName = '';
+  String artistName = '';
   String time = '';
   String location = '';
   String image = '';
+  String ticketType= '';
+  String level= '';
 
   Future<void> getAllEvents(keyword) async {
     isLoading = true;
@@ -31,9 +34,12 @@ class EventProvider extends ChangeNotifier {
 
     date = prefs.getString('date') ?? 'N/A';
     eventName = prefs.getString('eventName') ?? 'N/A';
+    artistName = prefs.getString('artisName') ?? 'N/A';
     time = prefs.getString('eventName') ?? 'N/A';
     location = prefs.getString('location') ?? 'N/A';
     image = prefs.getString('image') ?? '';
+    ticketType = prefs.getString('ticketType') ?? 'N/A';
+    level = prefs.getString('level') ?? 'N/A';
     print(image);
     notifyListeners();
   }
@@ -49,6 +55,8 @@ class FormDataProvider extends ChangeNotifier {
     date: '',
     location: '',
     time: '',
+    ticketType: '',
+    level: '',
   );
 
   FormData get formData => _formData;

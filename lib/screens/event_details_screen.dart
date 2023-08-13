@@ -26,6 +26,8 @@ class _EventDetailsState extends State<EventDetails> {
   String _location = '';
   String _time = '';
   String _image = '';
+  String _ticketType = '';
+  String _level = '';
 
   @override
   void initState() {
@@ -45,6 +47,8 @@ class _EventDetailsState extends State<EventDetails> {
       _location = prefs.getString('location') ?? 'N/A';
       _time = prefs.getString('time') ?? 'N/A';
       _image = prefs.getString('image') ?? '';
+      _ticketType = prefs.getString('ticketType') ?? 'N/A';
+      _level = prefs.getString('level') ?? 'N/A';
     });
   }
 
@@ -53,9 +57,16 @@ class _EventDetailsState extends State<EventDetails> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
-        leading: const Icon(
-          Icons.cancel_sharp,
-          color: Colors.black,
+        leading: Padding(
+          padding: const EdgeInsets.all(17.0),
+          child: SizedBox(
+            height: 20,
+            width: 20,
+            child: Image.asset(
+              "assets/images/cancel.png",
+              color: Colors.white,
+            ),
+          ),
         ),
         title: const Padding(
           padding: EdgeInsets.only(left: 100),
@@ -99,10 +110,10 @@ class _EventDetailsState extends State<EventDetails> {
                             width: MediaQuery.of(context).size.width,
                             height: MediaQuery.of(context).size.height * 0.03,
                             color: Colors.blue.shade900,
-                            child: const Center(
+                            child: Center(
                               child: Text(
-                                "SILVER PREMIUM TICKET PACKAGE",
-                                style: TextStyle(
+                                _ticketType,
+                                style: const TextStyle(
                                   fontWeight: FontWeight.w400,
                                   color: Colors.white,
                                 ),
@@ -220,12 +231,37 @@ class _EventDetailsState extends State<EventDetails> {
                                   const SizedBox(
                                     height: 10,
                                   ),
-                                  Text(
-                                    _date + " " + _time + " " + _location,
-                                    style: const TextStyle(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w500,
-                                        color: Colors.white),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        _date + " " + _time + " ",
+                                        style: const TextStyle(
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.w500,
+                                            color: Colors.white),
+                                      ),
+                                      const SizedBox(
+                                            width: 10,
+                                      ),
+                                      Container(
+                                        height: 5,
+                                        width: 5,
+                                        decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius:
+                                                BorderRadius.circular(2.5)),
+                                      ),
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
+                                      Text( _location,
+                                        style: const TextStyle(
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.w500,
+                                            color: Colors.white),
+                                      ),
+                                    ],
                                   ),
                                 ],
                               ),
@@ -244,9 +280,9 @@ class _EventDetailsState extends State<EventDetails> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceEvenly,
                                   children: [
-                                    const Text(
-                                      "FLOOR SEATING",
-                                      style: TextStyle(
+                                    Text(
+                                      _level,
+                                      style: const TextStyle(
                                           fontWeight: FontWeight.w700),
                                     ),
                                     Container(
