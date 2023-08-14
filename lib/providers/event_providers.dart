@@ -14,8 +14,10 @@ class EventProvider extends ChangeNotifier {
   String time = '';
   String location = '';
   String image = '';
-  String ticketType= '';
-  String level= '';
+  String ticketType = '';
+  String level = '';
+  String section = '';
+  String numberOfTicket = '';
 
   Future<void> getAllEvents(keyword) async {
     isLoading = true;
@@ -34,13 +36,15 @@ class EventProvider extends ChangeNotifier {
 
     date = prefs.getString('date') ?? 'N/A';
     eventName = prefs.getString('eventName') ?? 'N/A';
-    artistName = prefs.getString('artisName') ?? 'N/A';
-    time = prefs.getString('eventName') ?? 'N/A';
+    artistName = prefs.getString('artistName') ?? 'N/A';
+    time = prefs.getString('time') ?? 'N/A';
     location = prefs.getString('location') ?? 'N/A';
     image = prefs.getString('image') ?? '';
     ticketType = prefs.getString('ticketType') ?? 'N/A';
     level = prefs.getString('level') ?? 'N/A';
-    print(image);
+    section = prefs.getString('section') ?? 'N/A';
+    numberOfTicket = prefs.getString('numberOfTicket') ?? 'N/A';
+
     notifyListeners();
   }
 }
@@ -57,6 +61,7 @@ class FormDataProvider extends ChangeNotifier {
     time: '',
     ticketType: '',
     level: '',
+    numberOfTicket: '',
   );
 
   FormData get formData => _formData;

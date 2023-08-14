@@ -10,7 +10,7 @@ class EventService {
     List<Event> event = [];
     if (response.statusCode == 200) {
       final decodedevent = eventgetFromJson(response.body);
-      event = decodedevent.embedded.events;
+      event = decodedevent.embedded!.events ?? [];
       // final json = jsonDecode(response.body) as List;
       // final json = "[" + response.body + "]" as List;
       // final events = json.map((e) {

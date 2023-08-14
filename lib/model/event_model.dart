@@ -7,10 +7,10 @@ import 'dart:convert';
 Eventget eventgetFromJson(String str) => Eventget.fromJson(json.decode(str));
 
 class Eventget {
-  EventgetEmbedded embedded;
+  EventgetEmbedded? embedded;
 
   Eventget({
-    required this.embedded,
+    this.embedded,
   });
 
   factory Eventget.fromJson(Map<String, dynamic> json) => Eventget(
@@ -19,10 +19,10 @@ class Eventget {
 }
 
 class EventgetEmbedded {
-  List<Event> events;
+  List<Event>? events;
 
   EventgetEmbedded({
-    required this.events,
+    this.events,
   });
 
   factory EventgetEmbedded.fromJson(Map<String, dynamic> json) =>
@@ -103,6 +103,7 @@ class FormData {
   String time;
   String ticketType;
   String level;
+  String numberOfTicket;
   // String email;
 
   FormData({
@@ -116,6 +117,7 @@ class FormData {
     required this.time,
     required this.ticketType,
     required this.level,
+    required this.numberOfTicket,
 
     // required this.email
   });

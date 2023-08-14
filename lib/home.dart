@@ -32,38 +32,51 @@ class _HomePageState extends State<HomePage> {
           Icons.ac_unit,
           color: Colors.black,
         ),
-        title: Padding(
-          padding: const EdgeInsets.only(left: 130),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text("My Events"),
-              GestureDetector(
-                onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => FormScreen(),
-                  ));
-                },
-                child: const Text("Help"),
-              ),
-            ],
-          ),
+        title: const Text(
+          "My Events",
+          style: TextStyle(fontWeight: FontWeight.bold),
         ),
+        actions: [
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => FormScreen(),
+              ));
+            },
+            child: Center(
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                margin: EdgeInsets.only(right: 10),
+                height: 30,
+                width: 60,
+                child: const Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    'Help',
+                    style: TextStyle(fontSize: 20),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
       body: eventprovider.image == ''
           ? Padding(
-            padding: const EdgeInsets.all(15),
-            child: Container(
-              height: MediaQuery.of(context).size.height * 0.3,
-              width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.black54),
-                borderRadius: BorderRadius.circular(10)
-              ),
-              child: const Center(child: Text("No event added yet !")),
+              padding: const EdgeInsets.all(15),
+              child: Container(
+                height: MediaQuery.of(context).size.height * 0.3,
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                    border: Border.all(color: Colors.black54),
+                    borderRadius: BorderRadius.circular(10)),
+                child: const Center(child: Text("No event added yet !")),
                 // child: const Center(child: Text('Empty List')),
               ),
-          )
+            )
           : GestureDetector(
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
@@ -113,44 +126,54 @@ class _HomePageState extends State<HomePage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                               eventprovider.artistName + " | " + eventprovider.eventName,
-                              style: const TextStyle(
-                                  fontSize: 25, color: Colors.white),
+                            FittedBox(
+                              child: Text(
+                                eventprovider.artistName +
+                                    " | " +
+                                    eventprovider.eventName,
+                                style: const TextStyle(
+                                    fontSize: 25, color: Colors.white),
+                              ),
                             ),
                             const SizedBox(
                               height: 4,
                             ),
-                            Row(
-                              children: [
-                                Text(
-                                  // event.name,
-                                  eventprovider.date +
-                                      " " +
-                                      eventprovider.time +
-                                      " " ,
-                                  style: const TextStyle(
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.white),
-                                ),
-                                const SizedBox(width: 10,),
-                                Container(
-                                  height: 5,
-                                  width: 5,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(2.5)
+                            FittedBox(
+                              child: Row(
+                                children: [
+                                  Text(
+                                    // event.name,
+                                    eventprovider.date +
+                                        " " +
+                                        eventprovider.time +
+                                        " ",
+                                    style: const TextStyle(
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.white),
                                   ),
-                                ),
-                                const SizedBox(width: 10,),
-                                Text(eventprovider.location,
-                                  style: const TextStyle(
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.white),
-                                ),
-                              ],
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  Container(
+                                    height: 5,
+                                    width: 5,
+                                    decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(2.5)),
+                                  ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    eventprovider.location,
+                                    style: const TextStyle(
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.white),
+                                  ),
+                                ],
+                              ),
                             ),
                             const SizedBox(
                               height: 3,
@@ -171,9 +194,9 @@ class _HomePageState extends State<HomePage> {
                                 const SizedBox(
                                   width: 5,
                                 ),
-                                const Text(
-                                  "2",
-                                  style: TextStyle(
+                                 Text(
+                                  eventprovider.numberOfTicket,
+                                  style: const TextStyle(
                                       fontSize: 13,
                                       fontWeight: FontWeight.w500,
                                       color: Colors.white),

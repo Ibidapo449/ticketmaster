@@ -68,16 +68,37 @@ class _EventDetailsState extends State<EventDetails> {
             ),
           ),
         ),
-        title: const Padding(
-          padding: EdgeInsets.only(left: 100),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text("My Tickets"),
-              Text("Help"),
-            ],
-          ),
+        title: const Text(
+          "My Tickets",
+          style: TextStyle(fontWeight: FontWeight.bold),
         ),
+        actions: [
+          GestureDetector(
+            // onTap: () {
+            //   Navigator.of(context).push(MaterialPageRoute(
+            //     builder: (context) => FormScreen(),
+            //   ));
+            // },
+            child: Center(
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                margin: EdgeInsets.only(right: 10),
+                height: 30,
+                width: 60,
+                child: Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    'Help',
+                    style: TextStyle(fontSize: 20),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -109,7 +130,7 @@ class _EventDetailsState extends State<EventDetails> {
                           Container(
                             width: MediaQuery.of(context).size.width,
                             height: MediaQuery.of(context).size.height * 0.03,
-                            color: Colors.blue.shade900,
+                            color: const Color(0xff0361cb),
                             child: Center(
                               child: Text(
                                 _ticketType,
@@ -123,7 +144,7 @@ class _EventDetailsState extends State<EventDetails> {
                           Container(
                             width: MediaQuery.of(context).size.width,
                             height: MediaQuery.of(context).size.height * 0.12,
-                            color: Colors.blue.shade800,
+                            color: const Color(0xff006ce7),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -221,47 +242,59 @@ class _EventDetailsState extends State<EventDetails> {
                                 children: [
                                   SizedBox(
                                     height: MediaQuery.of(context).size.height *
-                                        0.23,
+                                        0.2,
                                   ),
-                                  Text(
-                                    _artistName + " | " + _eventName,
-                                    style: const TextStyle(
-                                        fontSize: 25, color: Colors.white),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: FittedBox(
+                                      child: Text(
+                                        _artistName + " | " + _eventName,
+                                        style: const TextStyle(
+                                            fontSize: 25, color: Colors.white),
+                                      ),
+                                    ),
                                   ),
                                   const SizedBox(
                                     height: 10,
                                   ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        _date + " " + _time + " ",
-                                        style: const TextStyle(
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.w500,
-                                            color: Colors.white),
-                                      ),
-                                      const SizedBox(
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: FittedBox(
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            _date + " " + _time + " ",
+                                            style: const TextStyle(
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.w500,
+                                                color: Colors.white),
+                                          ),
+                                          const SizedBox(
                                             width: 10,
+                                          ),
+                                          Container(
+                                            height: 5,
+                                            width: 5,
+                                            decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius:
+                                                    BorderRadius.circular(2.5)),
+                                          ),
+                                          const SizedBox(
+                                            width: 10,
+                                          ),
+                                          Text(
+                                            _location,
+                                            style: const TextStyle(
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.w500,
+                                                color: Colors.white),
+                                          ),
+                                        ],
                                       ),
-                                      Container(
-                                        height: 5,
-                                        width: 5,
-                                        decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            borderRadius:
-                                                BorderRadius.circular(2.5)),
-                                      ),
-                                      const SizedBox(
-                                        width: 10,
-                                      ),
-                                      Text( _location,
-                                        style: const TextStyle(
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.w500,
-                                            color: Colors.white),
-                                      ),
-                                    ],
+                                    ),
                                   ),
                                 ],
                               ),
@@ -274,7 +307,7 @@ class _EventDetailsState extends State<EventDetails> {
                                 padding: EdgeInsets.symmetric(
                                     horizontal:
                                         MediaQuery.of(context).size.width *
-                                            0.24),
+                                            0.18),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   mainAxisAlignment:
@@ -288,39 +321,44 @@ class _EventDetailsState extends State<EventDetails> {
                                     Container(
                                       height: 50,
                                       width: MediaQuery.of(context).size.width *
-                                          0.5,
+                                          0.53,
                                       decoration: BoxDecoration(
                                           color: Colors.black,
                                           borderRadius:
                                               BorderRadius.circular(10)),
                                       child: Center(
-                                          child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Container(
-                                            width: 40,
-                                            height: 30,
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(5),
-                                              image: const DecorationImage(
-                                                  image: AssetImage(
-                                                    'assets/images/applewallet.png',
-                                                  ),
-                                                  fit: BoxFit.cover),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(4.0),
+                                            child: Row(
+                                                                                  mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                                                                  children: [
+                                            Container(
+                                              width: 40,
+                                              height: 30,
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(5),
+                                                image: const DecorationImage(
+                                                    image: AssetImage(
+                                                      'assets/images/applewallet.png',
+                                                    ),
+                                                    fit: BoxFit.cover),
+                                              ),
                                             ),
-                                          ),
-                                          const SizedBox(
-                                            width: 10,
-                                          ),
-                                          const Text(
-                                            "Add to Apple Wallet",
-                                            style:
-                                                TextStyle(color: Colors.white),
-                                          ),
-                                        ],
-                                      )),
+                                            const SizedBox(
+                                              width: 10,
+                                            ),
+                                            const FittedBox(
+                                              child: Text(
+                                                "Add to Apple Wallet",
+                                                style:
+                                                    TextStyle(color: Colors.white),
+                                              ),
+                                            ),
+                                                                                  ],
+                                                                                ),
+                                          )),
                                     ),
                                     Row(
                                       mainAxisAlignment:
@@ -355,7 +393,7 @@ class _EventDetailsState extends State<EventDetails> {
                           Container(
                             width: MediaQuery.of(context).size.width,
                             height: MediaQuery.of(context).size.height * 0.03,
-                            color: Colors.blue.shade900,
+                            color: const Color(0xff0361cb),
                             child: Center(
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -415,7 +453,7 @@ class _EventDetailsState extends State<EventDetails> {
                   width: MediaQuery.of(context).size.width * 0.42,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    color: Colors.blue,
+                    color: const Color(0xff0361cb),
                   ),
                   child: const Center(
                       child: Text(

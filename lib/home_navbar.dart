@@ -22,7 +22,7 @@ class _HomeNavBarState extends State<HomeNavBar> {
     return Scaffold(
       body: tabs[_currentIndex],
       bottomNavigationBar: SizedBox(
-        height: 90,
+        height: 100,
         child: BottomNavigationBar(
           showUnselectedLabels: true,
           showSelectedLabels: true,
@@ -31,19 +31,20 @@ class _HomeNavBarState extends State<HomeNavBar> {
           backgroundColor: Colors.white,
           selectedFontSize: 13,
           unselectedFontSize: 13,
-          selectedItemColor: Colors.grey,
           currentIndex: _currentIndex,
+          selectedItemColor: Color(0xff45688d),
+          unselectedItemColor: Colors.grey,
           enableFeedback: true,
           onTap: (index) {
             setState(() {
               _currentIndex = index;
             });
           },
-          // selectedLabelStyle: const TextStyle(
-          //   color: Colors.blue,
-          //   fontSize: 15,
-          //   fontWeight: FontWeight.w400,
-          // ),
+          selectedLabelStyle: const TextStyle(
+            color: Color(0xff45688d),
+            fontSize: 15,
+            fontWeight: FontWeight.w400,
+          ),
           unselectedLabelStyle: const TextStyle(
             color: Colors.grey,
             fontSize: 13,
