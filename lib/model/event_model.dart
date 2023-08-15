@@ -97,13 +97,13 @@ class FormData {
   String eventName;
   String section;
   String row;
-  String seat;
+  int seat;
   String date;
   String location;
   String time;
   String ticketType;
   String level;
-  String numberOfTicket;
+  int numberOfTicket;
   // String email;
 
   FormData({

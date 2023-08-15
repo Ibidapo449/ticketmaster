@@ -17,7 +17,7 @@ class EventProvider extends ChangeNotifier {
   String ticketType = '';
   String level = '';
   String section = '';
-  String numberOfTicket = '';
+  int numberOfTicket = 1;
 
   Future<void> getAllEvents(keyword) async {
     isLoading = true;
@@ -43,7 +43,7 @@ class EventProvider extends ChangeNotifier {
     ticketType = prefs.getString('ticketType') ?? 'N/A';
     level = prefs.getString('level') ?? 'N/A';
     section = prefs.getString('section') ?? 'N/A';
-    numberOfTicket = prefs.getString('numberOfTicket') ?? 'N/A';
+    numberOfTicket = prefs.getInt('numberOfTicket') ?? 1;
 
     notifyListeners();
   }
@@ -55,13 +55,13 @@ class FormDataProvider extends ChangeNotifier {
     eventName: '',
     section: '',
     row: '',
-    seat: '',
+    seat: 1,
     date: '',
     location: '',
     time: '',
     ticketType: '',
     level: '',
-    numberOfTicket: '',
+    numberOfTicket: 1,
   );
 
   FormData get formData => _formData;

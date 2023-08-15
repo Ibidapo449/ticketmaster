@@ -20,8 +20,8 @@ class FormScreen extends StatelessWidget {
   final TextEditingController _timeController = TextEditingController();
   final TextEditingController _ticketTypeController = TextEditingController();
   final TextEditingController _levelController = TextEditingController();
-  final TextEditingController _numberOfTicketsController = TextEditingController();
-
+  final TextEditingController _numberOfTicketsController =
+      TextEditingController();
 
   // final TextEditingController _emailController = TextEditingController();
 
@@ -36,15 +36,13 @@ class FormScreen extends StatelessWidget {
         eventName: _eventNameController.text,
         section: _sectionController.text,
         row: _rowController.text,
-        seat: _seatController.text,
+        seat: int.parse(_seatController.text),
         date: _dateController.text,
         location: _locationController.text,
         time: _timeController.text,
         ticketType: _ticketTypeController.text,
         level: _levelController.text,
-        numberOfTicket: _numberOfTicketsController.text,
-
-
+        numberOfTicket: int.parse(_numberOfTicketsController.text),
         // email: _emailController.text,
       );
       print(_eventNameController.text);
@@ -66,13 +64,13 @@ class FormScreen extends StatelessWidget {
       prefs.setString('eventName', newFormData.eventName);
       prefs.setString('section', newFormData.section);
       prefs.setString('row', newFormData.row);
-      prefs.setString('seat', newFormData.seat);
+      prefs.setInt('seat', newFormData.seat);
       prefs.setString('date', newFormData.date);
       prefs.setString('location', newFormData.location);
       prefs.setString('time', newFormData.time);
       prefs.setString('ticketType', newFormData.ticketType);
       prefs.setString('level', newFormData.level);
-      prefs.setString('numberOfTicket', newFormData.numberOfTicket);
+      prefs.setInt('numberOfTicket', newFormData.numberOfTicket);
 
       prefs.setString(
           'image',
@@ -95,7 +93,6 @@ class FormScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final getvalue = context.read<EventProvider>();
     return Scaffold(
       body: SingleChildScrollView(
         child: SafeArea(
@@ -383,8 +380,10 @@ class FormScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 10,),
-                   Row(
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Container(

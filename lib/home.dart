@@ -160,7 +160,8 @@ class _HomePageState extends State<HomePage> {
                                     width: 5,
                                     decoration: BoxDecoration(
                                         color: Colors.white,
-                                        borderRadius: BorderRadius.circular(2.5)),
+                                        borderRadius:
+                                            BorderRadius.circular(2.5)),
                                   ),
                                   const SizedBox(
                                     width: 10,
@@ -194,8 +195,8 @@ class _HomePageState extends State<HomePage> {
                                 const SizedBox(
                                   width: 5,
                                 ),
-                                 Text(
-                                  eventprovider.numberOfTicket,
+                                Text(
+                                  eventprovider.numberOfTicket.toString(),
                                   style: const TextStyle(
                                       fontSize: 13,
                                       fontWeight: FontWeight.w500,

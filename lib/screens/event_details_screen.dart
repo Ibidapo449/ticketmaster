@@ -21,14 +21,14 @@ class _EventDetailsState extends State<EventDetails> {
   String _eventName = '';
   String _section = '';
   String _row = '';
-  String _seat = '';
+  int _seat = 1;
   String _date = '';
   String _location = '';
   String _time = '';
   String _image = '';
   String _ticketType = '';
   String _level = '';
-
+  int number_of_ticket = 1;
   @override
   void initState() {
     super.initState();
@@ -42,13 +42,15 @@ class _EventDetailsState extends State<EventDetails> {
       _eventName = prefs.getString('eventName') ?? 'N/A';
       _section = prefs.getString('section') ?? 'N/A';
       _row = prefs.getString('row') ?? 'N/A';
-      _seat = prefs.getString('seat') ?? 'N/A';
+      _seat = prefs.getInt('seat') ?? 1;
+      print(_seat);
       _date = prefs.getString('date') ?? 'N/A';
       _location = prefs.getString('location') ?? 'N/A';
       _time = prefs.getString('time') ?? 'N/A';
       _image = prefs.getString('image') ?? '';
       _ticketType = prefs.getString('ticketType') ?? 'N/A';
       _level = prefs.getString('level') ?? 'N/A';
+      number_of_ticket = prefs.getInt('numberOfTicket') ?? 1;
     });
   }
 
@@ -114,7 +116,7 @@ class _EventDetailsState extends State<EventDetails> {
                     currentIndex = index;
                   });
                 },
-                itemCount: images.length,
+                itemCount: number_of_ticket,
                 itemBuilder: (context, index) {
                   return Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 5),
@@ -204,7 +206,7 @@ class _EventDetailsState extends State<EventDetails> {
                                       height: 3,
                                     ),
                                     Text(
-                                      _seat,
+                                      (_seat + index).toString(),
                                       style: const TextStyle(
                                           color: Colors.white,
                                           fontSize: 25,
@@ -328,11 +330,11 @@ class _EventDetailsState extends State<EventDetails> {
                                               BorderRadius.circular(10)),
                                       child: Center(
                                           child: Padding(
-                                            padding: const EdgeInsets.all(4.0),
-                                            child: Row(
-                                                                                  mainAxisAlignment:
+                                        padding: const EdgeInsets.all(4.0),
+                                        child: Row(
+                                          mainAxisAlignment:
                                               MainAxisAlignment.center,
-                                                                                  children: [
+                                          children: [
                                             Container(
                                               width: 40,
                                               height: 30,
@@ -352,13 +354,13 @@ class _EventDetailsState extends State<EventDetails> {
                                             const FittedBox(
                                               child: Text(
                                                 "Add to Apple Wallet",
-                                                style:
-                                                    TextStyle(color: Colors.white),
+                                                style: TextStyle(
+                                                    color: Colors.white),
                                               ),
                                             ),
-                                                                                  ],
-                                                                                ),
-                                          )),
+                                          ],
+                                        ),
+                                      )),
                                     ),
                                     Row(
                                       mainAxisAlignment:
@@ -439,7 +441,7 @@ class _EventDetailsState extends State<EventDetails> {
               height: 20,
             ),
             Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              for (var i = 0; i < images.length; i++)
+              for (var i = 0; i < number_of_ticket; i++)
                 buildIndicator(currentIndex == i)
             ]),
             const SizedBox(
