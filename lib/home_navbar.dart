@@ -21,18 +21,20 @@ class _HomeNavBarState extends State<HomeNavBar> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: tabs[_currentIndex],
-      bottomNavigationBar: SizedBox(
-        height: 100,
+      bottomNavigationBar: Container(
+        decoration:
+            BoxDecoration(border: Border.all(color: Colors.grey.shade300)),
+        height: 94,
         child: BottomNavigationBar(
           showUnselectedLabels: true,
           showSelectedLabels: true,
           type: BottomNavigationBarType.fixed,
           elevation: 15,
           backgroundColor: Colors.white,
-          selectedFontSize: 13,
-          unselectedFontSize: 13,
+          selectedFontSize: 10,
+          unselectedFontSize: 10,
           currentIndex: _currentIndex,
-          selectedItemColor: Color(0xff45688d),
+          selectedItemColor: const Color(0xff0267d3).withOpacity(.9),
           unselectedItemColor: Colors.grey,
           enableFeedback: true,
           onTap: (index) {
@@ -42,81 +44,98 @@ class _HomeNavBarState extends State<HomeNavBar> {
           },
           selectedLabelStyle: const TextStyle(
             color: Color(0xff45688d),
-            fontSize: 15,
-            fontWeight: FontWeight.w400,
+            fontSize: 12,
           ),
           unselectedLabelStyle: const TextStyle(
             color: Colors.grey,
-            fontSize: 13,
-            fontWeight: FontWeight.w400,
+            fontSize: 12,
           ),
           items: [
             BottomNavigationBarItem(
-              icon: Container(
-                width: 30,
-                height: 30,
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage(
-                        'assets/images/search.png',
-                      ),
-                      fit: BoxFit.cover),
+              icon: Padding(
+                padding: const EdgeInsets.only(bottom: 5),
+                child: Container(
+                  width: 20,
+                  height: 20,
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage(
+                          'assets/images/search.png',
+                        ),
+                        fit: BoxFit.cover),
+                  ),
                 ),
               ),
               label: 'Discover',
             ),
             BottomNavigationBarItem(
-              icon: Container(
-                width: 30,
-                height: 30,
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage(
-                        'assets/images/love.png',
-                      ),
-                      fit: BoxFit.cover),
+              icon: Padding(
+               padding: const EdgeInsets.only(bottom: 5),
+                child: Container(
+                  width: 25,
+                  height: 25,
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage(
+                          'assets/images/love.png',
+                        ),
+                        fit: BoxFit.cover),
+                  ),
                 ),
               ),
               label: 'Favourites',
             ),
             BottomNavigationBarItem(
-              icon: Container(
-                width: 30,
-                height: 30,
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage(
-                        'assets/images/myevent.png',
-                      ),
-                      fit: BoxFit.cover),
+              icon: ColorFiltered(
+                colorFilter:
+                    const ColorFilter.mode(Color(0xff0267d3), BlendMode.srcIn),
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 5),
+                  child: Container(
+                    width: 25,
+                    height: 25,
+                    decoration: const BoxDecoration(
+                      image: DecorationImage(
+                          image: AssetImage(
+                            'assets/images/myevent.png',
+                          ),
+                          fit: BoxFit.cover),
+                    ),
+                  ),
                 ),
               ),
               label: 'My Events',
             ),
             BottomNavigationBarItem(
-              icon: Container(
-                width: 30,
-                height: 30,
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage(
-                        'assets/images/search.png',
-                      ),
-                      fit: BoxFit.cover),
+              icon: Padding(
+                padding: const EdgeInsets.only(bottom: 5),
+                child: Container(
+                  width: 25,
+                  height: 25,
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage(
+                          'assets/images/sell.png',
+                        ),
+                        fit: BoxFit.cover),
+                  ),
                 ),
               ),
               label: 'Sell',
             ),
             BottomNavigationBarItem(
-              icon: Container(
-                width: 30,
-                height: 30,
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage(
-                        'assets/images/person.png',
-                      ),
-                      fit: BoxFit.cover),
+              icon: Padding(
+                padding: const EdgeInsets.only(bottom: 5),
+                child: Container(
+                  width: 25,
+                  height: 25,
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage(
+                          'assets/images/person.png',
+                        ),
+                        fit: BoxFit.cover),
+                  ),
                 ),
               ),
               label: 'My Account',

@@ -21,7 +21,7 @@ class _EventDetailsState extends State<EventDetails> {
   String _eventName = '';
   String _section = '';
   String _row = '';
-  int _seat = 1;
+  String _seat = '1';
   String _date = '';
   String _location = '';
   String _time = '';
@@ -42,8 +42,8 @@ class _EventDetailsState extends State<EventDetails> {
       _eventName = prefs.getString('eventName') ?? 'N/A';
       _section = prefs.getString('section') ?? 'N/A';
       _row = prefs.getString('row') ?? 'N/A';
-      _seat = prefs.getInt('seat') ?? 1;
-      print(_seat);
+      _seat = prefs.getString('seat') ?? '1';
+
       _date = prefs.getString('date') ?? 'N/A';
       _location = prefs.getString('location') ?? 'N/A';
       _time = prefs.getString('time') ?? 'N/A';
@@ -58,15 +58,18 @@ class _EventDetailsState extends State<EventDetails> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.black,
+        backgroundColor: Color(0xff1f262e),
         leading: Padding(
           padding: const EdgeInsets.all(17.0),
-          child: SizedBox(
-            height: 20,
-            width: 20,
-            child: Image.asset(
-              "assets/images/cancel.png",
-              color: Colors.white,
+          child: GestureDetector(
+            onTap: Navigator.of(context).pop,
+            child: SizedBox(
+              height: 20,
+              width: 20,
+              child: Image.asset(
+                "assets/images/cancel.png",
+                color: Colors.white,
+              ),
             ),
           ),
         ),
@@ -76,20 +79,15 @@ class _EventDetailsState extends State<EventDetails> {
         ),
         actions: [
           GestureDetector(
-            // onTap: () {
-            //   Navigator.of(context).push(MaterialPageRoute(
-            //     builder: (context) => FormScreen(),
-            //   ));
-            // },
             child: Center(
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                 ),
-                margin: EdgeInsets.only(right: 10),
+                margin: const EdgeInsets.only(right: 10),
                 height: 30,
                 width: 60,
-                child: Align(
+                child: const Align(
                   alignment: Alignment.center,
                   child: Text(
                     'Help',
@@ -107,7 +105,7 @@ class _EventDetailsState extends State<EventDetails> {
         child: Column(
           children: [
             Container(
-              height: MediaQuery.of(context).size.height * 0.73,
+              height: MediaQuery.of(context).size.height * 0.72,
               width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
               child: PageView.builder(
@@ -119,7 +117,7 @@ class _EventDetailsState extends State<EventDetails> {
                 itemCount: number_of_ticket,
                 itemBuilder: (context, index) {
                   return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
                     child: Container(
                       height: MediaQuery.of(context).size.height * 0.2,
                       width: MediaQuery.of(context).size.width,
@@ -129,97 +127,130 @@ class _EventDetailsState extends State<EventDetails> {
                       ),
                       child: Column(
                         children: [
-                          Container(
-                            width: MediaQuery.of(context).size.width,
-                            height: MediaQuery.of(context).size.height * 0.03,
-                            color: const Color(0xff0361cb),
-                            child: Center(
-                              child: Text(
-                                _ticketType,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.w400,
-                                  color: Colors.white,
+                          Expanded(
+                            child: ConstrainedBox(
+                              constraints: BoxConstraints(
+                                maxWidth: MediaQuery.of(context).size.width,
+                                maxHeight:
+                                    MediaQuery.of(context).size.height * 0.04,
+                              ),
+                              child: Container(
+                                width: double.infinity,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.04,
+                                color: const Color(0xff0361cb),
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10),
+                                  child: Center(
+                                    child: FittedBox(
+                                      fit: BoxFit.fitWidth,
+                                      child: ConstrainedBox(
+                                        constraints: BoxConstraints(
+                                            minHeight: 1, minWidth: 1),
+                                        child: Text(
+                                          _ticketType,
+                                          //  maxLines: 1,
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.w400,
+                                              color: Colors.white,
+                                              fontSize: 16),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
                           ),
                           Container(
                             width: MediaQuery.of(context).size.width,
-                            height: MediaQuery.of(context).size.height * 0.12,
+                            height: MediaQuery.of(context).size.height * 0.1,
                             color: const Color(0xff006ce7),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    const Text(
-                                      "SEC",
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 3,
-                                    ),
-                                    Text(
-                                      _section,
-                                      style: const TextStyle(
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal:
+                                      MediaQuery.of(context).size.width * 0.09),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const Text(
+                                        "SEC",
+                                        style: TextStyle(
                                           color: Colors.white,
-                                          fontSize: 25,
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                  ],
-                                ),
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    const Text(
-                                      "ROW",
-                                      style: TextStyle(
-                                        color: Colors.white,
+                                        ),
                                       ),
-                                    ),
-                                    const SizedBox(
-                                      height: 3,
-                                    ),
-                                    Text(
-                                      _row,
-                                      style: const TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 25,
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                  ],
-                                ),
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    const Text(
-                                      "SEAT",
-                                      style: TextStyle(
-                                        color: Colors.white,
+                                      const SizedBox(
+                                        height: 3,
                                       ),
-                                    ),
-                                    const SizedBox(
-                                      height: 3,
-                                    ),
-                                    Text(
-                                      (_seat + index).toString(),
-                                      style: const TextStyle(
+                                      Text(
+                                        _section,
+                                        style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 25,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                    ],
+                                  ),
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const Text(
+                                        "ROW",
+                                        style: TextStyle(
                                           color: Colors.white,
-                                          fontSize: 25,
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                  ],
-                                )
-                              ],
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        height: 3,
+                                      ),
+                                      Text(
+                                        _row,
+                                        style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 25,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                    ],
+                                  ),
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const Text(
+                                        "SEAT",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        height: 3,
+                                      ),
+                                      Text(
+                                        _seat == '1'
+                                            ? ''
+                                            : _seat == '-'
+                                                ? _seat
+                                                : (int.parse(_seat) + index)
+                                                    .toString(),
+                                        style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 25,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
                             ),
                           ),
                           Container(
                             width: MediaQuery.of(context).size.width,
-                            height: MediaQuery.of(context).size.height * 0.31,
+                            height: MediaQuery.of(context).size.height * 0.25,
                             decoration: BoxDecoration(
                               image: DecorationImage(
                                 fit: BoxFit.cover,
@@ -244,10 +275,11 @@ class _EventDetailsState extends State<EventDetails> {
                                 children: [
                                   SizedBox(
                                     height: MediaQuery.of(context).size.height *
-                                        0.2,
+                                        0.175,
                                   ),
                                   Padding(
-                                    padding: const EdgeInsets.all(8.0),
+                                    padding: const EdgeInsets.only(
+                                        left: 8, right: 8, top: 8),
                                     child: FittedBox(
                                       child: Text(
                                         _artistName + " | " + _eventName,
@@ -257,10 +289,13 @@ class _EventDetailsState extends State<EventDetails> {
                                     ),
                                   ),
                                   const SizedBox(
-                                    height: 10,
+                                    height: 3,
                                   ),
                                   Padding(
-                                    padding: const EdgeInsets.all(8.0),
+                                    padding: const EdgeInsets.only(
+                                      left: 8,
+                                      right: 8,
+                                    ),
                                     child: FittedBox(
                                       child: Row(
                                         mainAxisAlignment:
@@ -274,18 +309,18 @@ class _EventDetailsState extends State<EventDetails> {
                                                 color: Colors.white),
                                           ),
                                           const SizedBox(
-                                            width: 10,
+                                            width: 5,
                                           ),
                                           Container(
-                                            height: 5,
-                                            width: 5,
+                                            height: 3,
+                                            width: 3,
                                             decoration: BoxDecoration(
                                                 color: Colors.white,
                                                 borderRadius:
                                                     BorderRadius.circular(2.5)),
                                           ),
                                           const SizedBox(
-                                            width: 10,
+                                            width: 7,
                                           ),
                                           Text(
                                             _location,
@@ -304,12 +339,14 @@ class _EventDetailsState extends State<EventDetails> {
                           ),
                           SizedBox(
                               width: MediaQuery.of(context).size.width,
-                              height: MediaQuery.of(context).size.height * 0.24,
+                              height: MediaQuery.of(context).size.height * 0.28,
                               child: Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal:
-                                        MediaQuery.of(context).size.width *
-                                            0.18),
+                                padding: EdgeInsets.only(
+                                    top: 10,
+                                    left: MediaQuery.of(context).size.width *
+                                        0.17,
+                                    right: MediaQuery.of(context).size.width *
+                                        0.17),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   mainAxisAlignment:
@@ -318,7 +355,8 @@ class _EventDetailsState extends State<EventDetails> {
                                     Text(
                                       _level,
                                       style: const TextStyle(
-                                          fontWeight: FontWeight.w700),
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500),
                                     ),
                                     Container(
                                       height: 50,
@@ -370,7 +408,8 @@ class _EventDetailsState extends State<EventDetails> {
                                           "View Barcode",
                                           style: TextStyle(
                                               color: Colors.blue.shade800,
-                                              fontWeight: FontWeight.w800),
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w600),
                                         ),
                                         const Spacer(),
                                         GestureDetector(
@@ -385,17 +424,26 @@ class _EventDetailsState extends State<EventDetails> {
                                               "Ticket Details",
                                               style: TextStyle(
                                                   color: Colors.blue.shade800,
-                                                  fontWeight: FontWeight.w800),
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.w600),
                                             ))
                                       ],
                                     )
                                   ],
                                 ),
                               )),
+                          const SizedBox(
+                            height: 10,
+                          ),
                           Container(
                             width: MediaQuery.of(context).size.width,
                             height: MediaQuery.of(context).size.height * 0.03,
-                            color: const Color(0xff0361cb),
+                            decoration: const BoxDecoration(
+                              borderRadius: BorderRadius.only(
+                                  bottomLeft: Radius.circular(8),
+                                  bottomRight: Radius.circular(8)),
+                              color: Color(0xff0361cb),
+                            ),
                             child: Center(
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -420,7 +468,7 @@ class _EventDetailsState extends State<EventDetails> {
                                         fontStyle: FontStyle.italic,
                                         fontWeight: FontWeight.w500,
                                         color: Colors.white,
-                                        fontSize: 14),
+                                        fontSize: 12),
                                   ),
                                 ],
                               ),
@@ -438,7 +486,7 @@ class _EventDetailsState extends State<EventDetails> {
               ),
             ),
             const SizedBox(
-              height: 20,
+              height: 5,
             ),
             Row(mainAxisAlignment: MainAxisAlignment.center, children: [
               for (var i = 0; i < number_of_ticket; i++)
@@ -471,6 +519,12 @@ class _EventDetailsState extends State<EventDetails> {
                     borderRadius: BorderRadius.circular(10),
                     color: Colors.grey.shade200,
                   ),
+                  child: const Center(
+                      child: Text(
+                    "Sell",
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.w700),
+                  )),
                 )
               ],
             )

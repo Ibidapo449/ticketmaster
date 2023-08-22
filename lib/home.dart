@@ -27,10 +27,10 @@ class _HomePageState extends State<HomePage> {
     final eventprovider = context.watch<EventProvider>();
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.black,
+        backgroundColor: Color(0xff1f262e),
         leading: const Icon(
           Icons.ac_unit,
-          color: Colors.black,
+          color: Color(0xff1f262e),
         ),
         title: const Text(
           "My Events",
@@ -48,7 +48,7 @@ class _HomePageState extends State<HomePage> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                 ),
-                margin: EdgeInsets.only(right: 10),
+                margin: const EdgeInsets.only(right: 10),
                 height: 30,
                 width: 60,
                 child: const Align(
@@ -132,7 +132,7 @@ class _HomePageState extends State<HomePage> {
                                     " | " +
                                     eventprovider.eventName,
                                 style: const TextStyle(
-                                    fontSize: 25, color: Colors.white),
+                                    fontSize: 18, color: Colors.white),
                               ),
                             ),
                             const SizedBox(
@@ -153,18 +153,18 @@ class _HomePageState extends State<HomePage> {
                                         color: Colors.white),
                                   ),
                                   const SizedBox(
-                                    width: 10,
+                                    width: 5,
                                   ),
                                   Container(
-                                    height: 5,
-                                    width: 5,
+                                    height: 3,
+                                    width: 3,
                                     decoration: BoxDecoration(
                                         color: Colors.white,
                                         borderRadius:
                                             BorderRadius.circular(2.5)),
                                   ),
                                   const SizedBox(
-                                    width: 10,
+                                    width: 7,
                                   ),
                                   Text(
                                     eventprovider.location,
@@ -196,10 +196,16 @@ class _HomePageState extends State<HomePage> {
                                   width: 5,
                                 ),
                                 Text(
-                                  eventprovider.numberOfTicket.toString(),
+                                  eventprovider.numberOfTicket.toString() == '1'
+                                      ? eventprovider.numberOfTicket
+                                              .toString() +
+                                          " ticket"
+                                      : eventprovider.numberOfTicket
+                                              .toString() +
+                                          " tickets",
                                   style: const TextStyle(
                                       fontSize: 13,
-                                      fontWeight: FontWeight.w500,
+                                      // fontWeight: FontWeight.w500,
                                       color: Colors.white),
                                 ),
                               ],
@@ -215,124 +221,6 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ),
-      // body: Consumer<EventProvider>(
-      //   builder: (context, value, child) {
-      //     final events = value.events;
-      //     return ListView.builder(
-      //         itemCount: events.length,
-      //         itemBuilder: (context, index) {
-      //           final event = events[index];
-      //           return Padding(
-      //             padding: const EdgeInsets.symmetric(vertical: 10),
-      //             child: GestureDetector(
-      //               onTap: () {
-      //                 Navigator.of(context).push(MaterialPageRoute(
-      //                   builder: (context) => const EventDetails(),
-      //                 ));
-      //               },
-      //               child: Container(
-      //                 height: MediaQuery.of(context).size.height * 0.25,
-      //                 decoration: const BoxDecoration(
-      //                   image: DecorationImage(
-      //                     fit: BoxFit.cover,
-      //                     image: NetworkImage(
-      //                       'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSs6uOkARyMvSA4MJUzIa-8KnWZeDn_VT4Zcg&usqp=CAU', // Replace with your image URL
-      //                     ),
-      //                   ),
-      //                 ),
-      //                 child: Column(
-      //                   crossAxisAlignment: CrossAxisAlignment.start,
-      //                   children: [
-      //                     Container(
-      //                       height: MediaQuery.of(context).size.height * 0.025,
-      //                       color: Colors.transparent,
-      //                       child: const Center(
-      //                           child: Text(
-      //                         "NEW DATE",
-      //                         style: TextStyle(
-      //                             fontSize: 12,
-      //                             color: Colors.transparent,
-      //                             fontWeight: FontWeight.w500),
-      //                       )),
-      //                     ),
-      //                     const Spacer(),
-      //                     Container(
-      //                       width: MediaQuery.of(context).size.width,
-      //                       decoration: const BoxDecoration(
-      //                           gradient: LinearGradient(
-      //                         colors: [
-      //                           Colors.transparent,
-      //                           Colors.black,
-      //                         ],
-      //                         stops: [0.0, 1.0],
-      //                         begin: FractionalOffset.topCenter,
-      //                         end: FractionalOffset.bottomCenter,
-      //                       )),
-      //                       child: Padding(
-      //                         padding:
-      //                             const EdgeInsets.symmetric(horizontal: 15),
-      //                         child: Column(
-      //                           crossAxisAlignment: CrossAxisAlignment.start,
-      //                           children: [
-      //                             const Text(
-      //                               "The Eras Tour",
-      //                               style: TextStyle(
-      //                                   fontSize: 25, color: Colors.white),
-      //                             ),
-      //                             const SizedBox(
-      //                               height: 4,
-      //                             ),
-      //                             Text(
-      //                               event.name,
-      //                               // "Sun, Aug 5, 6:30pm. SoFi Stadium",
-      //                               style: const TextStyle(
-      //                                   fontSize: 13,
-      //                                   fontWeight: FontWeight.w500,
-      //                                   color: Colors.white),
-      //                             ),
-      //                             const SizedBox(
-      //                               height: 3,
-      //                             ),
-      //                             Row(
-      //                               children: [
-      //                                 Container(
-      //                                   width: 13,
-      //                                   height: 13,
-      //                                   decoration: const BoxDecoration(
-      //                                     image: DecorationImage(
-      //                                         image: AssetImage(
-      //                                           'assets/images/ticket.png',
-      //                                         ),
-      //                                         fit: BoxFit.cover),
-      //                                   ),
-      //                                 ),
-      //                                 const SizedBox(
-      //                                   width: 5,
-      //                                 ),
-      //                                 Text(
-      //                                   event.id.toString(),
-      //                                   style: const TextStyle(
-      //                                       fontSize: 13,
-      //                                       fontWeight: FontWeight.w500,
-      //                                       color: Colors.white),
-      //                                 ),
-      //                               ],
-      //                             ),
-      //                             const SizedBox(
-      //                               height: 10,
-      //                             )
-      //                           ],
-      //                         ),
-      //                       ),
-      //                     ),
-      //                   ],
-      //                 ),
-      //               ),
-      //             ),
-      //           );
-      //         });
-      //   },
-      // ),
     );
   }
 }

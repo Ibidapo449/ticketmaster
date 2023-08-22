@@ -55,7 +55,7 @@ class FormDataProvider extends ChangeNotifier {
     eventName: '',
     section: '',
     row: '',
-    seat: 1,
+    seat: '1',
     date: '',
     location: '',
     time: '',

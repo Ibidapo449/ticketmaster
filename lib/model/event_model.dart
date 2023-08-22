@@ -97,7 +97,7 @@ class FormData {
   String eventName;
   String section;
   String row;
-  int seat;
+  String seat;
   String date;
   String location;
   String time;

@@ -36,13 +36,15 @@ class FormScreen extends StatelessWidget {
         eventName: _eventNameController.text,
         section: _sectionController.text,
         row: _rowController.text,
-        seat: int.parse(_seatController.text),
+        seat: _seatController.text.isEmpty ? '1' : _seatController.text,
         date: _dateController.text,
         location: _locationController.text,
         time: _timeController.text,
         ticketType: _ticketTypeController.text,
         level: _levelController.text,
-        numberOfTicket: int.parse(_numberOfTicketsController.text),
+        numberOfTicket: int.parse(_numberOfTicketsController.text.isEmpty
+            ? '1'
+            : _numberOfTicketsController.text),
         // email: _emailController.text,
       );
       print(_eventNameController.text);
@@ -64,7 +66,7 @@ class FormScreen extends StatelessWidget {
       prefs.setString('eventName', newFormData.eventName);
       prefs.setString('section', newFormData.section);
       prefs.setString('row', newFormData.row);
-      prefs.setInt('seat', newFormData.seat);
+      prefs.setString('seat', newFormData.seat);
       prefs.setString('date', newFormData.date);
       prefs.setString('location', newFormData.location);
       prefs.setString('time', newFormData.time);
@@ -207,12 +209,12 @@ class FormScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(5)),
                         child: TextFormField(
                           controller: _rowController,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter a valid row';
-                            }
-                            return null;
-                          },
+                          // validator: (value) {
+                          //   if (value == null || value.isEmpty) {
+                          //     return 'Please enter a valid row';
+                          //   }
+                          //   return null;
+                          // },
                           decoration: const InputDecoration(
                               contentPadding:
                                   EdgeInsets.symmetric(horizontal: 5),
@@ -237,12 +239,12 @@ class FormScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(5)),
                         child: TextFormField(
                           controller: _seatController,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter a valid seat';
-                            }
-                            return null;
-                          },
+                          // validator: (value) {
+                          //   if (value == null || value.isEmpty) {
+                          //     return 'Please enter a valid seat';
+                          //   }
+                          //   return null;
+                          // },
                           decoration: const InputDecoration(
                               contentPadding:
                                   EdgeInsets.symmetric(horizontal: 5),
@@ -363,12 +365,12 @@ class FormScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(5)),
                         child: TextFormField(
                           controller: _levelController,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter a valid level';
-                            }
-                            return null;
-                          },
+                          // validator: (value) {
+                          //   if (value == null || value.isEmpty) {
+                          //     return 'Please enter a valid level';
+                          //   }
+                          //   return null;
+                          // },
                           decoration: const InputDecoration(
                               contentPadding:
                                   EdgeInsets.symmetric(horizontal: 5),
@@ -393,12 +395,12 @@ class FormScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(5)),
                         child: TextFormField(
                           controller: _numberOfTicketsController,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter a valid ticket Type';
-                            }
-                            return null;
-                          },
+                          // validator: (value) {
+                          //   if (value == null || value.isEmpty) {
+                          //     return 'Please enter a valid ticket Type';
+                          //   }
+                          //   return null;
+                          // },
                           decoration: const InputDecoration(
                               contentPadding:
                                   EdgeInsets.symmetric(horizontal: 5),
