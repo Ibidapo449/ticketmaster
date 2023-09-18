@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ticketmaster/model/event_model.dart';
@@ -17,15 +19,29 @@ class EventProvider extends ChangeNotifier {
   String ticketType = '';
   String level = '';
   String section = '';
+  bool error = false;
   int numberOfTicket = 1;
 
-  Future<void> getAllEvents(keyword) async {
+  Future<void> getAllEvents(keyword, artistname) async {
+    error = false;
     isLoading = true;
     notifyListeners();
 
     final response = await _service.getAll(keyword);
 
     _events = response;
+    print(_events);
+
+    if (_events.isEmpty) {
+      print(artistname);
+      final response = await _service.getAll(artistname);
+
+      _events = response;
+      if (_events.isEmpty) {
+        error = true;
+      }
+      isLoading = false;
+    }
     isLoading = false;
     loadSavedData();
     notifyListeners();
@@ -44,6 +60,7 @@ class EventProvider extends ChangeNotifier {
     level = prefs.getString('level') ?? 'N/A';
     section = prefs.getString('section') ?? 'N/A';
     numberOfTicket = prefs.getInt('numberOfTicket') ?? 1;
+    print(image);
 
     notifyListeners();
   }

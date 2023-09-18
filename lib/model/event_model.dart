@@ -8,13 +8,16 @@ Eventget eventgetFromJson(String str) => Eventget.fromJson(json.decode(str));
 
 class Eventget {
   EventgetEmbedded? embedded;
+  Page page;
 
   Eventget({
     this.embedded,
+    required this.page,
   });
 
   factory Eventget.fromJson(Map<String, dynamic> json) => Eventget(
         embedded: EventgetEmbedded.fromJson(json["_embedded"]),
+        page: Page.fromJson(json["page"]),
       );
 }
 
@@ -29,6 +32,34 @@ class EventgetEmbedded {
       EventgetEmbedded(
         events: List<Event>.from(json["events"].map((x) => Event.fromJson(x))),
       );
+}
+
+class Page {
+  int size;
+  int totalElements;
+  int totalPages;
+  int number;
+
+  Page({
+    required this.size,
+    required this.totalElements,
+    required this.totalPages,
+    required this.number,
+  });
+
+  factory Page.fromJson(Map<String, dynamic> json) => Page(
+        size: json["size"],
+        totalElements: json["totalElements"],
+        totalPages: json["totalPages"],
+        number: json["number"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "size": size,
+        "totalElements": totalElements,
+        "totalPages": totalPages,
+        "number": number,
+      };
 }
 
 class Event {

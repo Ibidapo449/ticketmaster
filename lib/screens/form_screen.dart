@@ -50,46 +50,54 @@ class FormScreen extends StatelessWidget {
       print(_eventNameController.text);
       await context
           .read<EventProvider>()
-          .getAllEvents(_eventNameController.text);
+          .getAllEvents(_eventNameController.text, _artistNameController.text);
+      if (context.read<EventProvider>().error == false) {
+        FormDataProvider formDataProvider =
+            Provider.of<FormDataProvider>(context, listen: false);
+        formDataProvider.updateFormData(newFormData);
+        print(Provider.of<EventProvider>(context, listen: false)
+            .events[0]
+            .images
+            .where((element) => element.width == 1024)
+            .toList()[0]
+            .url);
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.setString('artistName', newFormData.artistName);
+        prefs.setString('eventName', newFormData.eventName);
+        prefs.setString('section', newFormData.section);
+        prefs.setString('row', newFormData.row);
+        prefs.setString('seat', newFormData.seat);
+        prefs.setString('date', newFormData.date);
+        prefs.setString('location', newFormData.location);
+        prefs.setString('time', newFormData.time);
+        prefs.setString('ticketType', newFormData.ticketType);
+        prefs.setString('level', newFormData.level);
+        prefs.setInt('numberOfTicket', newFormData.numberOfTicket);
+        prefs.setString(
+            'image',
+            Provider.of<EventProvider>(context, listen: false)
+                .events[0]
+                .images
+                .where((element) => element.width == 1024)
+                .toList()[0]
+                .url);
+        SmartDialog.dismiss();
+        context.read<EventProvider>().loadSavedData();
+        // Show a toast notification
+        Fluttertoast.showToast(
+          msg: "Event Added successfully!",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+        );
+      } else {
+        SmartDialog.dismiss();
 
-      FormDataProvider formDataProvider =
-          Provider.of<FormDataProvider>(context, listen: false);
-      formDataProvider.updateFormData(newFormData);
-      print(Provider.of<EventProvider>(context, listen: false)
-          .events[0]
-          .images
-          .where((element) => element.width == 1024)
-          .toList()[0]
-          .url);
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setString('artistName', newFormData.artistName);
-      prefs.setString('eventName', newFormData.eventName);
-      prefs.setString('section', newFormData.section);
-      prefs.setString('row', newFormData.row);
-      prefs.setString('seat', newFormData.seat);
-      prefs.setString('date', newFormData.date);
-      prefs.setString('location', newFormData.location);
-      prefs.setString('time', newFormData.time);
-      prefs.setString('ticketType', newFormData.ticketType);
-      prefs.setString('level', newFormData.level);
-      prefs.setInt('numberOfTicket', newFormData.numberOfTicket);
-
-      prefs.setString(
-          'image',
-          Provider.of<EventProvider>(context, listen: false)
-              .events[0]
-              .images
-              .where((element) => element.width == 1024)
-              .toList()[0]
-              .url);
-      SmartDialog.dismiss();
-      context.read<EventProvider>().loadSavedData();
-      // Show a toast notification
-      Fluttertoast.showToast(
-        msg: "Event Added successfully!",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-      );
+        Fluttertoast.showToast(
+          msg: "Check The Artist name and Event Name!",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+        );
+      }
     }
   }
 
@@ -156,12 +164,6 @@ class FormScreen extends StatelessWidget {
                         child: TextFormField(
                           // initialValue: getvalue.eventName,
                           controller: _eventNameController,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter a valid event name';
-                            }
-                            return null;
-                          },
                           decoration: const InputDecoration(
                               contentPadding:
                                   EdgeInsets.symmetric(horizontal: 5),

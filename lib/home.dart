@@ -25,6 +25,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final eventprovider = context.watch<EventProvider>();
+    print(eventprovider.image);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xff1f262e),
@@ -127,12 +128,19 @@ class _HomePageState extends State<HomePage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             FittedBox(
-                              child: Text(
-                                eventprovider.artistName +
-                                    " | " +
-                                    eventprovider.eventName,
-                                style: const TextStyle(
-                                    fontSize: 18, color: Colors.white),
+                              fit: BoxFit.fitWidth,
+                              child: ConstrainedBox(
+                                constraints:
+                                    BoxConstraints(minHeight: 1, minWidth: 1),
+                                child: Text(
+                                  eventprovider.eventName == ''
+                                      ? eventprovider.artistName
+                                      : eventprovider.artistName +
+                                          ' | ' +
+                                          eventprovider.eventName,
+                                  style: const TextStyle(
+                                      fontSize: 18, color: Colors.white),
+                                ),
                               ),
                             ),
                             const SizedBox(

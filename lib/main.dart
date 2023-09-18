@@ -19,6 +19,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => FormDataProvider()),
       ],
       child: MaterialApp(
+        
         title: 'Flutter Demo',
         debugShowCheckedModeBanner: false,
         navigatorObservers: [FlutterSmartDialog.observer],

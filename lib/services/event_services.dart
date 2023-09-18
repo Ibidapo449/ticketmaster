@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import '../model/event_model.dart';
 import 'package:http/http.dart' as http;
 
@@ -9,8 +11,14 @@ class EventService {
     final response = await http.get(uri);
     List<Event> event = [];
     if (response.statusCode == 200) {
-      final decodedevent = eventgetFromJson(response.body);
-      event = decodedevent.embedded!.events ?? [];
+      final decodeddata = jsonDecode(response.body);
+      if (decodeddata['page']['totalPages'] >= 1) {
+        final decodedevent = eventgetFromJson(response.body);
+        event = decodedevent.embedded!.events ?? [];
+      } else {
+        event = [];
+      }
+
       // final json = jsonDecode(response.body) as List;
       // final json = "[" + response.body + "]" as List;
       // final events = json.map((e) {
