@@ -282,9 +282,7 @@ class _EventDetailsState extends State<EventDetails> {
                                         left: 8, right: 8, top: 8),
                                     child: FittedBox(
                                       child: Text(
-                                        _eventName == ''
-                                            ? _artistName
-                                            : _artistName + ' | ' + _eventName,
+                                        _artistName + ' | ' + _eventName,
                                         style: const TextStyle(
                                             fontSize: 25, color: Colors.white),
                                       ),
