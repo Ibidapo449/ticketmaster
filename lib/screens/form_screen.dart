@@ -10,7 +10,8 @@ import 'package:ticketmaster/providers/event_providers.dart'; // Import the prov
 
 class FormScreen extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _artistNameController = TextEditingController();
+  // final TextEditingController _artistNameController = TextEditingController();
+  final TextEditingController _artistNameController = TextEditingController(text: FormDataProvider().formData.artistName);
   final TextEditingController _eventNameController = TextEditingController();
   final TextEditingController _sectionController = TextEditingController();
   final TextEditingController _rowController = TextEditingController();
@@ -73,6 +74,12 @@ class FormScreen extends StatelessWidget {
               .url);
       SmartDialog.dismiss();
       context.read<EventProvider>().loadSavedData();
+
+
+      // Update the text controllers with the entered data
+    _artistNameController.text = newFormData.artistName;
+    // _emailController.text = newFormData.email;
+
       // Show a toast notification
       Fluttertoast.showToast(
         msg: "Event Added successfully!",

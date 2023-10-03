@@ -21,7 +21,7 @@ class _HomePageState extends State<HomePage> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {});
     context.read<EventProvider>().loadSavedData();
   }
-
+  List<String> tickets = [];
   @override
   Widget build(BuildContext context) {
     final eventprovider = context.watch<EventProvider>();
@@ -70,127 +70,130 @@ class _HomePageState extends State<HomePage> {
                   builder: (context) => const EventDetails(),
                 ));
               },
-              child: Container(
-                height: MediaQuery.of(context).size.height * 0.25,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: NetworkImage(
-                      eventprovider.image, // Replace with your image URL
-                    ),
-                  ),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      height: MediaQuery.of(context).size.height * 0.025,
-                      color: Colors.transparent,
-                      child: const Center(
-                          child: Text(
-                        "NEW DATE",
-                        style: TextStyle(
-                            fontSize: 12,
-                            color: Colors.transparent,
-                            fontWeight: FontWeight.w500),
-                      )),
-                    ),
-                    const Spacer(),
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      decoration: const BoxDecoration(
-                          gradient: LinearGradient(
-                        colors: [
-                          Colors.transparent,
-                          Colors.black,
-                        ],
-                        stops: [0.0, 1.0],
-                        begin: FractionalOffset.topCenter,
-                        end: FractionalOffset.bottomCenter,
-                      )),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 15),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                               eventprovider.artistName + " | " + eventprovider.eventName,
-                              style: const TextStyle(
-                                  fontSize: 25, color: Colors.white),
-                            ),
-                            const SizedBox(
-                              height: 4,
-                            ),
-                            Row(
-                              children: [
-                                Text(
-                                  // event.name,
-                                  eventprovider.date +
-                                      " " +
-                                      eventprovider.time +
-                                      " " ,
-                                  style: const TextStyle(
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.white),
-                                ),
-                                const SizedBox(width: 10,),
-                                Container(
-                                  height: 5,
-                                  width: 5,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(2.5)
-                                  ),
-                                ),
-                                const SizedBox(width: 10,),
-                                Text(eventprovider.location,
-                                  style: const TextStyle(
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.white),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 3,
-                            ),
-                            Row(
-                              children: [
-                                Container(
-                                  width: 13,
-                                  height: 13,
-                                  decoration: const BoxDecoration(
-                                    image: DecorationImage(
-                                        image: AssetImage(
-                                          'assets/images/ticket.png',
-                                        ),
-                                        fit: BoxFit.cover),
-                                  ),
-                                ),
-                                const SizedBox(
-                                  width: 5,
-                                ),
-                                const Text(
-                                  "2",
-                                  style: TextStyle(
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.white),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            )
-                          ],
-                        ),
+              child:  Container(
+                  height: MediaQuery.of(context).size.height * 0.25,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: NetworkImage(
+                        eventprovider.image, // Replace with your image URL
                       ),
                     ),
-                  ],
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        height: MediaQuery.of(context).size.height * 0.025,
+                        color: Colors.transparent,
+                        child: const Center(
+                            child: Text(
+                          "NEW DATE",
+                          style: TextStyle(
+                              fontSize: 12,
+                              color: Colors.transparent,
+                              fontWeight: FontWeight.w500),
+                        )),
+                      ),
+                      const Spacer(),
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        decoration: const BoxDecoration(
+                            gradient: LinearGradient(
+                          colors: [
+                            Colors.transparent,
+                            Colors.black,
+                          ],
+                          stops: [0.0, 1.0],
+                          begin: FractionalOffset.topCenter,
+                          end: FractionalOffset.bottomCenter,
+                        )),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                 eventprovider.artistName + " | " + eventprovider.eventName,
+                                style: const TextStyle(
+                                    fontSize: 25, color: Colors.white),
+                              ),
+                              const SizedBox(
+                                height: 4,
+                              ),
+                              Row(
+                                children: [
+                                  Text(
+                                    // event.name,
+                                    eventprovider.date +
+                                        " " +
+                                        eventprovider.time +
+                                        " " ,
+                                    style: const TextStyle(
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.white),
+                                  ),
+                                  const SizedBox(width: 10,),
+                                  Container(
+                                    height: 5,
+                                    width: 5,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(2.5)
+                                    ),
+                                  ),
+                                  const SizedBox(width: 10,),
+                                  Text(eventprovider.location,
+                                    style: const TextStyle(
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.white),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 3,
+                              ),
+                              Row(
+                                children: [
+                                  Container(
+                                    width: 13,
+                                    height: 13,
+                                    decoration: const BoxDecoration(
+                                      image: DecorationImage(
+                                          image: AssetImage(
+                                            'assets/images/ticket.png',
+                                          ),
+                                          fit: BoxFit.cover),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 5,
+                                  ),
+                                  const Text(
+                                    "2",
+                                    style: TextStyle(
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.white),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ),
+                
+                ),
+          
+              );
       // body: Consumer<EventProvider>(
       //   builder: (context, value, child) {
       //     final events = value.events;
@@ -309,6 +312,6 @@ class _HomePageState extends State<HomePage> {
       //         });
       //   },
       // ),
-    );
+    
   }
 }
