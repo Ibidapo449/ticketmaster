@@ -21,14 +21,14 @@ class _EventDetailsState extends State<EventDetails> {
   String _eventName = '';
   String _section = '';
   String _row = '';
-  String _seat = '';
+  String _seat = '1';
   String _date = '';
   String _location = '';
   String _time = '';
   String _image = '';
   String _ticketType = '';
   String _level = '';
-
+  int number_of_ticket = 1;
   @override
   void initState() {
     super.initState();
@@ -42,13 +42,15 @@ class _EventDetailsState extends State<EventDetails> {
       _eventName = prefs.getString('eventName') ?? 'N/A';
       _section = prefs.getString('section') ?? 'N/A';
       _row = prefs.getString('row') ?? 'N/A';
-      _seat = prefs.getString('seat') ?? 'N/A';
+      _seat = prefs.getString('seat') ?? '1';
+
       _date = prefs.getString('date') ?? 'N/A';
       _location = prefs.getString('location') ?? 'N/A';
       _time = prefs.getString('time') ?? 'N/A';
       _image = prefs.getString('image') ?? '';
       _ticketType = prefs.getString('ticketType') ?? 'N/A';
       _level = prefs.getString('level') ?? 'N/A';
+      number_of_ticket = prefs.getInt('numberOfTicket') ?? 1;
     });
   }
 
@@ -56,35 +58,54 @@ class _EventDetailsState extends State<EventDetails> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.black,
+        backgroundColor: Color(0xff1f262e),
         leading: Padding(
           padding: const EdgeInsets.all(17.0),
-          child: SizedBox(
-            height: 20,
-            width: 20,
-            child: Image.asset(
-              "assets/images/cancel.png",
-              color: Colors.white,
+          child: GestureDetector(
+            onTap: Navigator.of(context).pop,
+            child: SizedBox(
+              height: 20,
+              width: 20,
+              child: Image.asset(
+                "assets/images/cancel.png",
+                color: Colors.white,
+              ),
             ),
           ),
         ),
-        title: const Padding(
-          padding: EdgeInsets.only(left: 100),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text("My Tickets"),
-              Text("Help"),
-            ],
-          ),
+        title: const Text(
+          "My Tickets",
+          style: TextStyle(fontWeight: FontWeight.bold),
         ),
+        actions: [
+          GestureDetector(
+            child: Center(
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                margin: const EdgeInsets.only(right: 10),
+                height: 30,
+                width: 60,
+                child: const Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    'Help',
+                    style: TextStyle(fontSize: 20),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
             Container(
-              height: MediaQuery.of(context).size.height * 0.73,
+              height: MediaQuery.of(context).size.height * 0.72,
               width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
               child: PageView.builder(
@@ -93,10 +114,10 @@ class _EventDetailsState extends State<EventDetails> {
                     currentIndex = index;
                   });
                 },
-                itemCount: images.length,
+                itemCount: number_of_ticket,
                 itemBuilder: (context, index) {
                   return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
                     child: Container(
                       height: MediaQuery.of(context).size.height * 0.2,
                       width: MediaQuery.of(context).size.width,
@@ -106,97 +127,130 @@ class _EventDetailsState extends State<EventDetails> {
                       ),
                       child: Column(
                         children: [
-                          Container(
-                            width: MediaQuery.of(context).size.width,
-                            height: MediaQuery.of(context).size.height * 0.03,
-                            color: Colors.blue.shade900,
-                            child: Center(
-                              child: Text(
-                                _ticketType,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.w400,
-                                  color: Colors.white,
+                          Expanded(
+                            child: ConstrainedBox(
+                              constraints: BoxConstraints(
+                                maxWidth: MediaQuery.of(context).size.width,
+                                maxHeight:
+                                    MediaQuery.of(context).size.height * 0.04,
+                              ),
+                              child: Container(
+                                width: double.infinity,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.04,
+                                color: const Color(0xff0361cb),
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10),
+                                  child: Center(
+                                    child: FittedBox(
+                                      fit: BoxFit.fitWidth,
+                                      child: ConstrainedBox(
+                                        constraints: const BoxConstraints(
+                                            minHeight: 1, minWidth: 1),
+                                        child: Text(
+                                          _ticketType,
+                                          //  maxLines: 1,
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.w400,
+                                              color: Colors.white,
+                                              fontSize: 16),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
                           ),
                           Container(
                             width: MediaQuery.of(context).size.width,
-                            height: MediaQuery.of(context).size.height * 0.12,
-                            color: Colors.blue.shade800,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    const Text(
-                                      "SEC",
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 3,
-                                    ),
-                                    Text(
-                                      _section,
-                                      style: const TextStyle(
+                            height: MediaQuery.of(context).size.height * 0.1,
+                            color: const Color(0xff006ce7),
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal:
+                                      MediaQuery.of(context).size.width * 0.09),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const Text(
+                                        "SEC",
+                                        style: TextStyle(
                                           color: Colors.white,
-                                          fontSize: 25,
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                  ],
-                                ),
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    const Text(
-                                      "ROW",
-                                      style: TextStyle(
-                                        color: Colors.white,
+                                        ),
                                       ),
-                                    ),
-                                    const SizedBox(
-                                      height: 3,
-                                    ),
-                                    Text(
-                                      _row,
-                                      style: const TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 25,
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                  ],
-                                ),
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    const Text(
-                                      "SEAT",
-                                      style: TextStyle(
-                                        color: Colors.white,
+                                      const SizedBox(
+                                        height: 3,
                                       ),
-                                    ),
-                                    const SizedBox(
-                                      height: 3,
-                                    ),
-                                    Text(
-                                      _seat,
-                                      style: const TextStyle(
+                                      Text(
+                                        _section,
+                                        style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 25,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                    ],
+                                  ),
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const Text(
+                                        "ROW",
+                                        style: TextStyle(
                                           color: Colors.white,
-                                          fontSize: 25,
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                  ],
-                                )
-                              ],
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        height: 3,
+                                      ),
+                                      Text(
+                                        _row,
+                                        style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 25,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                    ],
+                                  ),
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const Text(
+                                        "SEAT",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        height: 3,
+                                      ),
+                                      Text(
+                                        _seat == '1'
+                                            ? ''
+                                            : _seat == '-'
+                                                ? _seat
+                                                : (int.parse(_seat) + index)
+                                                    .toString(),
+                                        style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 25,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
                             ),
                           ),
                           Container(
                             width: MediaQuery.of(context).size.width,
-                            height: MediaQuery.of(context).size.height * 0.31,
+                            height: MediaQuery.of(context).size.height * 0.25,
                             decoration: BoxDecoration(
                               image: DecorationImage(
                                 fit: BoxFit.cover,
@@ -221,47 +275,63 @@ class _EventDetailsState extends State<EventDetails> {
                                 children: [
                                   SizedBox(
                                     height: MediaQuery.of(context).size.height *
-                                        0.23,
+                                        0.175,
                                   ),
-                                  Text(
-                                    _artistName + " | " + _eventName,
-                                    style: const TextStyle(
-                                        fontSize: 25, color: Colors.white),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 8, right: 8, top: 8),
+                                    child: FittedBox(
+                                      child: Text(
+                                        _artistName + ' | ' + _eventName,
+                                        style: const TextStyle(
+                                            fontSize: 25, color: Colors.white),
+                                      ),
+                                    ),
                                   ),
                                   const SizedBox(
-                                    height: 10,
+                                    height: 3,
                                   ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        _date + " " + _time + " ",
-                                        style: const TextStyle(
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.w500,
-                                            color: Colors.white),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                      left: 8,
+                                      right: 8,
+                                    ),
+                                    child: FittedBox(
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            _date + " " + _time + " ",
+                                            style: const TextStyle(
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.w500,
+                                                color: Colors.white),
+                                          ),
+                                          const SizedBox(
+                                            width: 5,
+                                          ),
+                                          Container(
+                                            height: 3,
+                                            width: 3,
+                                            decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius:
+                                                    BorderRadius.circular(2.5)),
+                                          ),
+                                          const SizedBox(
+                                            width: 7,
+                                          ),
+                                          Text(
+                                            _location,
+                                            style: const TextStyle(
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.w500,
+                                                color: Colors.white),
+                                          ),
+                                        ],
                                       ),
-                                      const SizedBox(
-                                            width: 10,
-                                      ),
-                                      Container(
-                                        height: 5,
-                                        width: 5,
-                                        decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            borderRadius:
-                                                BorderRadius.circular(2.5)),
-                                      ),
-                                      const SizedBox(
-                                        width: 10,
-                                      ),
-                                      Text( _location,
-                                        style: const TextStyle(
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.w500,
-                                            color: Colors.white),
-                                      ),
-                                    ],
+                                    ),
                                   ),
                                 ],
                               ),
@@ -269,12 +339,14 @@ class _EventDetailsState extends State<EventDetails> {
                           ),
                           SizedBox(
                               width: MediaQuery.of(context).size.width,
-                              height: MediaQuery.of(context).size.height * 0.24,
+                              height: MediaQuery.of(context).size.height * 0.28,
                               child: Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal:
-                                        MediaQuery.of(context).size.width *
-                                            0.24),
+                                padding: EdgeInsets.only(
+                                    top: 10,
+                                    left: MediaQuery.of(context).size.width *
+                                        0.17,
+                                    right: MediaQuery.of(context).size.width *
+                                        0.17),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   mainAxisAlignment:
@@ -283,43 +355,49 @@ class _EventDetailsState extends State<EventDetails> {
                                     Text(
                                       _level,
                                       style: const TextStyle(
-                                          fontWeight: FontWeight.w700),
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500),
                                     ),
                                     Container(
                                       height: 50,
                                       width: MediaQuery.of(context).size.width *
-                                          0.5,
+                                          0.53,
                                       decoration: BoxDecoration(
                                           color: Colors.black,
                                           borderRadius:
                                               BorderRadius.circular(10)),
                                       child: Center(
-                                          child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Container(
-                                            width: 40,
-                                            height: 30,
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(5),
-                                              image: const DecorationImage(
-                                                  image: AssetImage(
-                                                    'assets/images/applewallet.png',
-                                                  ),
-                                                  fit: BoxFit.cover),
+                                          child: Padding(
+                                        padding: const EdgeInsets.all(4.0),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Container(
+                                              width: 40,
+                                              height: 30,
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(5),
+                                                image: const DecorationImage(
+                                                    image: AssetImage(
+                                                      'assets/images/applewallet.png',
+                                                    ),
+                                                    fit: BoxFit.cover),
+                                              ),
                                             ),
-                                          ),
-                                          const SizedBox(
-                                            width: 10,
-                                          ),
-                                          const Text(
-                                            "Add to Apple Wallet",
-                                            style:
-                                                TextStyle(color: Colors.white),
-                                          ),
-                                        ],
+                                            const SizedBox(
+                                              width: 10,
+                                            ),
+                                            const FittedBox(
+                                              child: Text(
+                                                "Add to Apple Wallet",
+                                                style: TextStyle(
+                                                    color: Colors.white),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       )),
                                     ),
                                     Row(
@@ -330,7 +408,8 @@ class _EventDetailsState extends State<EventDetails> {
                                           "View Barcode",
                                           style: TextStyle(
                                               color: Colors.blue.shade800,
-                                              fontWeight: FontWeight.w800),
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w600),
                                         ),
                                         const Spacer(),
                                         GestureDetector(
@@ -345,17 +424,26 @@ class _EventDetailsState extends State<EventDetails> {
                                               "Ticket Details",
                                               style: TextStyle(
                                                   color: Colors.blue.shade800,
-                                                  fontWeight: FontWeight.w800),
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.w600),
                                             ))
                                       ],
                                     )
                                   ],
                                 ),
                               )),
+                          const SizedBox(
+                            height: 10,
+                          ),
                           Container(
                             width: MediaQuery.of(context).size.width,
                             height: MediaQuery.of(context).size.height * 0.03,
-                            color: Colors.blue.shade900,
+                            decoration: const BoxDecoration(
+                              borderRadius: BorderRadius.only(
+                                  bottomLeft: Radius.circular(8),
+                                  bottomRight: Radius.circular(8)),
+                              color: Color(0xff0361cb),
+                            ),
                             child: Center(
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -380,7 +468,7 @@ class _EventDetailsState extends State<EventDetails> {
                                         fontStyle: FontStyle.italic,
                                         fontWeight: FontWeight.w500,
                                         color: Colors.white,
-                                        fontSize: 14),
+                                        fontSize: 12),
                                   ),
                                 ],
                               ),
@@ -398,10 +486,10 @@ class _EventDetailsState extends State<EventDetails> {
               ),
             ),
             const SizedBox(
-              height: 20,
+              height: 5,
             ),
             Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              for (var i = 0; i < images.length; i++)
+              for (var i = 0; i < number_of_ticket; i++)
                 buildIndicator(currentIndex == i)
             ]),
             const SizedBox(
@@ -410,19 +498,24 @@ class _EventDetailsState extends State<EventDetails> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Container(
-                  height: 50,
-                  width: MediaQuery.of(context).size.width * 0.42,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Colors.blue,
+                GestureDetector(
+                  onTap: () {
+                    _showBottomSheet(context);
+                  },
+                  child: Container(
+                    height: 50,
+                    width: MediaQuery.of(context).size.width * 0.42,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: const Color(0xff0361cb),
+                    ),
+                    child: const Center(
+                        child: Text(
+                      "Transfer",
+                      style: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.w700),
+                    )),
                   ),
-                  child: const Center(
-                      child: Text(
-                    "Transfer",
-                    style: TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.w700),
-                  )),
                 ),
                 Container(
                   height: 50,
@@ -431,6 +524,12 @@ class _EventDetailsState extends State<EventDetails> {
                     borderRadius: BorderRadius.circular(10),
                     color: Colors.grey.shade200,
                   ),
+                  child: const Center(
+                      child: Text(
+                    "Sell",
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.w700),
+                  )),
                 )
               ],
             )
@@ -473,4 +572,114 @@ class _EventDetailsState extends State<EventDetails> {
       ),
     );
   }
+}
+
+void _showBottomSheet(BuildContext context) {
+  showModalBottomSheet(
+    context: context,
+    builder: (BuildContext context) {
+      return Container(
+        decoration: const BoxDecoration(color: Colors.white),
+        height: MediaQuery.of(context).size.height * 0.6,
+        child: Padding(
+          padding: const EdgeInsets.only(top: 16.0),
+          child: Column(
+            children: <Widget>[
+              const Text('TRANSFER TICKECT'),
+              const Divider(),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text("1 Tickect Selected"),
+                    const SizedBox(height: 15,),
+                    const Row(
+                      children: [
+                        Text(_seat),
+                        Text("Row 15, "),
+                        Text("Seat 11"),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    transferTicketContainer(context,
+                    text: "Lizzie",
+                    height: 35),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    const Text("Last Name"),
+                    const SizedBox(height: 3,),
+                    transferTicketContainer(context,
+                    text: "Wilson",
+                    height: 35
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    const Text("Email or Mobile Number"),
+                    const SizedBox(height: 3,),
+                    transferTicketContainer(context,
+                    text: "iamlizziew74@example.com",
+                    height: 35
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    const Text("Note"),
+                    const SizedBox(height: 3,),
+                    transferTicketContainer(context,
+                    height: 100,
+                    ),
+                    const SizedBox(height: 15,),
+                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Row(
+                          children: [
+                            Icon(Icons.keyboard_arrow_left),
+                            Text("BACK")
+                          ],),
+                          Container(
+                            height: 40,
+                            width: 210,
+                            decoration: const BoxDecoration(
+                              color: Colors.blue
+                            ),
+                            child: const Center(child: Text("Transfer 1 Ticket", style: TextStyle(color: Colors.white),)),
+                          )
+                      ],
+                    )
+                  ],
+                ),
+              )
+            ],
+          ),
+        ),
+      );
+    },
+  );
+}
+
+Container transferTicketContainer(BuildContext context, {height, text}) {
+  return Container(
+      height: height,
+      width: MediaQuery.of(context).size.width,
+      decoration: BoxDecoration(border: Border.all(color: Colors.black)),
+      child:  Center(
+        child: Padding(
+          padding: const EdgeInsets.only(left: 8, bottom: 8, top: 8),
+          child: TextField(
+            cursorColor: Colors.black,
+            decoration: InputDecoration(
+                hintText: text,
+                suffixIcon: const Icon(Icons.cancel, size: 20,),
+                border: InputBorder.none,
+                focusedBorder: const UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.transparent))),
+          ),
+        ),
+      ));
 }

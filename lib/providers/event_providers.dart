@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ticketmaster/model/event_model.dart';
@@ -14,16 +16,32 @@ class EventProvider extends ChangeNotifier {
   String time = '';
   String location = '';
   String image = '';
-  String ticketType= '';
-  String level= '';
+  String ticketType = '';
+  String level = '';
+  String section = '';
+  bool error = false;
+  int numberOfTicket = 1;
 
-  Future<void> getAllEvents(keyword) async {
+  Future<void> getAllEvents(keyword, artistname) async {
+    error = false;
     isLoading = true;
     notifyListeners();
 
     final response = await _service.getAll(keyword);
 
     _events = response;
+    print(_events);
+
+    if (_events.isEmpty) {
+      print(artistname);
+      final response = await _service.getAll(artistname);
+
+      _events = response;
+      if (_events.isEmpty) {
+        error = true;
+      }
+      isLoading = false;
+    }
     isLoading = false;
     loadSavedData();
     notifyListeners();
@@ -34,13 +52,16 @@ class EventProvider extends ChangeNotifier {
 
     date = prefs.getString('date') ?? 'N/A';
     eventName = prefs.getString('eventName') ?? 'N/A';
-    artistName = prefs.getString('artisName') ?? 'N/A';
-    time = prefs.getString('eventName') ?? 'N/A';
+    artistName = prefs.getString('artistName') ?? 'N/A';
+    time = prefs.getString('time') ?? 'N/A';
     location = prefs.getString('location') ?? 'N/A';
     image = prefs.getString('image') ?? '';
     ticketType = prefs.getString('ticketType') ?? 'N/A';
     level = prefs.getString('level') ?? 'N/A';
+    section = prefs.getString('section') ?? 'N/A';
+    numberOfTicket = prefs.getInt('numberOfTicket') ?? 1;
     print(image);
+
     notifyListeners();
   }
 }
@@ -51,12 +72,13 @@ class FormDataProvider extends ChangeNotifier {
     eventName: '',
     section: '',
     row: '',
-    seat: '',
+    seat: '1',
     date: '',
     location: '',
     time: '',
     ticketType: '',
     level: '',
+    numberOfTicket: 1,
   );
 
   FormData get formData => _formData;

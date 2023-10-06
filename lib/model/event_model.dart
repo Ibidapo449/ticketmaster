@@ -7,28 +7,59 @@ import 'dart:convert';
 Eventget eventgetFromJson(String str) => Eventget.fromJson(json.decode(str));
 
 class Eventget {
-  EventgetEmbedded embedded;
+  EventgetEmbedded? embedded;
+  Page page;
 
   Eventget({
-    required this.embedded,
+    this.embedded,
+    required this.page,
   });
 
   factory Eventget.fromJson(Map<String, dynamic> json) => Eventget(
         embedded: EventgetEmbedded.fromJson(json["_embedded"]),
+        page: Page.fromJson(json["page"]),
       );
 }
 
 class EventgetEmbedded {
-  List<Event> events;
+  List<Event>? events;
 
   EventgetEmbedded({
-    required this.events,
+    this.events,
   });
 
   factory EventgetEmbedded.fromJson(Map<String, dynamic> json) =>
       EventgetEmbedded(
         events: List<Event>.from(json["events"].map((x) => Event.fromJson(x))),
       );
+}
+
+class Page {
+  int size;
+  int totalElements;
+  int totalPages;
+  int number;
+
+  Page({
+    required this.size,
+    required this.totalElements,
+    required this.totalPages,
+    required this.number,
+  });
+
+  factory Page.fromJson(Map<String, dynamic> json) => Page(
+        size: json["size"],
+        totalElements: json["totalElements"],
+        totalPages: json["totalPages"],
+        number: json["number"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "size": size,
+        "totalElements": totalElements,
+        "totalPages": totalPages,
+        "number": number,
+      };
 }
 
 class Event {
@@ -103,6 +134,7 @@ class FormData {
   String time;
   String ticketType;
   String level;
+  int numberOfTicket;
   // String email;
 
   FormData({
@@ -116,6 +148,7 @@ class FormData {
     required this.time,
     required this.ticketType,
     required this.level,
+    required this.numberOfTicket,
 
     // required this.email
   });
