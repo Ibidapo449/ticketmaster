@@ -1,8 +1,10 @@
 // ignore_for_file: prefer_interpolation_to_compose_strings
 
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ticketmaster/screens/ticket_details_screen.dart';
+import 'package:ticketmaster/screens/widgets/ticket_successful_modal.dart';
 
 class EventDetails extends StatefulWidget {
   const EventDetails({super.key});
@@ -576,11 +578,12 @@ class _EventDetailsState extends State<EventDetails> {
 
 void _showBottomSheet(BuildContext context) {
   showModalBottomSheet(
+    isScrollControlled: true,
     context: context,
     builder: (BuildContext context) {
       return Container(
         decoration: const BoxDecoration(color: Colors.white),
-        height: MediaQuery.of(context).size.height * 0.6,
+        height: MediaQuery.of(context).size.height * 0.62,
         child: Padding(
           padding: const EdgeInsets.only(top: 16.0),
           child: Column(
@@ -593,10 +596,12 @@ void _showBottomSheet(BuildContext context) {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text("1 Tickect Selected"),
-                    const SizedBox(height: 15,),
+                    const SizedBox(
+                      height: 15,
+                    ),
                     const Row(
                       children: [
-                        Text(_seat),
+                        Text("Sec 151, "),
                         Text("Row 15, "),
                         Text("Seat 11"),
                       ],
@@ -605,51 +610,75 @@ void _showBottomSheet(BuildContext context) {
                       height: 15,
                     ),
                     transferTicketContainer(context,
-                    text: "Lizzie",
-                    height: 35),
+                        text: "Lizzie", height: 35.0),
                     const SizedBox(
                       height: 15,
                     ),
                     const Text("Last Name"),
-                    const SizedBox(height: 3,),
-                    transferTicketContainer(context,
-                    text: "Wilson",
-                    height: 35
+                    const SizedBox(
+                      height: 3,
                     ),
+                    transferTicketContainer(context,
+                        text: "Wilson", height: 35.0),
                     const SizedBox(
                       height: 15,
                     ),
                     const Text("Email or Mobile Number"),
-                    const SizedBox(height: 3,),
-                    transferTicketContainer(context,
-                    text: "iamlizziew74@example.com",
-                    height: 35
+                    const SizedBox(
+                      height: 3,
                     ),
+                    transferTicketContainer(context,
+                        text: "iamlizziew74@example.com", height: 35.0),
                     const SizedBox(
                       height: 15,
                     ),
                     const Text("Note"),
-                    const SizedBox(height: 3,),
-                    transferTicketContainer(context,
-                    height: 100,
+                    const SizedBox(
+                      height: 3,
                     ),
-                    const SizedBox(height: 15,),
-                     Row(
+                    transferTicketContainer(
+                      context,
+                      height: 100.0,
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Row(
-                          children: [
-                            Icon(Icons.keyboard_arrow_left),
-                            Text("BACK")
-                          ],),
-                          Container(
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: const Row(
+                            children: [
+                              Icon(Icons.keyboard_arrow_left),
+                              Text("BACK")
+                            ],
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).pop();
+                            AwesomeDialog(
+                              context: context,
+                              headerAnimationLoop: false,
+                              animType: AnimType.BOTTOMSLIDE,
+                              dialogType: DialogType.NO_HEADER,
+                              body: const TicketTransferSuccessfullModal(),
+                            ).show();
+                          },
+                          child: Container(
                             height: 40,
                             width: 210,
-                            decoration: const BoxDecoration(
-                              color: Colors.blue
-                            ),
-                            child: const Center(child: Text("Transfer 1 Ticket", style: TextStyle(color: Colors.white),)),
-                          )
+                            decoration: const BoxDecoration(color: Colors.blue),
+                            child: const Center(
+                                child: Text(
+                              "Transfer 1 Ticket",
+                              style: TextStyle(color: Colors.white),
+                            )),
+                          ),
+                        )
                       ],
                     )
                   ],
@@ -668,14 +697,20 @@ Container transferTicketContainer(BuildContext context, {height, text}) {
       height: height,
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(border: Border.all(color: Colors.black)),
-      child:  Center(
+      child: Center(
         child: Padding(
-          padding: const EdgeInsets.only(left: 8, bottom: 8, top: 8),
+          padding: const EdgeInsets.only(
+            left: 8,
+            top: 16,
+          ),
           child: TextField(
             cursorColor: Colors.black,
             decoration: InputDecoration(
                 hintText: text,
-                suffixIcon: const Icon(Icons.cancel, size: 20,),
+                // suffixIcon: const Icon(
+                //   Icons.cancel,
+                //   size: 20,
+                // ),
                 border: InputBorder.none,
                 focusedBorder: const UnderlineInputBorder(
                     borderSide: BorderSide(color: Colors.transparent))),
