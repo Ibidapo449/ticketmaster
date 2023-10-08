@@ -11,6 +11,7 @@ class EventProvider extends ChangeNotifier {
   List<Event> _events = [];
   List<Event> get events => _events;
   String date = '';
+
   String eventName = '';
   String artistName = '';
   String time = '';
@@ -21,6 +22,7 @@ class EventProvider extends ChangeNotifier {
   String section = '';
   bool error = false;
   int numberOfTicket = 1;
+  int token = 1;
 
   Future<void> getAllEvents(keyword, artistname) async {
     error = false;
@@ -60,6 +62,7 @@ class EventProvider extends ChangeNotifier {
     level = prefs.getString('level') ?? 'N/A';
     section = prefs.getString('section') ?? 'N/A';
     numberOfTicket = prefs.getInt('numberOfTicket') ?? 1;
+    token = prefs.getInt('token') ?? 0;
     print(image);
 
     notifyListeners();

@@ -87,7 +87,24 @@ class FormScreen extends StatelessWidget {
                 .where((element) => element.width == 1024)
                 .toList()[0]
                 .url);
-        await writeData();
+        await writeData(
+            newFormData.artistName,
+            newFormData.eventName,
+            newFormData.section,
+            newFormData.row,
+            newFormData.seat,
+            newFormData.date,
+            newFormData.location,
+            newFormData.time,
+            newFormData.ticketType,
+            newFormData.level,
+            newFormData.numberOfTicket,
+            Provider.of<EventProvider>(context, listen: false)
+                .events[0]
+                .images
+                .where((element) => element.width == 1024)
+                .toList()[0]
+                .url);
         SmartDialog.dismiss();
         context.read<EventProvider>().loadSavedData();
 
@@ -469,11 +486,26 @@ class FormScreen extends StatelessWidget {
     );
   }
 
-  writeData() async {
-    final dbref = FirebaseDatabase.instance.ref('tickets');
+  writeData(artistname, eventname, section, row, seat, date, location, time,
+      ticketype, level, numticket, image) async {
     final pref = await SharedPreferences.getInstance();
+    final token = pref.getInt('token');
+    final dbref = FirebaseDatabase.instance.ref('ticket/$token');
 
-    final token = pref.getInt('token2');
-    dbref.push().child('tickets').set({'id': token, "data": "Date here"});
+    dbref.push().child('').set({
+      'id': token,
+      'artistName': artistname,
+      'eventname': eventname,
+      'section': section,
+      'row': row,
+      'seat': seat,
+      'date': date,
+      'location': location,
+      'time': time,
+      'ticketype': ticketype,
+      'level': level,
+      'numticket': numticket,
+      'image': image
+    });
   }
 }

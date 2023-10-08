@@ -25,16 +25,21 @@ class TicketTransferSuccessfullModal extends StatelessWidget {
             decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 border: Border.all(
-                  color: Colors.blue,
+                  color: const Color(0xff006ce7),
                 )),
             child: const Center(
-                // child: SvgPicture.asset(
-                //   AppAssets.mail2,
-                //   color: IklinColors.primaryColor,
-                //   width: 38,
-                //   height: 30,
-                // ),
-                ),
+              child: Icon(
+                Icons.done,
+                size: 35,
+                color: Color(0xff006ce7),
+              ),
+              // child: SvgPicture.asset(
+              //   AppAssets.mail2,
+              //   color: IklinColors.primaryColor,
+              //   width: 38,
+              //   height: 30,
+              // ),
+            ),
           ),
           const SizedBox(height: 10),
           const Text(
@@ -53,18 +58,24 @@ class TicketTransferSuccessfullModal extends StatelessWidget {
           const SizedBox(height: 25),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 50),
-            child: Container(
-              height: 35,
-              width: MediaQuery.of(context).size.width * 0.5,
-              color: Colors.blue,
-              child: Center(
-                  child: GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => const HomePage(),
-                        ));
-                      },
-                      child: const Text("Continue"))),
+            child: GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const HomePage(),
+                ));
+              },
+              child: Container(
+                height: 35,
+                width: MediaQuery.of(context).size.width * 0.65,
+                color: const Color(0xff006ce7),
+                child: const Center(
+                    child: Text(
+                  "OK",
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                )),
+              ),
             ),
           )
         ],

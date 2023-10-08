@@ -502,7 +502,9 @@ class _EventDetailsState extends State<EventDetails> {
               children: [
                 GestureDetector(
                   onTap: () {
-                    _showBottomSheet(context);
+                    _showBottomSheet(
+                      context,
+                    );
                   },
                   child: Container(
                     height: 50,
@@ -576,7 +578,9 @@ class _EventDetailsState extends State<EventDetails> {
   }
 }
 
-void _showBottomSheet(BuildContext context) {
+void _showBottomSheet(
+  BuildContext context,
+) {
   showModalBottomSheet(
     isScrollControlled: true,
     context: context,
@@ -603,7 +607,7 @@ void _showBottomSheet(BuildContext context) {
                       children: [
                         Text("Sec 151, "),
                         Text("Row 15, "),
-                        Text("Seat 11"),
+                        Text("Seat 378 "),
                       ],
                     ),
                     const SizedBox(
@@ -652,8 +656,16 @@ void _showBottomSheet(BuildContext context) {
                           },
                           child: const Row(
                             children: [
-                              Icon(Icons.keyboard_arrow_left),
-                              Text("BACK")
+                              Icon(
+                                Icons.keyboard_arrow_left,
+                                color: Color(0xff006ce7),
+                              ),
+                              Text(
+                                "BACK",
+                                style: TextStyle(
+                                  color: Color(0xff006ce7),
+                                ),
+                              )
                             ],
                           ),
                         ),
@@ -671,7 +683,9 @@ void _showBottomSheet(BuildContext context) {
                           child: Container(
                             height: 40,
                             width: 210,
-                            decoration: const BoxDecoration(color: Colors.blue),
+                            decoration: const BoxDecoration(
+                              color: Color(0xff006ce7),
+                            ),
                             child: const Center(
                                 child: Text(
                               "Transfer 1 Ticket",
