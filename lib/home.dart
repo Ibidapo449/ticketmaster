@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_interpolation_to_compose_strings
 
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
@@ -36,15 +37,48 @@ class _HomePageState extends State<HomePage> {
 
   Query getlist(token) {
     print(token);
+
     Query dbref = FirebaseDatabase.instance.ref().child('ticket/$token');
     return dbref;
   }
 
+  int dataIndex = 0;
+
   Widget listItem({required Map tickets}) {
     return GestureDetector(
+      onLongPress: () {
+        final eventprovider =
+            Provider.of<EventProvider>(context, listen: false);
+
+        AwesomeDialog(
+          context: context,
+          dialogType: DialogType.error,
+          animType: AnimType.bottomSlide,
+          title: 'Delete Ticket',
+          desc: 'Are you sure you want to delete ticket',
+          btnCancelOnPress: () {},
+          btnOkOnPress: () {
+            Query refrence =
+                FirebaseDatabase.instance.ref().child('ticket/$token');
+            refrence.ref.child(tickets['key']).remove();
+          },
+        ).show();
+      },
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => const EventDetails(),
+          builder: (context) => EventDetails(
+              artistName: tickets['artistName'],
+              eventName: tickets['eventname'],
+              section: tickets['section'],
+              row: tickets['row'],
+              seat: tickets['seat'],
+              date: tickets['date'],
+              location: tickets['location'],
+              time: tickets['time'],
+              image: tickets['image'],
+              ticketType: tickets['ticketype'],
+              level: tickets['level'],
+              number_of_ticket: tickets['numticket']),
         ));
       },
       child: Container(
@@ -228,16 +262,34 @@ class _HomePageState extends State<HomePage> {
             ),
           ],
         ),
-        body: Container(
+        body: SizedBox(
           height: double.infinity,
           child: FirebaseAnimatedList(
-            defaultChild: Center(child: CircularProgressIndicator()),
+            defaultChild: const Center(child: CircularProgressIndicator()),
             query: getlist(eventprovider.token),
             itemBuilder: (context, snapshot, animation, index) {
+              dataIndex += 1;
               Map ticket = snapshot.value as Map;
-              // ticket['key'] = snapshot.key;
+              // ignore: avoid_print
+              print(ticket);
+              ticket['key'] = snapshot.key;
 
-              return listItem(tickets: ticket);
+              if (dataIndex == 0) {
+                return Padding(
+                  padding: const EdgeInsets.all(15),
+                  child: Container(
+                    height: MediaQuery.of(context).size.height * 0.3,
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Colors.black54),
+                        borderRadius: BorderRadius.circular(10)),
+                    child: const Center(child: Text("No event added yet !")),
+                    // child: const Center(child: Text('Empty List')),
+                  ),
+                );
+              } else {
+                return listItem(tickets: ticket);
+              }
             },
           ),
         )

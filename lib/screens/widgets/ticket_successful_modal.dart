@@ -33,12 +33,6 @@ class TicketTransferSuccessfullModal extends StatelessWidget {
                 size: 35,
                 color: Color(0xff006ce7),
               ),
-              // child: SvgPicture.asset(
-              //   AppAssets.mail2,
-              //   color: IklinColors.primaryColor,
-              //   width: 38,
-              //   height: 30,
-              // ),
             ),
           ),
           const SizedBox(height: 10),

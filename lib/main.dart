@@ -43,16 +43,16 @@ void createrandom() async {
   await Firebase.initializeApp();
   final pref = await SharedPreferences.getInstance();
 
-  final token = pref.getInt('token2');
+  final token = pref.getInt('token');
 
   if (token == null) {
     var rng = new Random();
     var code = rng.nextInt(900000000) + 100000000;
 
-    pref.setInt('token2', code);
+    pref.setInt('token', code);
     final dbref = FirebaseDatabase.instance.ref();
 
-    final token = pref.getInt('token2');
+    final token = pref.getInt('token');
     dbref.child('user').set({'id': token, "validity": "true"});
   }
 }
