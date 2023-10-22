@@ -36,8 +36,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   Query getlist(token) {
-    print(token);
-
     Query dbref = FirebaseDatabase.instance.ref().child('ticket/$token');
     return dbref;
   }
@@ -146,8 +144,7 @@ class _HomePageState extends State<HomePage> {
                       child: Row(
                         children: [
                           Text(
-                            // event.name,
-                            tickets['date'] + " " + tickets['date'] + " ",
+                            tickets['date'] + ", " + tickets['time'] + " ",
                             style: const TextStyle(
                                 fontSize: 13,
                                 fontWeight: FontWeight.w500,
