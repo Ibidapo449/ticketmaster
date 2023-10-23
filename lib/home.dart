@@ -144,7 +144,7 @@ class _HomePageState extends State<HomePage> {
                       child: Row(
                         children: [
                           Text(
-                            tickets['date'] + ", " + tickets['time'] + " ",
+                            tickets['date'] + " " + tickets['time'] + " ",
                             style: const TextStyle(
                                 fontSize: 13,
                                 fontWeight: FontWeight.w500,
