@@ -306,9 +306,11 @@ class _EventDetailsState extends State<EventDetails> {
                                           left: 8, right: 8, top: 8),
                                       child: FittedBox(
                                         child: Text(
-                                          widget.artistName +
-                                              ' | ' +
-                                              widget.eventName,
+                                          widget.eventName == ''
+                                              ? widget.artistName
+                                              : widget.artistName +
+                                                  ' | ' +
+                                                  widget.eventName,
                                           style: const TextStyle(
                                               fontSize: 25,
                                               color: Colors.white),
@@ -622,7 +624,11 @@ class _EventDetailsState extends State<EventDetails> {
                       alignment: Alignment.center,
                       child: Text('TRANSFER TICKET')),
                   const Divider(),
-                  const Text("Ticket Selected"),
+                  widget.number_of_ticket == 1
+                      ? Text(
+                          "${widget.number_of_ticket.toString()} Ticket Selected")
+                      : Text(
+                          "${widget.number_of_ticket.toString()} Tickets Selected"),
                   const SizedBox(
                     height: 15,
                   ),
@@ -721,9 +727,11 @@ class _EventDetailsState extends State<EventDetails> {
                           decoration: const BoxDecoration(
                             color: Color(0xff006ce7),
                           ),
-                          child: const Center(
+                          child: Center(
                               child: Text(
-                            "Transfer Ticket",
+                            widget.number_of_ticket == 1
+                                ? "Transfer Ticket"
+                                : "Transfer Tickets",
                             style: TextStyle(color: Colors.white),
                           )),
                         ),
