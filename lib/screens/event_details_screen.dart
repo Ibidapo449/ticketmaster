@@ -596,7 +596,7 @@ void _showBottomSheet(BuildContext context) {
                     const SizedBox(height: 15,),
                     const Row(
                       children: [
-                        Text(_seat),
+                        Text("Seat 5"),
                         Text("Row 15, "),
                         Text("Seat 11"),
                       ],
