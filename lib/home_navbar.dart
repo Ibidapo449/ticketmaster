@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:ticketmaster/home.dart';
+import 'package:ticketmaster/providers/event_providers.dart';
 
 class HomeNavBar extends StatefulWidget {
   const HomeNavBar({super.key});
@@ -19,6 +21,7 @@ class _HomeNavBarState extends State<HomeNavBar> {
   ];
   @override
   Widget build(BuildContext context) {
+    context.read<EventProvider>().loadSavedData();
     return Scaffold(
       body: tabs[_currentIndex],
       bottomNavigationBar: Container(
@@ -70,7 +73,7 @@ class _HomeNavBarState extends State<HomeNavBar> {
             ),
             BottomNavigationBarItem(
               icon: Padding(
-               padding: const EdgeInsets.only(bottom: 5),
+                padding: const EdgeInsets.only(bottom: 5),
                 child: Container(
                   width: 25,
                   height: 25,

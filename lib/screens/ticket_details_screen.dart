@@ -18,10 +18,7 @@ class TicketDetails extends StatelessWidget {
               Text("Help"),
             ],
           ),
-        ),
-        
-      
-            
+        ),    
       ),
       body: SingleChildScrollView(
         child: Padding(

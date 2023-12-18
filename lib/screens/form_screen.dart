@@ -6,12 +6,16 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ticketmaster/model/event_model.dart';
-import 'package:ticketmaster/providers/event_providers.dart'; // Import the provider class you created
+import 'package:firebase_database/firebase_database.dart';
+import 'package:ticketmaster/providers/event_providers.dart';
+import 'package:firebase_core/firebase_core.dart';
+// Import the provider class you created
 
 class FormScreen extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
   // final TextEditingController _artistNameController = TextEditingController();
-  final TextEditingController _artistNameController = TextEditingController(text: FormDataProvider().formData.artistName);
+  final TextEditingController _artistNameController =
+      TextEditingController(text: FormDataProvider().formData.artistName);
   final TextEditingController _eventNameController = TextEditingController();
   final TextEditingController _sectionController = TextEditingController();
   final TextEditingController _rowController = TextEditingController();
@@ -29,6 +33,7 @@ class FormScreen extends StatelessWidget {
   FormScreen({super.key});
 
   void _submitForm(BuildContext context) async {
+    await Firebase.initializeApp();
     if (_formKey.currentState!.validate()) {
       // Form is valid, update form data using the provider
       SmartDialog.showLoading();
@@ -82,8 +87,27 @@ class FormScreen extends StatelessWidget {
                 .where((element) => element.width == 1024)
                 .toList()[0]
                 .url);
+        await writeData(
+            newFormData.artistName,
+            newFormData.eventName,
+            newFormData.section,
+            newFormData.row,
+            newFormData.seat,
+            newFormData.date,
+            newFormData.location,
+            newFormData.time,
+            newFormData.ticketType,
+            newFormData.level,
+            newFormData.numberOfTicket,
+            Provider.of<EventProvider>(context, listen: false)
+                .events[0]
+                .images
+                .where((element) => element.width == 1024)
+                .toList()[0]
+                .url);
         SmartDialog.dismiss();
         context.read<EventProvider>().loadSavedData();
+
         // Show a toast notification
         Fluttertoast.showToast(
           msg: "Event Added successfully!",
@@ -104,6 +128,7 @@ class FormScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // final dbref = FirebaseDatabase.instance.ref();
     return Scaffold(
       body: SingleChildScrollView(
         child: SafeArea(
@@ -459,5 +484,28 @@ class FormScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  writeData(artistname, eventname, section, row, seat, date, location, time,
+      ticketype, level, numticket, image) async {
+    final pref = await SharedPreferences.getInstance();
+    final token = pref.getInt('token');
+    final dbref = FirebaseDatabase.instance.ref('ticket/$token');
+
+    dbref.push().child('').set({
+      'id': token,
+      'artistName': artistname,
+      'eventname': eventname,
+      'section': section,
+      'row': row,
+      'seat': seat,
+      'date': date,
+      'location': location,
+      'time': time,
+      'ticketype': ticketype,
+      'level': level,
+      'numticket': numticket,
+      'image': image
+    });
   }
 }

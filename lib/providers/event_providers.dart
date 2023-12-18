@@ -11,6 +11,7 @@ class EventProvider extends ChangeNotifier {
   List<Event> _events = [];
   List<Event> get events => _events;
   String date = '';
+
   String eventName = '';
   String artistName = '';
   String time = '';
@@ -21,26 +22,27 @@ class EventProvider extends ChangeNotifier {
   String section = '';
   bool error = false;
   int numberOfTicket = 1;
+  int token = 1;
 
   Future<void> getAllEvents(keyword, artistname) async {
     error = false;
     isLoading = true;
+    String joinboth = keyword + ' ' + artistName;
     notifyListeners();
 
-    final response = await _service.getAll(keyword);
+    final response = await _service.getAll(joinboth);
 
     _events = response;
     print(_events);
 
     if (_events.isEmpty) {
-      print(artistname);
       final response = await _service.getAll(artistname);
-
       _events = response;
-      if (_events.isEmpty) {
-        error = true;
-      }
-      isLoading = false;
+    } else if (_events.isEmpty) {
+      final response = await _service.getAll(keyword);
+      _events = response;
+    } else if (_events.isEmpty) {
+      error = true;
     }
     isLoading = false;
     loadSavedData();
@@ -60,6 +62,7 @@ class EventProvider extends ChangeNotifier {
     level = prefs.getString('level') ?? 'N/A';
     section = prefs.getString('section') ?? 'N/A';
     numberOfTicket = prefs.getInt('numberOfTicket') ?? 1;
+    token = prefs.getInt('token') ?? 0;
     print(image);
 
     notifyListeners();
