@@ -492,7 +492,7 @@ class FormScreen extends StatelessWidget {
     final token = pref.getInt('token');
     final dbref = FirebaseDatabase.instance.ref('ticket/$token');
 
-    dbref.push().child('').set({
+    dbref.push().child('1234').set({
       'id': token,
       'artistName': artistname,
       'eventname': eventname,

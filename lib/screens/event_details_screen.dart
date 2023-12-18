@@ -39,6 +39,9 @@ class EventDetails extends StatefulWidget {
 }
 
 class _EventDetailsState extends State<EventDetails> {
+   final PageController _pageController = PageController(
+    viewportFraction: 0.9, // Adjust the fraction as needed
+  );
   int currentIndex = 0;
   List<String> images = [
     'assets/images/event.jpg',
@@ -127,6 +130,7 @@ class _EventDetailsState extends State<EventDetails> {
                 decoration:
                     BoxDecoration(borderRadius: BorderRadius.circular(5)),
                 child: PageView.builder(
+                   controller: _pageController,
                   onPageChanged: (index) {
                     setState(() {
                       currentIndex = index;
@@ -190,84 +194,86 @@ class _EventDetailsState extends State<EventDetails> {
                                     horizontal:
                                         MediaQuery.of(context).size.width *
                                             0.09),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        const Text(
-                                          "SEC",
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                          height: 3,
-                                        ),
-                                        Text(
-                                          widget.section,
-                                          style: const TextStyle(
+                                child: Center(
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          const Text(
+                                            "SEC",
+                                            style: TextStyle(
                                               color: Colors.white,
-                                              fontSize: 25,
-                                              fontWeight: FontWeight.w600),
-                                        ),
-                                      ],
-                                    ),
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        const Text(
-                                          "ROW",
-                                          style: TextStyle(
-                                            color: Colors.white,
+                                            ),
                                           ),
-                                        ),
-                                        const SizedBox(
-                                          height: 3,
-                                        ),
-                                        Text(
-                                          widget.row,
-                                          style: const TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 25,
-                                              fontWeight: FontWeight.w600),
-                                        ),
-                                      ],
-                                    ),
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        const Text(
-                                          "SEAT",
-                                          style: TextStyle(
-                                            color: Colors.white,
+                                          const SizedBox(
+                                            height: 3,
                                           ),
-                                        ),
-                                        const SizedBox(
-                                          height: 3,
-                                        ),
-                                        Text(
-                                          widget.seat == '1'
-                                              ? ''
-                                              : widget.seat == '-'
-                                                  ? widget.seat
-                                                  : (int.parse(widget.seat) +
-                                                          index)
-                                                      .toString(),
-                                          style: const TextStyle(
+                                          Text(
+                                            widget.section,
+                                            style: const TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 25,
+                                                fontWeight: FontWeight.w700),
+                                          ),
+                                        ],
+                                      ),
+                                      Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          const Text(
+                                            "ROW",
+                                            style: TextStyle(
                                               color: Colors.white,
-                                              fontSize: 25,
-                                              fontWeight: FontWeight.w600),
-                                        ),
-                                      ],
-                                    )
-                                  ],
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            height: 3,
+                                          ),
+                                          Text(
+                                            widget.row,
+                                            style: const TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 25,
+                                                fontWeight: FontWeight.w700),
+                                          ),
+                                        ],
+                                      ),
+                                      Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          const Text(
+                                            "SEAT",
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            height: 3,
+                                          ),
+                                          Text(
+                                            widget.seat == '1'
+                                                ? ''
+                                                : widget.seat == '-'
+                                                    ? widget.seat
+                                                    : (int.parse(widget.seat) +
+                                                            index)
+                                                        .toString(),
+                                            style: const TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 25,
+                                                fontWeight: FontWeight.w700),
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
@@ -507,7 +513,7 @@ class _EventDetailsState extends State<EventDetails> {
                 ),
               ),
               const SizedBox(
-                height: 12,
+                height: 20,
               ),
               Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                 for (var i = 0; i < widget.number_of_ticket; i++)

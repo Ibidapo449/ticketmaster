@@ -279,7 +279,7 @@ class _HomePageState extends State<HomePage> {
               Map ticket = snapshot.value as Map;
               // ignore: avoid_print
               print(ticket);
-              ticket['key'] = snapshot.key;
+              // ticket['key'] = snapshot.key;
 
               if (dataIndex == 0) {
                 return Padding(
@@ -295,7 +295,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                 );
               } else {
-                return listItem(tickets: ticket);
+                return listItem(tickets: ticket['1234']);
               }
             },
           ),
