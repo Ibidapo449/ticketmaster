@@ -9,9 +9,19 @@ import 'package:ticketmaster/providers/event_providers.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:firebase_core/firebase_core.dart';
 
-void main() {
+void main() async {
+  // FirebaseDatabase.instance();
+  await Firebase.initializeApp(
+    options: const FirebaseOptions(
+        apiKey: "AIzaSyBd2yXeP9VMzRoD961WSpAfdHFBgIftogU",
+        authDomain: "ticket-d5d35.firebaseapp.com",
+        databaseURL: "https://ticket-d5d35-default-rtdb.firebaseio.com",
+        projectId: "ticket-d5d35",
+        storageBucket: "ticket-d5d35.appspot.com",
+        messagingSenderId: "172881875812",
+        appId: "1:172881875812:web:9e4809d1e8148d55eba071"),
+  );
   runApp(const MyApp());
-  // FirebaseDatabase.instance().i
 }
 
 class MyApp extends StatelessWidget {

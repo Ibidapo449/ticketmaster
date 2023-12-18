@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_interpolation_to_compose_strings
 
+import 'dart:math';
+
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
@@ -9,6 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ticketmaster/screens/event_details_screen.dart';
 import 'package:ticketmaster/providers/event_providers.dart';
 import 'package:ticketmaster/screens/form_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -24,6 +27,7 @@ class _HomePageState extends State<HomePage> {
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {});
     context.read<EventProvider>().loadSavedData();
+
     gettoken();
   }
 
@@ -107,108 +111,114 @@ class _HomePageState extends State<HomePage> {
             const Spacer(),
             Container(
               width: MediaQuery.of(context).size.width,
-              decoration: const BoxDecoration(
+              height: 160,
+              decoration: BoxDecoration(
                   gradient: LinearGradient(
                 colors: [
                   Colors.transparent,
-                  Colors.black,
+                  Colors.black.withOpacity(.98),
                 ],
-                stops: [0.0, 1.0],
+                stops: const [0.0, 1],
                 begin: FractionalOffset.topCenter,
                 end: FractionalOffset.bottomCenter,
               )),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    FittedBox(
-                      fit: BoxFit.fitWidth,
-                      child: ConstrainedBox(
-                        constraints: BoxConstraints(minHeight: 1, minWidth: 1),
-                        child: Text(
-                          tickets['eventname'] == ''
-                              ? tickets['artistName']
-                              : tickets['artistName'] +
-                                  ' | ' +
-                                  tickets['eventname'],
-                          style: const TextStyle(
-                              fontSize: 18, color: Colors.white),
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      FittedBox(
+                        fit: BoxFit.fitWidth,
+                        child: ConstrainedBox(
+                          constraints:
+                              BoxConstraints(minHeight: 1, minWidth: 1),
+                          child: Text(
+                            tickets['eventname'] == ''
+                                ? tickets['artistName']
+                                : tickets['artistName'] +
+                                    ' | ' +
+                                    tickets['eventname'],
+                            style: const TextStyle(
+                                fontSize: 18, color: Colors.white),
+                          ),
                         ),
                       ),
-                    ),
-                    const SizedBox(
-                      height: 4,
-                    ),
-                    FittedBox(
-                      child: Row(
+                      const SizedBox(
+                        height: 4,
+                      ),
+                      FittedBox(
+                        child: Row(
+                          children: [
+                            Text(
+                              tickets['date'] + " " + tickets['time'] + " ",
+                              style: const TextStyle(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.white),
+                            ),
+                            const SizedBox(
+                              width: 5,
+                            ),
+                            Container(
+                              height: 3,
+                              width: 3,
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(2.5)),
+                            ),
+                            const SizedBox(
+                              width: 7,
+                            ),
+                            Text(
+                              tickets['location'],
+                              style: const TextStyle(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.white),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 3,
+                      ),
+                      Row(
                         children: [
-                          Text(
-                            tickets['date'] + " " + tickets['time'] + " ",
-                            style: const TextStyle(
-                                fontSize: 13,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.white),
+                          Container(
+                            width: 13,
+                            height: 13,
+                            decoration: const BoxDecoration(
+                              image: DecorationImage(
+                                  image: AssetImage(
+                                    'assets/images/ticket.png',
+                                  ),
+                                  fit: BoxFit.cover),
+                            ),
                           ),
                           const SizedBox(
                             width: 5,
                           ),
-                          Container(
-                            height: 3,
-                            width: 3,
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(2.5)),
-                          ),
-                          const SizedBox(
-                            width: 7,
-                          ),
                           Text(
-                            tickets['location'],
+                            tickets['numticket'].toString() == '1'
+                                ? tickets['numticket'].toString().toString() +
+                                    " ticket"
+                                : tickets['numticket'].toString().toString() +
+                                    " tickets",
                             style: const TextStyle(
                                 fontSize: 13,
-                                fontWeight: FontWeight.w500,
+                                // fontWeight: FontWeight.w500,
                                 color: Colors.white),
                           ),
                         ],
                       ),
-                    ),
-                    const SizedBox(
-                      height: 3,
-                    ),
-                    Row(
-                      children: [
-                        Container(
-                          width: 13,
-                          height: 13,
-                          decoration: const BoxDecoration(
-                            image: DecorationImage(
-                                image: AssetImage(
-                                  'assets/images/ticket.png',
-                                ),
-                                fit: BoxFit.cover),
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 5,
-                        ),
-                        Text(
-                          tickets['numticket'].toString() == '1'
-                              ? tickets['numticket'].toString().toString() +
-                                  " ticket"
-                              : tickets['numticket'].toString().toString() +
-                                  " tickets",
-                          style: const TextStyle(
-                              fontSize: 13,
-                              // fontWeight: FontWeight.w500,
-                              color: Colors.white),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    )
-                  ],
+                      const SizedBox(
+                        height: 10,
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),
