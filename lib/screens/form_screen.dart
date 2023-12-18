@@ -190,12 +190,12 @@ class FormScreen extends StatelessWidget {
                         child: TextFormField(
                           // initialValue: getvalue.eventName,
                           controller: _eventNameController,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter a valid event name';
-                            }
-                            return null;
-                          },
+                          // validator: (value) {
+                          //   if (value == null || value.isEmpty) {
+                          //     return 'Please enter a valid event name';
+                          //   }
+                          //   return null;
+                          // },
                           decoration: const InputDecoration(
                               contentPadding:
                                   EdgeInsets.symmetric(horizontal: 5),

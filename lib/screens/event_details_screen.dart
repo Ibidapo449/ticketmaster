@@ -135,7 +135,7 @@ class _EventDetailsState extends State<EventDetails> {
                   itemCount: widget.number_of_ticket,
                   itemBuilder: (context, index) {
                     return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      padding: const EdgeInsets.symmetric(horizontal: 5),
                       child: Container(
                         height: MediaQuery.of(context).size.height * 0.2,
                         width: MediaQuery.of(context).size.width,
@@ -284,13 +284,13 @@ class _EventDetailsState extends State<EventDetails> {
                               ),
                               child: Container(
                                 width: MediaQuery.of(context).size.width,
-                                decoration: const BoxDecoration(
+                                decoration: BoxDecoration(
                                     gradient: LinearGradient(
                                   colors: [
                                     Colors.transparent,
-                                    Colors.black,
+                                    Colors.black.withOpacity(.98),
                                   ],
-                                  stops: [0.0, 1.5],
+                                  stops: [0.0, 1],
                                   begin: FractionalOffset.topCenter,
                                   end: FractionalOffset.bottomCenter,
                                 )),
@@ -306,9 +306,11 @@ class _EventDetailsState extends State<EventDetails> {
                                           left: 8, right: 8, top: 8),
                                       child: FittedBox(
                                         child: Text(
-                                          widget.artistName +
-                                              ' | ' +
-                                              widget.eventName,
+                                          widget.eventName == ''
+                                              ? widget.artistName
+                                              : widget.artistName +
+                                                  ' | ' +
+                                                  widget.eventName,
                                           style: const TextStyle(
                                               fontSize: 25,
                                               color: Colors.white),
@@ -395,7 +397,7 @@ class _EventDetailsState extends State<EventDetails> {
                                         height: 50,
                                         width:
                                             MediaQuery.of(context).size.width *
-                                                0.53,
+                                                0.62,
                                         decoration: BoxDecoration(
                                             color: const Color(0xff006ce7),
                                             borderRadius:
@@ -407,28 +409,33 @@ class _EventDetailsState extends State<EventDetails> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.center,
                                             children: [
-                                              Container(
+                                              Center(
+                                                  child: Container(
+                                                      height: 30,
+                                                      width: 30,
+                                                      decoration: BoxDecoration(
+                                                          border: Border.all(
+                                                              color:
+                                                                  Colors.white),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      20)),
+                                                      child: Icon(
+                                                        Icons.check,
+                                                        size: 20,
+                                                        color: Colors.white,
+                                                      ))),
+                                              SizedBox(
                                                 width: 30,
-                                                height: 30,
-                                                decoration: BoxDecoration(
-                                                  shape: BoxShape.circle,
-                                                  border: Border.all(
-                                                      color: Colors.white),
-                                                ),
-                                                child: const Center(
-                                                  child: Icon(
-                                                    Icons.done,
-                                                    color: Colors.white,
-                                                  ),
-                                                ),
-                                              ),
-                                              const SizedBox(
-                                                width: 25,
                                               ),
                                               const FittedBox(
                                                 child: Text(
-                                                  "View in Wallet",
+                                                  "View in wallet",
                                                   style: TextStyle(
+                                                      fontSize: 15,
+                                                      fontWeight:
+                                                          FontWeight.bold,
                                                       color: Colors.white),
                                                 ),
                                               ),
@@ -440,10 +447,13 @@ class _EventDetailsState extends State<EventDetails> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         children: [
-                                          Text(
+                                          const Text(
                                             "View Barcode",
                                             style: TextStyle(
-                                                color: Colors.blue.shade800,
+                                                decoration:
+                                                    TextDecoration.underline,
+                                                color: const Color.fromARGB(
+                                                    255, 51, 90, 135),
                                                 fontSize: 15,
                                                 fontWeight: FontWeight.w600),
                                           ),
@@ -456,10 +466,13 @@ class _EventDetailsState extends State<EventDetails> {
                                                       const TicketDetails(),
                                                 ));
                                               },
-                                              child: Text(
+                                              child: const Text(
                                                 "Ticket Details",
                                                 style: TextStyle(
-                                                    color: Colors.blue.shade800,
+                                                    decoration: TextDecoration
+                                                        .underline,
+                                                    color: const Color.fromARGB(
+                                                        255, 51, 90, 135),
                                                     fontSize: 15,
                                                     fontWeight:
                                                         FontWeight.w600),
@@ -470,45 +483,16 @@ class _EventDetailsState extends State<EventDetails> {
                                   ),
                                 )),
                             const SizedBox(
-                              height: 10,
+                              height: 0,
                             ),
                             Container(
                               width: MediaQuery.of(context).size.width,
-                              height: MediaQuery.of(context).size.height * 0.03,
+                              height: MediaQuery.of(context).size.height * 0.04,
                               decoration: const BoxDecoration(
                                 borderRadius: BorderRadius.only(
                                     bottomLeft: Radius.circular(8),
                                     bottomRight: Radius.circular(8)),
                                 color: Color(0xff0361cb),
-                              ),
-                              child: Center(
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      width: 15,
-                                      height: 15,
-                                      decoration: const BoxDecoration(
-                                        image: DecorationImage(
-                                            image: AssetImage(
-                                              'assets/images/verified.png',
-                                            ),
-                                            fit: BoxFit.cover),
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      width: 5,
-                                    ),
-                                    const Text(
-                                      "ticketmaster.verified",
-                                      style: TextStyle(
-                                          fontStyle: FontStyle.italic,
-                                          fontWeight: FontWeight.w500,
-                                          color: Colors.white,
-                                          fontSize: 12),
-                                    ),
-                                  ],
-                                ),
                               ),
                             ),
                           ],
@@ -552,7 +536,9 @@ class _EventDetailsState extends State<EventDetails> {
                           child: Text(
                         "Transfer",
                         style: TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.w700),
+                            decoration: TextDecoration.underline,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w700),
                       )),
                     ),
                   ),
@@ -567,7 +553,9 @@ class _EventDetailsState extends State<EventDetails> {
                         child: Text(
                       "Sell",
                       style: TextStyle(
-                          color: Colors.white, fontWeight: FontWeight.w700),
+                          decoration: TextDecoration.underline,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w700),
                     )),
                   )
                 ],
@@ -622,22 +610,51 @@ class _EventDetailsState extends State<EventDetails> {
                       alignment: Alignment.center,
                       child: Text('TRANSFER TICKET')),
                   const Divider(),
-                  const Text("Ticket Selected"),
+                  widget.number_of_ticket == 1
+                      ? Text(
+                          "${widget.number_of_ticket.toString()} Ticket Selected")
+                      : Text(
+                          "${widget.number_of_ticket.toString()} Tickets Selected"),
                   const SizedBox(
                     height: 15,
                   ),
                   Row(
                     children: [
-                      Text("Sec ${widget.section}, "),
-                      Text("Row ${widget.row}, "),
-                      Text("Seat ${widget.seat} "),
+                      Row(
+                        children: [
+                          Text("Sec "),
+                          Text(
+                            '${widget.section} ,',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          )
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Text("Row "),
+                          Text(
+                            '${widget.row} ,',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          )
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Text("Seat "),
+                          Text(
+                            '${widget.seat}',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          )
+                        ],
+                      ),
                     ],
                   ),
                   const SizedBox(
                     height: 15,
                   ),
+                  const Text("First Name"),
                   transferTicketContainer(context,
-                      text: "Lizzie", height: 35.0),
+                      text: "First Name", height: 35.0),
                   const SizedBox(
                     height: 15,
                   ),
@@ -646,7 +663,7 @@ class _EventDetailsState extends State<EventDetails> {
                     height: 3,
                   ),
                   transferTicketContainer(context,
-                      text: "Wilson", height: 35.0),
+                      text: "Last Name", height: 35.0),
                   const SizedBox(
                     height: 15,
                   ),
@@ -655,7 +672,7 @@ class _EventDetailsState extends State<EventDetails> {
                     height: 3,
                   ),
                   transferTicketContainer(context,
-                      text: "iamlizziew74@example.com", height: 35.0),
+                      text: "Email or Mobile Number", height: 35.0),
                   const SizedBox(
                     height: 15,
                   ),
@@ -721,9 +738,11 @@ class _EventDetailsState extends State<EventDetails> {
                           decoration: const BoxDecoration(
                             color: Color(0xff006ce7),
                           ),
-                          child: const Center(
+                          child: Center(
                               child: Text(
-                            "Transfer Ticket",
+                            widget.number_of_ticket == 1
+                                ? "Transfer Ticket"
+                                : "Transfer Tickets",
                             style: TextStyle(color: Colors.white),
                           )),
                         ),
@@ -771,6 +790,7 @@ Container transferTicketContainer(BuildContext context, {height, text}) {
             cursorColor: Colors.black,
             decoration: InputDecoration(
                 hintText: text,
+                hintStyle: TextStyle(color: Colors.black.withOpacity(.3)),
                 // suffixIcon: const Icon(
                 //   Icons.cancel,
                 //   size: 20,

@@ -28,12 +28,11 @@ class EventProvider extends ChangeNotifier {
     error = false;
     isLoading = true;
     String joinboth = keyword + ' ' + artistName;
-    notifyListeners();
-
+    // print(artistname);
+    // print(joinboth);
     final response = await _service.getAll(joinboth);
 
     _events = response;
-    print(_events);
 
     if (_events.isEmpty) {
       final response = await _service.getAll(artistname);
@@ -63,7 +62,6 @@ class EventProvider extends ChangeNotifier {
     section = prefs.getString('section') ?? 'N/A';
     numberOfTicket = prefs.getInt('numberOfTicket') ?? 1;
     token = prefs.getInt('token') ?? 0;
-    print(image);
 
     notifyListeners();
   }
