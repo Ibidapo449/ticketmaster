@@ -39,7 +39,15 @@ class EventDetails extends StatefulWidget {
 }
 
 class _EventDetailsState extends State<EventDetails> {
-   final PageController _pageController = PageController(
+  bool isContainer1Visible = true;
+
+  void switchContainers() {
+    setState(() {
+      isContainer1Visible = !isContainer1Visible;
+    });
+  }
+
+  final PageController _pageController = PageController(
     viewportFraction: 0.9, // Adjust the fraction as needed
   );
   int currentIndex = 0;
@@ -130,7 +138,7 @@ class _EventDetailsState extends State<EventDetails> {
                 decoration:
                     BoxDecoration(borderRadius: BorderRadius.circular(5)),
                 child: PageView.builder(
-                   controller: _pageController,
+                  controller: _pageController,
                   onPageChanged: (index) {
                     setState(() {
                       currentIndex = index;
@@ -198,7 +206,8 @@ class _EventDetailsState extends State<EventDetails> {
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
                                     children: [
                                       Column(
                                         mainAxisAlignment:
@@ -399,55 +408,122 @@ class _EventDetailsState extends State<EventDetails> {
                                             fontSize: 16,
                                             fontWeight: FontWeight.w500),
                                       ),
-                                      Container(
-                                        height: 50,
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.62,
-                                        decoration: BoxDecoration(
-                                            color: const Color(0xff006ce7),
-                                            borderRadius:
-                                                BorderRadius.circular(5)),
-                                        child: Center(
-                                            child: Padding(
-                                          padding: const EdgeInsets.all(4.0),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Center(
-                                                  child: Container(
-                                                      height: 30,
-                                                      width: 30,
-                                                      decoration: BoxDecoration(
-                                                          border: Border.all(
-                                                              color:
-                                                                  Colors.white),
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      20)),
-                                                      child: Icon(
-                                                        Icons.check,
-                                                        size: 20,
-                                                        color: Colors.white,
-                                                      ))),
-                                              SizedBox(
-                                                width: 30,
-                                              ),
-                                              const FittedBox(
-                                                child: Text(
-                                                  "View in wallet",
-                                                  style: TextStyle(
-                                                      fontSize: 15,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: Colors.white),
+                                      GestureDetector(
+                                        onTap: () {
+                                          switchContainers();
+                                        },
+                                        child: Stack(children: [
+                                          AnimatedOpacity(
+                                            duration: Duration(milliseconds: 500),
+                                            opacity: isContainer1Visible ? 1.0 : 0.0,
+                                            child: Container(
+                                              height: 50,
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.62,
+                                              decoration: BoxDecoration(
+                                                  color: Colors.black,
+                                                  borderRadius:
+                                                      BorderRadius.circular(5)),
+                                              child: Center(
+                                                  child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(4.0),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Center(
+                                                        child: Container(
+                                                            height: 30,
+                                                            width: 40,
+                                                            decoration: BoxDecoration(
+                                                              borderRadius: BorderRadius.circular(5),
+                                                               image: DecorationImage(
+                                  image: AssetImage(
+                                    'assets/images/applewallet.png',
+                                  ),
+                                  fit: BoxFit.cover),
+                                                                ),
+                                                            
+                                                            )
+                                                            ),
+                                                    SizedBox(
+                                                      width: 20,
+                                                    ),
+                                                    const FittedBox(
+                                                      child: Text(
+                                                        "Add to Apple Wallet",
+                                                        style: TextStyle(
+                                                            fontSize: 15,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            color: Colors.white),
+                                                      ),
+                                                    ),
+                                                  ],
                                                 ),
-                                              ),
-                                            ],
+                                              )),
+                                            ),
                                           ),
-                                        )),
+                                          AnimatedOpacity(
+                                            duration: Duration(milliseconds: 500),
+                                            opacity: isContainer1Visible ? 0.0 : 1.0,
+                                            child: Container(
+                                              height: 50,
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.62,
+                                              decoration: BoxDecoration(
+                                                  color: const Color(0xff006ce7),
+                                                  borderRadius:
+                                                      BorderRadius.circular(5)),
+                                              child: Center(
+                                                  child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(4.0),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Center(
+                                                        child: Container(
+                                                            height: 30,
+                                                            width: 30,
+                                                            decoration: BoxDecoration(
+                                                                border: Border.all(
+                                                                    color: Colors
+                                                                        .white),
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            20)),
+                                                            child: Icon(
+                                                              Icons.check,
+                                                              size: 20,
+                                                              color: Colors.white,
+                                                            ))),
+                                                    SizedBox(
+                                                      width: 20,
+                                                    ),
+                                                    const FittedBox(
+                                                      child: Text(
+                                                        "View in wallet",
+                                                        style: TextStyle(
+                                                            fontSize: 15,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            color: Colors.white),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              )),
+                                            ),
+                                          )
+                                        ]),
                                       ),
                                       Row(
                                         mainAxisAlignment:
