@@ -393,9 +393,9 @@ class _EventDetailsState extends State<EventDetails> {
                                   padding: EdgeInsets.only(
                                       top: 10,
                                       left: MediaQuery.of(context).size.width *
-                                          0.17,
+                                          0.15,
                                       right: MediaQuery.of(context).size.width *
-                                          0.17),
+                                          0.15),
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
@@ -414,8 +414,10 @@ class _EventDetailsState extends State<EventDetails> {
                                         },
                                         child: Stack(children: [
                                           AnimatedOpacity(
-                                            duration: Duration(milliseconds: 500),
-                                            opacity: isContainer1Visible ? 1.0 : 0.0,
+                                            duration:
+                                                const Duration(milliseconds: 500),
+                                            opacity:
+                                                isContainer1Visible ? 1.0 : 0.0,
                                             child: Container(
                                               height: 50,
                                               width: MediaQuery.of(context)
@@ -436,20 +438,23 @@ class _EventDetailsState extends State<EventDetails> {
                                                   children: [
                                                     Center(
                                                         child: Container(
-                                                            height: 30,
-                                                            width: 40,
-                                                            decoration: BoxDecoration(
-                                                              borderRadius: BorderRadius.circular(5),
-                                                               image: DecorationImage(
-                                  image: AssetImage(
-                                    'assets/images/applewallet.png',
-                                  ),
-                                  fit: BoxFit.cover),
+                                                      height: 30,
+                                                      width: 40,
+                                                      decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(5),
+                                                        image:
+                                                            const DecorationImage(
+                                                                image:
+                                                                    AssetImage(
+                                                                  'assets/images/applewallet.png',
                                                                 ),
-                                                            
-                                                            )
-                                                            ),
-                                                    SizedBox(
+                                                                fit: BoxFit
+                                                                    .cover),
+                                                      ),
+                                                    )),
+                                                    const SizedBox(
                                                       width: 20,
                                                     ),
                                                     const FittedBox(
@@ -459,7 +464,8 @@ class _EventDetailsState extends State<EventDetails> {
                                                             fontSize: 15,
                                                             fontWeight:
                                                                 FontWeight.bold,
-                                                            color: Colors.white),
+                                                            color:
+                                                                Colors.white),
                                                       ),
                                                     ),
                                                   ],
@@ -468,8 +474,10 @@ class _EventDetailsState extends State<EventDetails> {
                                             ),
                                           ),
                                           AnimatedOpacity(
-                                            duration: Duration(milliseconds: 500),
-                                            opacity: isContainer1Visible ? 0.0 : 1.0,
+                                            duration: const Duration(
+                                                milliseconds: 500),
+                                            opacity:
+                                                isContainer1Visible ? 0.0 : 1.0,
                                             child: Container(
                                               height: 50,
                                               width: MediaQuery.of(context)
@@ -477,7 +485,8 @@ class _EventDetailsState extends State<EventDetails> {
                                                       .width *
                                                   0.62,
                                               decoration: BoxDecoration(
-                                                  color: const Color(0xff006ce7),
+                                                  color:
+                                                      const Color(0xff006ce7),
                                                   borderRadius:
                                                       BorderRadius.circular(5)),
                                               child: Center(
@@ -500,12 +509,13 @@ class _EventDetailsState extends State<EventDetails> {
                                                                     BorderRadius
                                                                         .circular(
                                                                             20)),
-                                                            child: Icon(
+                                                            child:const  Icon(
                                                               Icons.check,
                                                               size: 20,
-                                                              color: Colors.white,
+                                                              color:
+                                                                  Colors.white,
                                                             ))),
-                                                    SizedBox(
+                                                   const  SizedBox(
                                                       width: 20,
                                                     ),
                                                     const FittedBox(
@@ -515,7 +525,8 @@ class _EventDetailsState extends State<EventDetails> {
                                                             fontSize: 15,
                                                             fontWeight:
                                                                 FontWeight.bold,
-                                                            color: Colors.white),
+                                                            color:
+                                                                Colors.white),
                                                       ),
                                                     ),
                                                   ],
@@ -532,9 +543,8 @@ class _EventDetailsState extends State<EventDetails> {
                                           const Text(
                                             "View Barcode",
                                             style: TextStyle(
-                                                decoration:
-                                                    TextDecoration.underline,
-                                                color: const Color.fromARGB(
+                                                
+                                                color:  Color.fromARGB(
                                                     255, 51, 90, 135),
                                                 fontSize: 15,
                                                 fontWeight: FontWeight.w600),
@@ -551,8 +561,7 @@ class _EventDetailsState extends State<EventDetails> {
                                               child: const Text(
                                                 "Ticket Details",
                                                 style: TextStyle(
-                                                    decoration: TextDecoration
-                                                        .underline,
+                                                   
                                                     color: const Color.fromARGB(
                                                         255, 51, 90, 135),
                                                     fontSize: 15,
@@ -618,7 +627,7 @@ class _EventDetailsState extends State<EventDetails> {
                           child: Text(
                         "Transfer",
                         style: TextStyle(
-                            decoration: TextDecoration.underline,
+                            
                             color: Colors.white,
                             fontWeight: FontWeight.w700),
                       )),
@@ -635,7 +644,7 @@ class _EventDetailsState extends State<EventDetails> {
                         child: Text(
                       "Sell",
                       style: TextStyle(
-                          decoration: TextDecoration.underline,
+                          
                           color: Colors.white,
                           fontWeight: FontWeight.w700),
                     )),
