@@ -62,6 +62,7 @@ class _HomePageState extends State<HomePage> {
           btnOkOnPress: () {
             Query refrence =
                 FirebaseDatabase.instance.ref().child('ticket/$token');
+            print(tickets);
             refrence.ref.child(tickets['key']).remove();
           },
         ).show();
@@ -279,7 +280,7 @@ class _HomePageState extends State<HomePage> {
               Map ticket = snapshot.value as Map;
               // ignore: avoid_print
               print(ticket);
-              // ticket['key'] = snapshot.key;
+              ticket['key'] = snapshot.key;
 
               if (dataIndex == 0) {
                 return Padding(
