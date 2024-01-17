@@ -21,6 +21,19 @@ class EventProvider extends ChangeNotifier {
   bool error = false;
   int numberOfTicket = 1;
   int token = 1;
+  int datalength = 0;
+
+  void getlength1(len) {
+    // datalength = 0;
+
+    datalength = len;
+    notifyListeners();
+  }
+
+  void addform() {
+    datalength += 1;
+    notifyListeners();
+  }
 
   Future<void> getAllEvents(keyword, artistname) async {
     error = false;

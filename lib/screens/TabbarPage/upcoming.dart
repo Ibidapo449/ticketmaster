@@ -1,7 +1,10 @@
 // ignore_for_file: unused_local_variable, prefer_interpolation_to_compose_strings
 
+import 'dart:math';
+
 import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:firebase_database/firebase_database.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -37,14 +40,26 @@ class _UpcomingState extends State<Upcoming> {
     });
   }
 
-  Query getlist(token) {
-    Query dbref = FirebaseDatabase.instance.ref().child('ticket/$token');
-    return dbref;
+  bool loaded = false;
+
+  // Query getlist(token) {
+  //   Query dbref = FirebaseDatabase.instance.ref().child('ticket/$token');
+
+  //   return dbref;
+  // }
+
+  Stream<QuerySnapshot> getmessages(token) {
+    final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+    return _firestore
+        .collection("ticket")
+        .doc(token.toString())
+        .collection("messages")
+        .snapshots();
   }
 
   int dataIndex = 0;
 
-  Widget listItem({required Map tickets}) {
+  Widget listItem({required List<QueryDocumentSnapshot> tickets, index}) {
     return GestureDetector(
       onLongPress: () {
         final eventprovider =
@@ -58,44 +73,64 @@ class _UpcomingState extends State<Upcoming> {
           desc: 'Are you sure you want to delete ticket',
           btnCancelOnPress: () {
             FormData newdata = FormData(
-                artistName: tickets['artistName'],
-                eventName: tickets['eventname'],
-                section: tickets['section'],
-                row: tickets['row'],
-                seat: tickets['seat'],
-                date: tickets['date'],
-                location: tickets['location'],
-                time: tickets['time'],
-                ticketType: tickets['ticketype'],
-                level: tickets['level'],
-                numberOfTicket: tickets['numticket']);
+                artistName: tickets[index]['artistName'],
+                eventName: tickets[index]['eventName'],
+                section: tickets[index]['section'],
+                row: tickets[index]['row'],
+                seat: tickets[index]['seat'],
+                date: tickets[index]['date'],
+                location: tickets[index]['location'],
+                time: tickets[index]['time'],
+                ticketType: tickets[index]['ticketType'],
+                level: tickets[index]['level'],
+                numberOfTicket: tickets[index]['numberOfTicket']);
             context.read<FormDataProvider>().updateFormData(newdata);
             Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => FormScreen(),
             ));
           },
-          btnOkOnPress: () {
-            Query refrence =
-                FirebaseDatabase.instance.ref().child('ticket/$token');
-            refrence.ref.child(tickets['key']).remove();
+          btnOkOnPress: () async {
+            final eventprovider =
+                Provider.of<EventProvider>(context, listen: false);
+            //  print(eventprovider.token);
+            final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+            DocumentReference _docref;
+            Future<DocumentSnapshot> _futureDocument;
+            _docref = FirebaseFirestore.instance
+                .collection("ticket")
+                .doc(eventprovider.token.toString());
+            _futureDocument = _docref.get();
+            List<Map> items = tickets.map((e) => {'id': e.id}).toList();
+            print(items[index]['id']);
+
+            await _firestore
+                .collection("ticket")
+                .doc(eventprovider.token.toString())
+                .collection('messages')
+                .doc(items[index]['id'])
+                .delete();
+            setState(() {
+              loaded = false;
+            });
           },
         ).show();
       },
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => EventDetails(
-              artistName: tickets['artistName'],
-              eventName: tickets['eventname'],
-              section: tickets['section'],
-              row: tickets['row'],
-              seat: tickets['seat'],
-              date: tickets['date'],
-              location: tickets['location'],
-              time: tickets['time'],
-              image: tickets['image'],
-              ticketType: tickets['ticketype'],
-              level: tickets['level'],
-              number_of_ticket: tickets['numticket']),
+              artistName: tickets[index]['artistName'],
+              eventName: tickets[index]['eventName'],
+              section: tickets[index]['section'],
+              row: tickets[index]['row'],
+              seat: tickets[index]['seat'],
+              date: tickets[index]['date'],
+              location: tickets[index]['location'],
+              time: tickets[index]['time'],
+              image: tickets[index]['image'],
+              ticketType: tickets[index]['ticketType'],
+              level: tickets[index]['level'],
+              number_of_ticket: tickets[index]['numberOfTicket']),
         ));
       },
       child: Container(
@@ -105,7 +140,7 @@ class _UpcomingState extends State<Upcoming> {
             image: DecorationImage(
               fit: BoxFit.cover,
               image: NetworkImage(
-                tickets['image'], // Replace with your image URL
+                tickets[index]['image'], // Replace with your image URL
               ),
             ),
           ),
@@ -151,11 +186,11 @@ class _UpcomingState extends State<Upcoming> {
                           constraints:
                               const BoxConstraints(minHeight: 1, minWidth: 1),
                           child: Text(
-                            tickets['eventname'] == ''
-                                ? tickets['artistName']
-                                : tickets['artistName'] +
+                            tickets[index]['eventName'] == ''
+                                ? tickets[index]['artistName']
+                                : tickets[index]['artistName'] +
                                     ' | ' +
-                                    tickets['eventname'],
+                                    tickets[index]['eventName'],
                             style: const TextStyle(
                                 fontSize: 18, color: Colors.white),
                           ),
@@ -168,7 +203,10 @@ class _UpcomingState extends State<Upcoming> {
                         child: Row(
                           children: [
                             Text(
-                              tickets['date'] + " " + tickets['time'] + " ",
+                              tickets[index]['date'] +
+                                  " " +
+                                  tickets[index]['time'] +
+                                  " ",
                               style: const TextStyle(
                                   fontSize: 13,
                                   fontWeight: FontWeight.w500,
@@ -188,7 +226,7 @@ class _UpcomingState extends State<Upcoming> {
                               width: 7,
                             ),
                             Text(
-                              tickets['location'],
+                              tickets[index]['location'],
                               style: const TextStyle(
                                   fontSize: 13,
                                   fontWeight: FontWeight.w500,
@@ -217,10 +255,14 @@ class _UpcomingState extends State<Upcoming> {
                             width: 5,
                           ),
                           Text(
-                            tickets['numticket'].toString() == '1'
-                                ? tickets['numticket'].toString().toString() +
+                            tickets[index]['numberOfTicket'].toString() == '1'
+                                ? tickets[index]['numberOfTicket']
+                                        .toString()
+                                        .toString() +
                                     " ticket"
-                                : tickets['numticket'].toString().toString() +
+                                : tickets[index]['numberOfTicket']
+                                        .toString()
+                                        .toString() +
                                     " tickets",
                             style: const TextStyle(
                                 fontSize: 13,
@@ -244,18 +286,35 @@ class _UpcomingState extends State<Upcoming> {
   @override
   Widget build(BuildContext context) {
     final eventprovider = context.watch<EventProvider>();
+    dataIndex = 0;
     return Scaffold(
-        body: FirebaseAnimatedList(
-      defaultChild: const Center(child: CircularProgressIndicator()),
-      query: getlist(eventprovider.token),
-      itemBuilder: (context, snapshot, animation, index) {
-        dataIndex += 1;
-        Map ticket = snapshot.value as Map;
-        // ignore: avoid_print
-        print(ticket);
-        ticket['key'] = snapshot.key;
+        body: StreamBuilder(
+      stream: getmessages(eventprovider.token),
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Text('Error${snapshot.error}');
+        }
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+        Future.delayed(Duration(milliseconds: 600), () {
+          if (loaded == false) {
+            context
+                .read<EventProvider>()
+                .getlength1(snapshot.data!.docs.length);
+          }
+          loaded = true;
+        });
+        //  print(dataIndex);
+        // Map ticket = snapshot.value as Map;
+        // // ignore: avoid_print
 
-        if (dataIndex == 0) {
+        // ticket['key'] = snapshot.key;
+        // print(ticket);
+
+        if (snapshot.data!.docs.isEmpty) {
           return Padding(
             padding: const EdgeInsets.all(15),
             child: Container(
@@ -269,7 +328,25 @@ class _UpcomingState extends State<Upcoming> {
             ),
           );
         } else {
-          return listItem(tickets: ticket);
+          //  print(snapshot.data!.docs[]);
+// doc_id = snapshot.data!.docs;
+
+          return ListView.builder(
+            shrinkWrap: true,
+
+            itemCount: snapshot.data!.docs.length,
+            itemBuilder: (context, index) {
+              // checknewmessage(
+              //   snapshot.data!.docs.length,
+              // );
+              // bookindex = snapshot.data!.docs.length;
+
+              return listItem(tickets: snapshot.data!.docs, index: index);
+            },
+            // children: snapshot.data!.docs
+            //     .map((document) => _buildmessageItem(document))
+            //     .toList(),
+          );
         }
       },
     ));

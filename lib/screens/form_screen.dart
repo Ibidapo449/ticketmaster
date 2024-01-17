@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously, avoid_print
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -115,6 +116,7 @@ class _FormScreenState extends State<FormScreen> {
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.CENTER,
         );
+        context.read<EventProvider>().addform();
       } else {
         SmartDialog.dismiss();
 
@@ -517,22 +519,41 @@ class _FormScreenState extends State<FormScreen> {
       ticketype, level, numticket, image) async {
     final pref = await SharedPreferences.getInstance();
     final token = pref.getInt('token');
-    final dbref = FirebaseDatabase.instance.ref('ticket/$token');
+    FormData newform = FormData(
+        artistName: artistname,
+        eventName: eventname,
+        section: section,
+        row: row,
+        seat: seat,
+        date: date,
+        location: location,
+        time: time,
+        ticketType: ticketype,
+        level: level,
+        image: image,
+        numberOfTicket: numticket);
+    final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+    await _firestore
+        .collection("ticket")
+        .doc(token.toString())
+        .collection('messages')
+        .add(newform.toMap());
+    //   final dbref = FirebaseDatabase.instance.ref('ticket/$token');
 
-    dbref.push().child('').set({
-      'id': token,
-      'artistName': artistname,
-      'eventname': eventname,
-      'section': section,
-      'row': row,
-      'seat': seat,
-      'date': date,
-      'location': location,
-      'time': time,
-      'ticketype': ticketype,
-      'level': level,
-      'numticket': numticket,
-      'image': image
-    });
+    // dbref.push().child('').set({
+    //   'id': token,
+    //   'artistName': artistname,
+    //   'eventname': eventname,
+    //   'section': section,
+    //   'row': row,
+    //   'seat': seat,
+    //   'date': date,
+    //   'location': location,
+    //   'time': time,
+    //   'ticketype': ticketype,
+    //   'level': level,
+    //   'numticket': numticket,
+    //   'image': image
+    // });
   }
 }

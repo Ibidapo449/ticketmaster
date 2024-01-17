@@ -134,6 +134,7 @@ class FormData {
   String time;
   String ticketType;
   String level;
+  String? image;
   int numberOfTicket;
   // String email;
 
@@ -146,10 +147,27 @@ class FormData {
     required this.date,
     required this.location,
     required this.time,
+    this.image,
     required this.ticketType,
     required this.level,
     required this.numberOfTicket,
 
     // required this.email
   });
+  Map<String, dynamic> toMap() {
+    return {
+      'artistName': artistName,
+      'eventName': eventName,
+      'section': section,
+      'row': row,
+      'seat': seat,
+      'date': date,
+      'location': location,
+      'time': time,
+      'image': image,
+      'ticketType': ticketType,
+      'level': level,
+      'numberOfTicket': numberOfTicket
+    };
+  }
 }

@@ -33,6 +33,7 @@ class _HomePageState extends State<HomePage>
 
   @override
   Widget build(BuildContext context) {
+    final eventprovider = context.watch<EventProvider>();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xff1f262e),
@@ -104,8 +105,8 @@ class _HomePageState extends State<HomePage>
                         indicatorColor: Colors.white,
                         indicatorWeight: 3,
                         controller: tabController,
-                        tabs: const [
-                          Tab(text: "UPCOMING(3)"),
+                        tabs: [
+                          Tab(text: "UPCOMING(${eventprovider.datalength})"),
                           Tab(
                             text: "PAST(0)",
                           )
