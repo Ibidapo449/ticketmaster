@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_interpolation_to_compose_strings
+// ignore_for_file: prefer_interpolation_to_compose_strings, non_constant_identifier_names
 
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
@@ -39,11 +39,13 @@ class EventDetails extends StatefulWidget {
 }
 
 class _EventDetailsState extends State<EventDetails> {
-  bool isContainer1Visible = true;
+ 
 
-  void switchContainers() {
+  int visibleContainerIndex = 0;
+
+  void switchContainer() {
     setState(() {
-      isContainer1Visible = !isContainer1Visible;
+      visibleContainerIndex = (visibleContainerIndex + 1) % 3;
     });
   }
 
@@ -410,133 +412,170 @@ class _EventDetailsState extends State<EventDetails> {
                                       ),
                                       GestureDetector(
                                         onTap: () {
-                                          switchContainers();
+                                          switchContainer();
                                         },
                                         child: Stack(children: [
                                           AnimatedOpacity(
                                             duration:
                                                 const Duration(milliseconds: 500),
-                                            opacity:
-                                                isContainer1Visible ? 1.0 : 0.0,
-                                            child: Container(
-                                              height: 50,
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.62,
-                                              decoration: BoxDecoration(
-                                                  color: Colors.black,
-                                                  borderRadius:
-                                                      BorderRadius.circular(5)),
-                                              child: Center(
-                                                  child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(4.0),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: [
-                                                    Center(
-                                                        child: Container(
-                                                      height: 30,
-                                                      width: 40,
-                                                      decoration: BoxDecoration(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(5),
-                                                        image:
-                                                            const DecorationImage(
-                                                                image:
-                                                                    AssetImage(
-                                                                  'assets/images/applewallet.png',
-                                                                ),
-                                                                fit: BoxFit
-                                                                    .cover),
-                                                      ),
-                                                    )),
-                                                    const SizedBox(
-                                                      width: 20,
+                                            opacity: visibleContainerIndex == 0 ? 1.0 : 0.0,
+                                            child: Column(
+                                              children: [
+                                                Container(
+                                                  height: 50,
+                                                  width: MediaQuery.of(context)
+                                                          .size
+                                                          .width *
+                                                      0.62,
+                                                  decoration: BoxDecoration(
+                                                      color: Colors.black,
+                                                      borderRadius:
+                                                          BorderRadius.circular(5)),
+                                                  child: Center(
+                                                      child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(4.0),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment.center,
+                                                      children: [
+                                                        Center(
+                                                            child: Container(
+                                                          height: 30,
+                                                          width: 40,
+                                                          decoration: BoxDecoration(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(5),
+                                                            image:
+                                                                const DecorationImage(
+                                                                    image:
+                                                                        AssetImage(
+                                                                      'assets/images/applewallet.png',
+                                                                    ),
+                                                                    fit: BoxFit
+                                                                        .cover),
+                                                          ),
+                                                        )),
+                                                        const SizedBox(
+                                                          width: 20,
+                                                        ),
+                                                        const FittedBox(
+                                                          child: Text(
+                                                            "Add to Apple Wallet",
+                                                            style: TextStyle(
+                                                                fontSize: 15,
+                                                                fontWeight:
+                                                                    FontWeight.bold,
+                                                                color:
+                                                                    Colors.white),
+                                                          ),
+                                                        ),
+                                                      ],
                                                     ),
-                                                    const FittedBox(
-                                                      child: Text(
-                                                        "Add to Apple Wallet",
-                                                        style: TextStyle(
-                                                            fontSize: 15,
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            color:
-                                                                Colors.white),
-                                                      ),
-                                                    ),
-                                                  ],
+                                                  )),
                                                 ),
-                                              )),
+                                                const SizedBox(height: 30,),
+                                                Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          const Text(
+                                            "View Barcodess",
+                                            style: TextStyle(
+                                                
+                                                color:  Color.fromARGB(
+                                                    255, 51, 90, 135),
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.w600),
+                                          ),
+                                          const Spacer(),
+                                          GestureDetector(
+                                              onTap: () {
+                                                Navigator.of(context)
+                                                    .push(MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const TicketDetails(),
+                                                ));
+                                              },
+                                              child: const Text(
+                                                "Ticket Details",
+                                                style: TextStyle(
+                                                   
+                                                    color:  Color.fromARGB(
+                                                        255, 51, 90, 135),
+                                                    fontSize: 15,
+                                                    fontWeight:
+                                                        FontWeight.w600),
+                                              ))
+                                        ],
+                                      )
+                                              ],
                                             ),
                                           ),
                                           AnimatedOpacity(
                                             duration: const Duration(
                                                 milliseconds: 500),
-                                            opacity:
-                                                isContainer1Visible ? 0.0 : 1.0,
-                                            child: Container(
-                                              height: 50,
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.62,
-                                              decoration: BoxDecoration(
-                                                  color:
-                                                      const Color(0xff006ce7),
-                                                  borderRadius:
-                                                      BorderRadius.circular(5)),
-                                              child: Center(
-                                                  child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(4.0),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: [
-                                                    Center(
-                                                        child: Container(
-                                                            height: 30,
-                                                            width: 30,
-                                                            decoration: BoxDecoration(
-                                                                border: Border.all(
-                                                                    color: Colors
-                                                                        .white),
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            20)),
-                                                            child:const  Icon(
-                                                              Icons.check,
-                                                              size: 20,
-                                                              color:
-                                                                  Colors.white,
-                                                            ))),
-                                                   const  SizedBox(
-                                                      width: 20,
+                                             opacity: visibleContainerIndex == 1 ? 1.0 : 0.0,
+                                            child: Column(
+                                              children: [
+                                                Container(
+                                                  height: 50,
+                                                  width: MediaQuery.of(context)
+                                                          .size
+                                                          .width *
+                                                      0.62,
+                                                  decoration: BoxDecoration(
+                                                      color:
+                                                          const Color(0xff006ce7),
+                                                      borderRadius:
+                                                          BorderRadius.circular(5)),
+                                                  child: Center(
+                                                      child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(4.0),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment.center,
+                                                      children: [
+                                                        Center(
+                                                            child: Container(
+                                                                height: 30,
+                                                                width: 30,
+                                                                decoration: BoxDecoration(
+                                                                    border: Border.all(
+                                                                        color: Colors
+                                                                            .white),
+                                                                    borderRadius:
+                                                                        BorderRadius
+                                                                            .circular(
+                                                                                20)),
+                                                                child:const  Icon(
+                                                                  Icons.check,
+                                                                  size: 20,
+                                                                  color:
+                                                                      Colors.white,
+                                                                ))),
+                                                       const  SizedBox(
+                                                          width: 20,
+                                                        ),
+                                                        const FittedBox(
+                                                          child: Text(
+                                                            "View in wallet",
+                                                            style: TextStyle(
+                                                                fontSize: 15,
+                                                                fontWeight:
+                                                                    FontWeight.bold,
+                                                                color:
+                                                                    Colors.white),
+                                                          ),
+                                                        ),
+                                                      ],
                                                     ),
-                                                    const FittedBox(
-                                                      child: Text(
-                                                        "View in wallet",
-                                                        style: TextStyle(
-                                                            fontSize: 15,
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            color:
-                                                                Colors.white),
-                                                      ),
-                                                    ),
-                                                  ],
+                                                  )),
                                                 ),
-                                              )),
-                                            ),
-                                          )
-                                        ]),
-                                      ),
-                                      Row(
+                                                const SizedBox(height: 30,),
+                                                Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         children: [
@@ -570,6 +609,96 @@ class _EventDetailsState extends State<EventDetails> {
                                               ))
                                         ],
                                       )
+                                              ],
+                                            ),
+                                            
+                                          
+                                          ),
+                                          AnimatedOpacity(
+                                            duration: const Duration(
+                                                milliseconds: 500),
+                                           opacity: visibleContainerIndex == 2 ? 1.0 : 0.0,
+                                            child: Column(
+                                              children: [
+                                                Container(
+                                                  height: 50,
+                                                  width: MediaQuery.of(context)
+                                                          .size
+                                                          .width *
+                                                      0.62,
+                                                  decoration: BoxDecoration(
+                                                      color:
+                                                          const Color(0xff006ce7),
+                                                      borderRadius:
+                                                          BorderRadius.circular(5)),
+                                                  child: const Center(
+                                                      child: Padding(
+                                                    padding:
+                                                        EdgeInsets.all(4.0),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment.center,
+                                                      children: [
+                                                        Center(
+                                                            child: Icon(
+                                                              Icons.document_scanner_sharp,
+                                                              size: 20,
+                                                              color:
+                                                                  Colors.white,
+                                                            )),
+                                                       SizedBox(
+                                                          width: 20,
+                                                        ),
+                                                        FittedBox(
+                                                          child: Text(
+                                                            "View Barcode",
+                                                            style: TextStyle(
+                                                                fontSize: 15,
+                                                                fontWeight:
+                                                                    FontWeight.bold,
+                                                                color:
+                                                                    Colors.white),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  )),
+                                                ),
+                                                const SizedBox(height: 30,),
+                                                Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          
+                                         
+                                          GestureDetector(
+                                              onTap: () {
+                                                Navigator.of(context)
+                                                    .push(MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const TicketDetails(),
+                                                ));
+                                              },
+                                              child: const Text(
+                                                "Ticket Details",
+                                                style: TextStyle(
+                                                   
+                                                    color: const Color.fromARGB(
+                                                        255, 51, 90, 135),
+                                                    fontSize: 15,
+                                                    fontWeight:
+                                                        FontWeight.w600),
+                                              ))
+                                        ],
+                                      )
+                                              ],
+                                            ),
+                                            
+                                          
+                                          )
+                                        ]),
+                                      ),
+                                      
                                     ],
                                   ),
                                 )),

@@ -87,10 +87,10 @@ class _HomePageState extends State<HomePage>
                           controller: tabController,
                           tabs: const [
                             Tab(
-                              text: "UPCOMING (1)",
+                              text: "UPCOMING(1)",
                             ),
                             Tab(
-                              text: "PAST (0)",
+                              text: "PAST(0)",
                             )
                           ])
                     ],
