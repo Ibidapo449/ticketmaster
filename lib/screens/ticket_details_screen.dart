@@ -14,11 +14,23 @@ class TicketDetails extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text("Ticket Details"),
-              Text("Help"),
+              Text(
+                "Ticket Details",
+                style: TextStyle(
+                  fontSize: 18,
+                  color: Colors.white,
+                ),
+              ),
+              Text(
+                "Help",
+                style: TextStyle(
+                  fontSize: 17,
+                  color: Colors.white,
+                ),
+              ),
             ],
           ),
-        ),    
+        ),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -52,7 +64,7 @@ class TicketDetails extends StatelessWidget {
               const SizedBox(
                 height: 10,
               ),
-               Column(
+              Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
@@ -63,11 +75,11 @@ class TicketDetails extends StatelessWidget {
                     height: 5,
                   ),
                   ticketInfoText(text: "LIVE NATION PRESENTS"),
-                   ticketInfoText(text: "FALL OUT BOY"),
-                   ticketInfoText(text: "SO MUCH FOR (TOUR) DUST"),
-                   ticketInfoText(text: "BLOSSOM MUSIC CAREER"),
+                  ticketInfoText(text: "FALL OUT BOY"),
+                  ticketInfoText(text: "SO MUCH FOR (TOUR) DUST"),
+                  ticketInfoText(text: "BLOSSOM MUSIC CAREER"),
                   ticketInfoText(text: "RAIN OR SHINE EVENT"),
-                   ticketInfoText(text: "TUE JUL 18 2023 6:30 PM"),
+                  ticketInfoText(text: "TUE JUL 18 2023 6:30 PM"),
                 ],
               ),
               const SizedBox(
@@ -122,30 +134,20 @@ class TicketDetails extends StatelessWidget {
                     height: 5,
                   ),
                   myRow(
-                    text: "Take A Seat Bundle (lawn Ticket + Lawn Chair)",
-                    textt: "\$54.50"
-                  ),
+                      text: "Take A Seat Bundle (lawn Ticket + Lawn Chair)",
+                      textt: "\$54.50"),
                   const SizedBox(
                     height: 3,
                   ),
-                  myRow(
-                    text: "Fee",
-                    textt: "\$16.35"
-                  ),
+                  myRow(text: "Fee", textt: "\$16.35"),
                   const SizedBox(
                     height: 3,
                   ),
-                 myRow(
-                    text: "Tax",
-                    textt: "\$1.64"
-                  ),
+                  myRow(text: "Tax", textt: "\$1.64"),
                   const SizedBox(
                     height: 3,
                   ),
-                  myRow(
-                    text: "GRAND TOTAL",
-                    textt: "\$72.49"
-                  ),
+                  myRow(text: "GRAND TOTAL", textt: "\$72.49"),
                 ],
               )
             ],
@@ -155,25 +157,24 @@ class TicketDetails extends StatelessWidget {
     );
   }
 
-  Text ticketInfoText({text}) => Text(text,
-  style: const TextStyle(
-    color: Colors.grey
-  ),
-  );
+  Text ticketInfoText({text}) => Text(
+        text,
+        style: const TextStyle(color: Colors.grey),
+      );
 
   Row myRow({text, textt}) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [Text(text,
-       style: const TextStyle(
-          color: Colors.grey
+      children: [
+        Text(
+          text,
+          style: const TextStyle(color: Colors.grey),
         ),
-      
-      ), Text(textt,
-       style: const TextStyle(
-          color: Colors.grey
-        ),
-      )],
+        Text(
+          textt,
+          style: const TextStyle(color: Colors.grey),
+        )
+      ],
     );
   }
 
@@ -190,10 +191,10 @@ class TicketDetails extends StatelessWidget {
         const SizedBox(
           height: 5,
         ),
-        Text(textt,
-        style: const TextStyle(
-          color: Colors.grey
-        ),),
+        Text(
+          textt,
+          style: const TextStyle(color: Colors.grey),
+        ),
       ],
     );
   }

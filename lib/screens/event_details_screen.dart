@@ -102,7 +102,8 @@ class _EventDetailsState extends State<EventDetails> {
         ),
         title: const Text(
           "My Tickets",
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: TextStyle(
+              fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold),
         ),
         actions: [
           GestureDetector(
@@ -118,7 +119,7 @@ class _EventDetailsState extends State<EventDetails> {
                   alignment: Alignment.center,
                   child: Text(
                     'Help',
-                    style: TextStyle(fontSize: 20),
+                    style: TextStyle(color: Colors.white, fontSize: 17),
                     textAlign: TextAlign.center,
                   ),
                 ),
@@ -288,7 +289,7 @@ class _EventDetailsState extends State<EventDetails> {
                             ),
                             Container(
                               width: MediaQuery.of(context).size.width,
-                              height: MediaQuery.of(context).size.height * 0.25,
+                              height: MediaQuery.of(context).size.height * 0.26,
                               decoration: BoxDecoration(
                                 image: DecorationImage(
                                   fit: BoxFit.cover,
@@ -393,9 +394,9 @@ class _EventDetailsState extends State<EventDetails> {
                                   padding: EdgeInsets.only(
                                       top: 10,
                                       left: MediaQuery.of(context).size.width *
-                                          0.17,
+                                          0.1,
                                       right: MediaQuery.of(context).size.width *
-                                          0.17),
+                                          0.1),
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
@@ -414,8 +415,8 @@ class _EventDetailsState extends State<EventDetails> {
                                         },
                                         child: Stack(children: [
                                           AnimatedOpacity(
-                                            duration:
-                                                Duration(milliseconds: 500),
+                                            duration: const Duration(
+                                                milliseconds: 500),
                                             opacity:
                                                 isContainer1Visible ? 1.0 : 0.0,
                                             child: Container(
@@ -438,27 +439,30 @@ class _EventDetailsState extends State<EventDetails> {
                                                   children: [
                                                     Center(
                                                         child: Container(
-                                                      height: 20,
-                                                      width: 25,
+                                                      height: 30,
+                                                      width: 40,
                                                       decoration: BoxDecoration(
                                                         borderRadius:
                                                             BorderRadius
                                                                 .circular(5),
-                                                        image: DecorationImage(
-                                                            image: AssetImage(
-                                                              'assets/images/applewallet.png',
-                                                            ),
-                                                            fit: BoxFit.cover),
+                                                        image:
+                                                            const DecorationImage(
+                                                                image:
+                                                                    AssetImage(
+                                                                  'assets/images/applewallet.png',
+                                                                ),
+                                                                fit: BoxFit
+                                                                    .cover),
                                                       ),
                                                     )),
-                                                    SizedBox(
-                                                      width: 10,
+                                                    const SizedBox(
+                                                      width: 20,
                                                     ),
                                                     const FittedBox(
                                                       child: Text(
                                                         "Add to Apple Wallet",
                                                         style: TextStyle(
-                                                            fontSize: 15,
+                                                            fontSize: 13,
                                                             fontWeight:
                                                                 FontWeight.bold,
                                                             color:
@@ -471,8 +475,8 @@ class _EventDetailsState extends State<EventDetails> {
                                             ),
                                           ),
                                           AnimatedOpacity(
-                                            duration:
-                                                Duration(milliseconds: 500),
+                                            duration: const Duration(
+                                                milliseconds: 500),
                                             opacity:
                                                 isContainer1Visible ? 0.0 : 1.0,
                                             child: Container(
@@ -506,13 +510,13 @@ class _EventDetailsState extends State<EventDetails> {
                                                                     BorderRadius
                                                                         .circular(
                                                                             20)),
-                                                            child: Icon(
+                                                            child: const Icon(
                                                               Icons.check,
                                                               size: 20,
                                                               color:
                                                                   Colors.white,
                                                             ))),
-                                                    SizedBox(
+                                                    const SizedBox(
                                                       width: 20,
                                                     ),
                                                     const FittedBox(
@@ -540,9 +544,7 @@ class _EventDetailsState extends State<EventDetails> {
                                           const Text(
                                             "View Barcode",
                                             style: TextStyle(
-                                                decoration:
-                                                    TextDecoration.underline,
-                                                color: const Color.fromARGB(
+                                                color: Color.fromARGB(
                                                     255, 51, 90, 135),
                                                 fontSize: 15,
                                                 fontWeight: FontWeight.w600),
@@ -559,8 +561,6 @@ class _EventDetailsState extends State<EventDetails> {
                                               child: const Text(
                                                 "Ticket Details",
                                                 style: TextStyle(
-                                                    decoration: TextDecoration
-                                                        .underline,
                                                     color: const Color.fromARGB(
                                                         255, 51, 90, 135),
                                                     fontSize: 15,
@@ -626,9 +626,7 @@ class _EventDetailsState extends State<EventDetails> {
                           child: Text(
                         "Transfer",
                         style: TextStyle(
-                            decoration: TextDecoration.underline,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w700),
+                            color: Colors.white, fontWeight: FontWeight.w700),
                       )),
                     ),
                   ),
@@ -643,9 +641,7 @@ class _EventDetailsState extends State<EventDetails> {
                         child: Text(
                       "Sell",
                       style: TextStyle(
-                          decoration: TextDecoration.underline,
-                          color: Colors.white,
-                          fontWeight: FontWeight.w700),
+                          color: Colors.white, fontWeight: FontWeight.w700),
                     )),
                   )
                 ],

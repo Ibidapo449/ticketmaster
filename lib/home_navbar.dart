@@ -27,7 +27,7 @@ class _HomeNavBarState extends State<HomeNavBar> {
       bottomNavigationBar: Container(
         decoration:
             BoxDecoration(border: Border.all(color: Colors.grey.shade300)),
-        height: 94,
+        height: 100,
         child: BottomNavigationBar(
           showUnselectedLabels: true,
           showSelectedLabels: true,

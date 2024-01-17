@@ -11,52 +11,53 @@ import 'package:ticketmaster/providers/event_providers.dart';
 import 'package:firebase_core/firebase_core.dart';
 // Import the provider class you created
 
-class FormScreen extends StatelessWidget {
+class FormScreen extends StatefulWidget {
+  const FormScreen({super.key});
+
+  @override
+  State<FormScreen> createState() => _FormScreenState();
+}
+
+class _FormScreenState extends State<FormScreen> {
   final _formKey = GlobalKey<FormState>();
   // final TextEditingController _artistNameController = TextEditingController();
-  final TextEditingController _artistNameController =
-      TextEditingController(text: FormDataProvider().formData.artistName);
-  final TextEditingController _eventNameController = TextEditingController();
-  final TextEditingController _sectionController = TextEditingController();
-  final TextEditingController _rowController = TextEditingController();
-  final TextEditingController _seatController = TextEditingController();
-  final TextEditingController _dateController = TextEditingController();
-  final TextEditingController _locationController = TextEditingController();
-  final TextEditingController _timeController = TextEditingController();
-  final TextEditingController _ticketTypeController = TextEditingController();
-  final TextEditingController _levelController = TextEditingController();
-  final TextEditingController _numberOfTicketsController =
-      TextEditingController();
-
-  // final TextEditingController _emailController = TextEditingController();
-
-  FormScreen({super.key});
-
+  TextEditingController artistNameController = TextEditingController();
+  TextEditingController eventNameController =
+      TextEditingController(text: FormDataProvider().formData.eventName);
+  TextEditingController sectionController = TextEditingController();
+  TextEditingController rowController = TextEditingController();
+  TextEditingController seatController = TextEditingController();
+  TextEditingController dateController = TextEditingController();
+  TextEditingController locationController = TextEditingController();
+  TextEditingController timeController = TextEditingController();
+  TextEditingController ticketTypeController = TextEditingController();
+  TextEditingController levelController = TextEditingController();
+  TextEditingController numberOfTicketsController = TextEditingController();
   void _submitForm(BuildContext context) async {
     await Firebase.initializeApp();
     if (_formKey.currentState!.validate()) {
       // Form is valid, update form data using the provider
       SmartDialog.showLoading();
       FormData newFormData = FormData(
-        artistName: _artistNameController.text,
-        eventName: _eventNameController.text,
-        section: _sectionController.text,
-        row: _rowController.text,
-        seat: _seatController.text.isEmpty ? '1' : _seatController.text,
-        date: _dateController.text,
-        location: _locationController.text,
-        time: _timeController.text,
-        ticketType: _ticketTypeController.text,
-        level: _levelController.text,
-        numberOfTicket: int.parse(_numberOfTicketsController.text.isEmpty
+        artistName: artistNameController.text,
+        eventName: eventNameController.text,
+        section: sectionController.text,
+        row: rowController.text,
+        seat: seatController.text.isEmpty ? '1' : seatController.text,
+        date: dateController.text,
+        location: locationController.text,
+        time: timeController.text,
+        ticketType: ticketTypeController.text,
+        level: levelController.text,
+        numberOfTicket: int.parse(numberOfTicketsController.text.isEmpty
             ? '1'
-            : _numberOfTicketsController.text),
+            : numberOfTicketsController.text),
         // email: _emailController.text,
       );
-      print(_eventNameController.text);
+
       await context
           .read<EventProvider>()
-          .getAllEvents(_eventNameController.text, _artistNameController.text);
+          .getAllEvents(eventNameController.text, artistNameController.text);
       if (context.read<EventProvider>().error == false) {
         FormDataProvider formDataProvider =
             Provider.of<FormDataProvider>(context, listen: false);
@@ -127,8 +128,34 @@ class FormScreen extends StatelessWidget {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    final FormDataget = Provider.of<FormDataProvider>(context, listen: false);
+
+    artistNameController =
+        TextEditingController(text: FormDataget.formData.artistName);
+    eventNameController =
+        TextEditingController(text: FormDataget.formData.eventName);
+    sectionController =
+        TextEditingController(text: FormDataget.formData.section);
+    rowController = TextEditingController(text: FormDataget.formData.row);
+    seatController = TextEditingController(text: FormDataget.formData.seat);
+    dateController = TextEditingController(text: FormDataget.formData.date);
+    locationController =
+        TextEditingController(text: FormDataget.formData.location);
+    timeController = TextEditingController(text: FormDataget.formData.time);
+    ticketTypeController =
+        TextEditingController(text: FormDataget.formData.ticketType);
+    levelController = TextEditingController(text: FormDataget.formData.level);
+    numberOfTicketsController = TextEditingController(
+        text: FormDataget.formData.numberOfTicket.toString());
+
+    print(context.read<FormDataProvider>().formData.artistName);
+  }
+
+  @override
   Widget build(BuildContext context) {
-    // final dbref = FirebaseDatabase.instance.ref();
     return Scaffold(
       body: SingleChildScrollView(
         child: SafeArea(
@@ -166,7 +193,7 @@ class FormScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(5)),
                         child: TextFormField(
                           // initialValue: getvalue.artistName,
-                          controller: _artistNameController,
+                          controller: artistNameController,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Please enter a valid artist name';
@@ -189,7 +216,7 @@ class FormScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(5)),
                         child: TextFormField(
                           // initialValue: getvalue.eventName,
-                          controller: _eventNameController,
+                          controller: eventNameController,
                           // validator: (value) {
                           //   if (value == null || value.isEmpty) {
                           //     return 'Please enter a valid event name';
@@ -220,7 +247,7 @@ class FormScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(5)),
                         child: TextFormField(
                           // initialValue: getvalue.section,
-                          controller: _sectionController,
+                          controller: sectionController,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Please enter a valid section';
@@ -242,7 +269,7 @@ class FormScreen extends StatelessWidget {
                             border: Border.all(color: Colors.black54),
                             borderRadius: BorderRadius.circular(5)),
                         child: TextFormField(
-                          controller: _rowController,
+                          controller: rowController,
                           // validator: (value) {
                           //   if (value == null || value.isEmpty) {
                           //     return 'Please enter a valid row';
@@ -272,7 +299,7 @@ class FormScreen extends StatelessWidget {
                             border: Border.all(color: Colors.black54),
                             borderRadius: BorderRadius.circular(5)),
                         child: TextFormField(
-                          controller: _seatController,
+                          controller: seatController,
                           // validator: (value) {
                           //   if (value == null || value.isEmpty) {
                           //     return 'Please enter a valid seat';
@@ -294,7 +321,7 @@ class FormScreen extends StatelessWidget {
                             border: Border.all(color: Colors.black54),
                             borderRadius: BorderRadius.circular(5)),
                         child: TextFormField(
-                          controller: _dateController,
+                          controller: dateController,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Please enter a valid date';
@@ -324,7 +351,7 @@ class FormScreen extends StatelessWidget {
                             border: Border.all(color: Colors.black54),
                             borderRadius: BorderRadius.circular(5)),
                         child: TextFormField(
-                          controller: _locationController,
+                          controller: locationController,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Please enter a valid location';
@@ -346,7 +373,7 @@ class FormScreen extends StatelessWidget {
                             border: Border.all(color: Colors.black54),
                             borderRadius: BorderRadius.circular(5)),
                         child: TextFormField(
-                          controller: _timeController,
+                          controller: timeController,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Please enter a valid time';
@@ -376,7 +403,7 @@ class FormScreen extends StatelessWidget {
                             border: Border.all(color: Colors.black54),
                             borderRadius: BorderRadius.circular(5)),
                         child: TextFormField(
-                          controller: _ticketTypeController,
+                          controller: ticketTypeController,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Please enter a valid ticket Type';
@@ -398,7 +425,7 @@ class FormScreen extends StatelessWidget {
                             border: Border.all(color: Colors.black54),
                             borderRadius: BorderRadius.circular(5)),
                         child: TextFormField(
-                          controller: _levelController,
+                          controller: levelController,
                           // validator: (value) {
                           //   if (value == null || value.isEmpty) {
                           //     return 'Please enter a valid level';
@@ -428,7 +455,7 @@ class FormScreen extends StatelessWidget {
                             border: Border.all(color: Colors.black54),
                             borderRadius: BorderRadius.circular(5)),
                         child: TextFormField(
-                          controller: _numberOfTicketsController,
+                          controller: numberOfTicketsController,
                           // validator: (value) {
                           //   if (value == null || value.isEmpty) {
                           //     return 'Please enter a valid ticket Type';
