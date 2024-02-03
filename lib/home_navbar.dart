@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ticketmaster/home.dart';
 import 'package:ticketmaster/providers/event_providers.dart';
+import 'package:ticketmaster/screens/account.dart';
 
 class HomeNavBar extends StatefulWidget {
   const HomeNavBar({super.key});
@@ -17,7 +18,7 @@ class _HomeNavBarState extends State<HomeNavBar> {
     Container(),
     const HomePage(),
     Container(),
-    Container(),
+    Account(),
   ];
   @override
   Widget build(BuildContext context) {

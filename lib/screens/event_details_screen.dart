@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ticketmaster/screens/ticket_details_screen.dart';
 import 'package:ticketmaster/screens/widgets/ticket_successful_modal.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class EventDetails extends StatefulWidget {
   final String artistName;
@@ -39,8 +40,6 @@ class EventDetails extends StatefulWidget {
 }
 
 class _EventDetailsState extends State<EventDetails> {
- 
-
   int visibleContainerIndex = 0;
 
   void switchContainer() {
@@ -417,9 +416,11 @@ class _EventDetailsState extends State<EventDetails> {
                                         },
                                         child: Stack(children: [
                                           AnimatedOpacity(
-                                            duration:
-                                                const Duration(milliseconds: 500),
-                                            opacity: visibleContainerIndex == 0 ? 1.0 : 0.0,
+                                            duration: const Duration(
+                                                milliseconds: 500),
+                                            opacity: visibleContainerIndex == 0
+                                                ? 1.0
+                                                : 0.0,
                                             child: Column(
                                               children: [
                                                 Container(
@@ -431,23 +432,28 @@ class _EventDetailsState extends State<EventDetails> {
                                                   decoration: BoxDecoration(
                                                       color: Colors.black,
                                                       borderRadius:
-                                                          BorderRadius.circular(5)),
+                                                          BorderRadius.circular(
+                                                              5)),
                                                   child: Center(
                                                       child: Padding(
                                                     padding:
-                                                        const EdgeInsets.all(4.0),
+                                                        const EdgeInsets.all(
+                                                            4.0),
                                                     child: Row(
                                                       mainAxisAlignment:
-                                                          MainAxisAlignment.center,
+                                                          MainAxisAlignment
+                                                              .center,
                                                       children: [
                                                         Center(
                                                             child: Container(
                                                           height: 30,
                                                           width: 40,
-                                                          decoration: BoxDecoration(
+                                                          decoration:
+                                                              BoxDecoration(
                                                             borderRadius:
                                                                 BorderRadius
-                                                                    .circular(5),
+                                                                    .circular(
+                                                                        5),
                                                             image:
                                                                 const DecorationImage(
                                                                     image:
@@ -467,57 +473,67 @@ class _EventDetailsState extends State<EventDetails> {
                                                             style: TextStyle(
                                                                 fontSize: 15,
                                                                 fontWeight:
-                                                                    FontWeight.bold,
-                                                                color:
-                                                                    Colors.white),
+                                                                    FontWeight
+                                                                        .bold,
+                                                                color: Colors
+                                                                    .white),
                                                           ),
                                                         ),
                                                       ],
                                                     ),
                                                   )),
                                                 ),
-                                                const SizedBox(height: 30,),
+                                                const SizedBox(
+                                                  height: 30,
+                                                ),
                                                 Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          const Text(
-                                            "View Barcodess",
-                                            style: TextStyle(
-                                                
-                                                color:  Color.fromARGB(
-                                                    255, 51, 90, 135),
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.w600),
-                                          ),
-                                          const Spacer(),
-                                          GestureDetector(
-                                              onTap: () {
-                                                Navigator.of(context)
-                                                    .push(MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      const TicketDetails(),
-                                                ));
-                                              },
-                                              child: const Text(
-                                                "Ticket Details",
-                                                style: TextStyle(
-                                                   
-                                                    color:  Color.fromARGB(
-                                                        255, 51, 90, 135),
-                                                    fontSize: 15,
-                                                    fontWeight:
-                                                        FontWeight.w600),
-                                              ))
-                                        ],
-                                      )
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    const Text(
+                                                      "View Barcode",
+                                                      style: TextStyle(
+                                                          color: Color.fromARGB(
+                                                              255, 51, 90, 135),
+                                                          fontSize: 15,
+                                                          fontWeight:
+                                                              FontWeight.w600),
+                                                    ),
+                                                    const Spacer(),
+                                                    GestureDetector(
+                                                        onTap: () {
+                                                          Navigator.of(context)
+                                                              .push(
+                                                                  MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                const TicketDetails(),
+                                                          ));
+                                                        },
+                                                        child: const Text(
+                                                          "Ticket Details",
+                                                          style: TextStyle(
+                                                              color: Color
+                                                                  .fromARGB(
+                                                                      255,
+                                                                      51,
+                                                                      90,
+                                                                      135),
+                                                              fontSize: 15,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600),
+                                                        ))
+                                                  ],
+                                                )
                                               ],
                                             ),
                                           ),
                                           AnimatedOpacity(
                                             duration: const Duration(
                                                 milliseconds: 500),
-                                             opacity: visibleContainerIndex == 1 ? 1.0 : 0.0,
+                                            opacity: visibleContainerIndex == 1
+                                                ? 1.0
+                                                : 0.0,
                                             child: Column(
                                               children: [
                                                 Container(
@@ -527,17 +543,20 @@ class _EventDetailsState extends State<EventDetails> {
                                                           .width *
                                                       0.62,
                                                   decoration: BoxDecoration(
-                                                      color:
-                                                          const Color(0xff006ce7),
+                                                      color: const Color(
+                                                          0xff006ce7),
                                                       borderRadius:
-                                                          BorderRadius.circular(5)),
+                                                          BorderRadius.circular(
+                                                              5)),
                                                   child: Center(
                                                       child: Padding(
                                                     padding:
-                                                        const EdgeInsets.all(4.0),
+                                                        const EdgeInsets.all(
+                                                            4.0),
                                                     child: Row(
                                                       mainAxisAlignment:
-                                                          MainAxisAlignment.center,
+                                                          MainAxisAlignment
+                                                              .center,
                                                       children: [
                                                         Center(
                                                             child: Container(
@@ -548,16 +567,16 @@ class _EventDetailsState extends State<EventDetails> {
                                                                         color: Colors
                                                                             .white),
                                                                     borderRadius:
-                                                                        BorderRadius
-                                                                            .circular(
-                                                                                20)),
-                                                                child:const  Icon(
+                                                                        BorderRadius.circular(
+                                                                            20)),
+                                                                child:
+                                                                    const Icon(
                                                                   Icons.check,
                                                                   size: 20,
-                                                                  color:
-                                                                      Colors.white,
+                                                                  color: Colors
+                                                                      .white,
                                                                 ))),
-                                                       const  SizedBox(
+                                                        const SizedBox(
                                                           width: 20,
                                                         ),
                                                         const FittedBox(
@@ -566,57 +585,64 @@ class _EventDetailsState extends State<EventDetails> {
                                                             style: TextStyle(
                                                                 fontSize: 15,
                                                                 fontWeight:
-                                                                    FontWeight.bold,
-                                                                color:
-                                                                    Colors.white),
+                                                                    FontWeight
+                                                                        .bold,
+                                                                color: Colors
+                                                                    .white),
                                                           ),
                                                         ),
                                                       ],
                                                     ),
                                                   )),
                                                 ),
-                                                const SizedBox(height: 30,),
+                                                const SizedBox(
+                                                  height: 30,
+                                                ),
                                                 Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          const Text(
-                                            "View Barcode",
-                                            style: TextStyle(
-                                                color: Color.fromARGB(
-                                                    255, 51, 90, 135),
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.w600),
-                                          ),
-                                          const Spacer(),
-                                          GestureDetector(
-                                              onTap: () {
-                                                Navigator.of(context)
-                                                    .push(MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      const TicketDetails(),
-                                                ));
-                                              },
-                                              child: const Text(
-                                                "Ticket Details",
-                                                style: TextStyle(
-                                                    color: const Color.fromARGB(
-                                                        255, 51, 90, 135),
-                                                    fontSize: 15,
-                                                    fontWeight:
-                                                        FontWeight.w600),
-                                              ))
-                                        ],
-                                      )
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    const Text(
+                                                      "View Barcode",
+                                                      style: TextStyle(
+                                                          color: Color.fromARGB(
+                                                              255, 51, 90, 135),
+                                                          fontSize: 15,
+                                                          fontWeight:
+                                                              FontWeight.w600),
+                                                    ),
+                                                    const Spacer(),
+                                                    GestureDetector(
+                                                        onTap: () {
+                                                          Navigator.of(context)
+                                                              .push(
+                                                                  MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                const TicketDetails(),
+                                                          ));
+                                                        },
+                                                        child: const Text(
+                                                          "Ticket Details",
+                                                          style: TextStyle(
+                                                              color: const Color
+                                                                  .fromARGB(255,
+                                                                  51, 90, 135),
+                                                              fontSize: 15,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600),
+                                                        ))
+                                                  ],
+                                                )
                                               ],
                                             ),
-                                            
-                                          
                                           ),
                                           AnimatedOpacity(
                                             duration: const Duration(
                                                 milliseconds: 500),
-                                           opacity: visibleContainerIndex == 2 ? 1.0 : 0.0,
+                                            opacity: visibleContainerIndex == 2
+                                                ? 1.0
+                                                : 0.0,
                                             child: Column(
                                               children: [
                                                 Container(
@@ -626,78 +652,92 @@ class _EventDetailsState extends State<EventDetails> {
                                                           .width *
                                                       0.62,
                                                   decoration: BoxDecoration(
-                                                      color:
-                                                          const Color(0xff006ce7),
+                                                      color: const Color(
+                                                          0xff006ce7),
                                                       borderRadius:
-                                                          BorderRadius.circular(5)),
-                                                  child: const Center(
+                                                          BorderRadius.circular(
+                                                              5)),
+                                                  child: Center(
                                                       child: Padding(
                                                     padding:
-                                                        EdgeInsets.all(4.0),
+                                                        const EdgeInsets.all(
+                                                            4.0),
                                                     child: Row(
                                                       mainAxisAlignment:
-                                                          MainAxisAlignment.center,
+                                                          MainAxisAlignment
+                                                              .center,
                                                       children: [
-                                                        Center(
-                                                            child: Icon(
-                                                              Icons.document_scanner_sharp,
-                                                              size: 20,
-                                                              color:
-                                                                  Colors.white,
-                                                            )),
-                                                       SizedBox(
-                                                          width: 20,
+                                                        Stack(
+                                                          children: [
+                                                            SvgPicture.asset(
+                                                                'assets/images/barcode1.svg',
+                                                                height: 30,
+                                                                width: 40,
+                                                                color: Color
+                                                                    .fromARGB(
+                                                                        255,
+                                                                        236,
+                                                                        236,
+                                                                        236)),
+                                                          ],
                                                         ),
-                                                        FittedBox(
+                                                        const SizedBox(
+                                                          width: 10,
+                                                        ),
+                                                        const FittedBox(
                                                           child: Text(
                                                             "View Barcode",
                                                             style: TextStyle(
                                                                 fontSize: 15,
                                                                 fontWeight:
-                                                                    FontWeight.bold,
-                                                                color:
-                                                                    Colors.white),
+                                                                    FontWeight
+                                                                        .bold,
+                                                                color: Color
+                                                                    .fromARGB(
+                                                                        255,
+                                                                        236,
+                                                                        236,
+                                                                        236)),
                                                           ),
                                                         ),
                                                       ],
                                                     ),
                                                   )),
                                                 ),
-                                                const SizedBox(height: 30,),
+                                                const SizedBox(
+                                                  height: 30,
+                                                ),
                                                 Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          
-                                         
-                                          GestureDetector(
-                                              onTap: () {
-                                                Navigator.of(context)
-                                                    .push(MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      const TicketDetails(),
-                                                ));
-                                              },
-                                              child: const Text(
-                                                "Ticket Details",
-                                                style: TextStyle(
-                                                   
-                                                    color: const Color.fromARGB(
-                                                        255, 51, 90, 135),
-                                                    fontSize: 15,
-                                                    fontWeight:
-                                                        FontWeight.w600),
-                                              ))
-                                        ],
-                                      )
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    GestureDetector(
+                                                        onTap: () {
+                                                          Navigator.of(context)
+                                                              .push(
+                                                                  MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                const TicketDetails(),
+                                                          ));
+                                                        },
+                                                        child: const Text(
+                                                          "Ticket Details",
+                                                          style: TextStyle(
+                                                              color: const Color
+                                                                  .fromARGB(255,
+                                                                  51, 90, 135),
+                                                              fontSize: 15,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600),
+                                                        ))
+                                                  ],
+                                                )
                                               ],
                                             ),
-                                            
-                                          
                                           )
                                         ]),
                                       ),
-                                      
                                     ],
                                   ),
                                 )),
