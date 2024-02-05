@@ -982,8 +982,8 @@ class _EventDetailsState extends State<EventDetails> {
                           AwesomeDialog(
                             context: context,
                             headerAnimationLoop: false,
-                            animType: AnimType.BOTTOMSLIDE,
-                            dialogType: DialogType.NO_HEADER,
+                            animType: AnimType.bottomSlide,
+                            dialogType: DialogType.noHeader,
                             body: const TicketTransferSuccessfullModal(),
                           ).show();
                         },
