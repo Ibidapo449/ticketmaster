@@ -4,6 +4,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:ticketmaster/firebase_options.dart';
 import 'package:ticketmaster/home_navbar.dart';
 import 'package:ticketmaster/providers/event_providers.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
@@ -39,7 +40,9 @@ class MyApp extends StatelessWidget {
 }
 
 void createrandom() async {
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   final pref = await SharedPreferences.getInstance();
 
   final token = pref.getInt('token');
