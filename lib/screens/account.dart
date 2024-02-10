@@ -10,6 +10,15 @@ class Account extends StatefulWidget {
 }
 
 class _AccountState extends State<Account> {
+
+   int visibleContainerIndex = 0;
+
+  void switchContainer() {
+    setState(() {
+      visibleContainerIndex = (visibleContainerIndex + 1) % 3;
+    });
+  }
+
   bool isSwitched = false;
   bool isSwitched2 = false;
 
@@ -180,10 +189,50 @@ class _AccountState extends State<Account> {
                         const SizedBox(
                           height: 15,
                         ),
-                        locationSettingsRow(
-                            image: 'assets/images/usa-icon.png',
-                            text: "My Country",
-                            textt: "United States"),
+                        GestureDetector(
+                           onTap: () {
+                                          switchContainer();
+                                        },
+                          child: Stack(
+                            children: [
+                            AnimatedOpacity(
+                              
+                               duration: const Duration(
+                                                milliseconds: 500),
+                                            opacity: visibleContainerIndex == 0
+                                                ? 1.0
+                                                : 0.0,
+                              child: locationSettingsRow(
+                                  image: 'assets/images/usa-icon.png',
+                                  text: "My Country",
+                                  textt: "United States"),
+                            ),
+
+                                 AnimatedOpacity(
+                                   duration: const Duration(
+                                                milliseconds: 500),
+                                            opacity: visibleContainerIndex == 1
+                                                ? 1.0
+                                                : 0.0,
+                                   child: locationSettingsRow(
+                                                                 image: 'assets/images/Ellipse 2.png',
+                                                                 text: "My Country",
+                                                                 textt: "United Kingdom"),
+                                 ),
+
+                                 AnimatedOpacity(
+                                  duration: const Duration(
+                                                milliseconds: 500),
+                                            opacity: visibleContainerIndex == 2
+                                                ? 1.0
+                                                : 0.0,
+                                   child: locationSettingsRow(
+                                                                 image: 'assets/images/Ellipse 3.png',
+                                                                 text: "My Country",
+                                                                 textt: "Canada"),
+                                 ),
+                                              ]),
+                        ),
                         const SizedBox(
                           height: 15,
                         ),
@@ -373,10 +422,17 @@ class _AccountState extends State<Account> {
             const SizedBox(
               width: 5,
             ),
-            const Icon(
-              Icons.edit_calendar,
-              color: Colors.blue,
-            )
+             Container(
+              width: 20,
+              height: 20,
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage(
+                      'assets/images/Group 3.png',
+                    ),
+                    fit: BoxFit.cover),
+              ),
+            ),
           ],
         )
       ],
