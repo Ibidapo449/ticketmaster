@@ -1,8 +1,11 @@
 // ignore_for_file: use_build_context_synchronously, avoid_print
 
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -10,6 +13,7 @@ import 'package:ticketmaster/model/event_model.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:ticketmaster/providers/event_providers.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:ticketmaster/screens/widgets/viewimage.dart';
 // Import the provider class you created
 
 class FormScreen extends StatefulWidget {
@@ -55,20 +59,17 @@ class _FormScreenState extends State<FormScreen> {
             : numberOfTicketsController.text),
         // email: _emailController.text,
       );
-
-      await context
-          .read<EventProvider>()
-          .getAllEvents(eventNameController.text, artistNameController.text);
-      if (context.read<EventProvider>().error == false) {
+      Provider.of<FormDataProvider>(context, listen: false).image == null
+          ? await context
+              .read<EventProvider>()
+              .getAllEvents(eventNameController.text, artistNameController.text)
+          : await context.read<FormDataProvider>().uploadbook();
+      if (context.read<EventProvider>().error == false ||
+          context.read<FormDataProvider>().imageurl != '') {
         FormDataProvider formDataProvider =
             Provider.of<FormDataProvider>(context, listen: false);
         formDataProvider.updateFormData(newFormData);
-        print(Provider.of<EventProvider>(context, listen: false)
-            .events[0]
-            .images
-            .where((element) => element.width == 1024)
-            .toList()[0]
-            .url);
+
         SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setString('artistName', newFormData.artistName);
         prefs.setString('eventName', newFormData.eventName);
@@ -83,12 +84,15 @@ class _FormScreenState extends State<FormScreen> {
         prefs.setInt('numberOfTicket', newFormData.numberOfTicket);
         prefs.setString(
             'image',
-            Provider.of<EventProvider>(context, listen: false)
-                .events[0]
-                .images
-                .where((element) => element.width == 1024)
-                .toList()[0]
-                .url);
+            Provider.of<FormDataProvider>(context, listen: false).image == null
+                ? Provider.of<EventProvider>(context, listen: false)
+                    .events[0]
+                    .images
+                    .where((element) => element.width == 1024)
+                    .toList()[0]
+                    .url
+                : Provider.of<FormDataProvider>(context, listen: false)
+                    .imageurl);
         await writeData(
             newFormData.artistName,
             newFormData.eventName,
@@ -101,12 +105,15 @@ class _FormScreenState extends State<FormScreen> {
             newFormData.ticketType,
             newFormData.level,
             newFormData.numberOfTicket,
-            Provider.of<EventProvider>(context, listen: false)
-                .events[0]
-                .images
-                .where((element) => element.width == 1024)
-                .toList()[0]
-                .url);
+            Provider.of<FormDataProvider>(context, listen: false).image == null
+                ? Provider.of<EventProvider>(context, listen: false)
+                    .events[0]
+                    .images
+                    .where((element) => element.width == 1024)
+                    .toList()[0]
+                    .url
+                : Provider.of<FormDataProvider>(context, listen: false)
+                    .imageurl);
         SmartDialog.dismiss();
         context.read<EventProvider>().loadSavedData();
 
@@ -133,6 +140,7 @@ class _FormScreenState extends State<FormScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    context.read<FormDataProvider>().resetpair();
     final FormDataget = Provider.of<FormDataProvider>(context, listen: false);
 
     artistNameController =
@@ -158,6 +166,7 @@ class _FormScreenState extends State<FormScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final uploadprovider = context.watch<FormDataProvider>();
     return Scaffold(
       body: SingleChildScrollView(
         child: SafeArea(
@@ -500,6 +509,39 @@ class _FormScreenState extends State<FormScreen> {
                   const SizedBox(
                     height: 20,
                   ),
+                  InkWell(
+                    onTap: () {
+                      uploadprovider.image == null
+                          ? uploadprovider.pickimage()
+                          : showModalBottomSheet(
+                              shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(8),
+                                  topRight: Radius.circular(8),
+                                ),
+                              ),
+                              context: context,
+                              builder: (context) {
+                                return ViewImage(
+                                  image: uploadprovider.image!,
+                                );
+                              });
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: UseCaseUpload(
+                        title: uploadprovider.image == null
+                            ? 'Add Image'
+                            : 'View Image',
+                        icon: 'assets/images/image.svg',
+                        iconcolor: Colors.green,
+                        file: uploadprovider.image,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
                   Center(
                     child: ElevatedButton(
                       onPressed: () => _submitForm(context),
@@ -555,5 +597,67 @@ class _FormScreenState extends State<FormScreen> {
     //   'numticket': numticket,
     //   'image': image
     // });
+  }
+}
+
+class UseCaseUpload extends StatelessWidget {
+  const UseCaseUpload({
+    super.key,
+    required this.title,
+    required this.icon,
+    required this.iconcolor,
+    required this.file,
+  });
+  final String title;
+  final String icon;
+  final Color iconcolor;
+  final File? file;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Theme.of(context).primaryColor,
+        borderRadius: BorderRadius.circular(5),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 3,
+            blurRadius: 7,
+            offset: Offset(0, 3), // changes position of shadow
+          ),
+        ],
+      ),
+      height: 55,
+      width: double.infinity,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 13.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            SvgPicture.asset(
+              icon,
+              color: iconcolor,
+            ),
+            Text(
+              title,
+              style:
+                  TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+            ),
+            file == null
+                ? SizedBox()
+                : InkWell(
+                    onTap: () {
+                      context.read<FormDataProvider>().deleteimage();
+                    },
+                    child: Icon(
+                      Icons.delete,
+                      color: Colors.red,
+                    ),
+                  ),
+          ],
+        ),
+      ),
+    );
   }
 }
