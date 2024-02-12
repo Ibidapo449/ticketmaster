@@ -221,9 +221,6 @@ class _EventDetailsState extends State<EventDetails> {
                                               color: Colors.white,
                                             ),
                                           ),
-                                          const SizedBox(
-                                            height: 3,
-                                          ),
                                           Text(
                                             widget.section,
                                             style: const TextStyle(
@@ -243,9 +240,6 @@ class _EventDetailsState extends State<EventDetails> {
                                               color: Colors.white,
                                             ),
                                           ),
-                                          const SizedBox(
-                                            height: 3,
-                                          ),
                                           Text(
                                             widget.row,
                                             style: const TextStyle(
@@ -264,9 +258,6 @@ class _EventDetailsState extends State<EventDetails> {
                                             style: TextStyle(
                                               color: Colors.white,
                                             ),
-                                          ),
-                                          const SizedBox(
-                                            height: 3,
                                           ),
                                           Text(
                                             widget.seat == '1'
@@ -311,79 +302,85 @@ class _EventDetailsState extends State<EventDetails> {
                                   begin: FractionalOffset.topCenter,
                                   end: FractionalOffset.bottomCenter,
                                 )),
-                                child: Column(
-                                  children: [
-                                    SizedBox(
-                                      height:
-                                          MediaQuery.of(context).size.height *
-                                              0.175,
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 8, right: 8, top: 8),
-                                      child: FittedBox(
+                                child: Align(
+                                  alignment: Alignment.bottomCenter,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                          left: 10,
+                                          right: 10,
+                                          top: 8,
+                                        ),
                                         child: Text(
                                           widget.eventName == ''
                                               ? widget.artistName
                                               : widget.artistName +
                                                   ' | ' +
                                                   widget.eventName,
+                                          maxLines: 2,
+                                          textAlign: TextAlign.center,
                                           style: const TextStyle(
-                                              fontSize: 25,
+                                              fontSize: 21,
+                                              fontWeight: FontWeight.w400,
                                               color: Colors.white),
                                         ),
                                       ),
-                                    ),
-                                    const SizedBox(
-                                      height: 3,
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                        left: 8,
-                                        right: 8,
+                                      const SizedBox(
+                                        height: 3,
                                       ),
-                                      child: FittedBox(
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Text(
-                                              widget.date +
-                                                  " " +
-                                                  widget.time +
-                                                  " ",
-                                              style: const TextStyle(
-                                                  fontSize: 15,
-                                                  fontWeight: FontWeight.w500,
-                                                  color: Colors.white),
-                                            ),
-                                            const SizedBox(
-                                              width: 5,
-                                            ),
-                                            Container(
-                                              height: 5,
-                                              width: 5,
-                                              decoration: BoxDecoration(
-                                                  color: Colors.white,
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          2.5)),
-                                            ),
-                                            const SizedBox(
-                                              width: 7,
-                                            ),
-                                            Text(
-                                              widget.location,
-                                              style: const TextStyle(
-                                                  fontSize: 15,
-                                                  fontWeight: FontWeight.w500,
-                                                  color: Colors.white),
-                                            ),
-                                          ],
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                          left: 8,
+                                          right: 8,
+                                        ),
+                                        child: FittedBox(
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                widget.date +
+                                                    " " +
+                                                    widget.time +
+                                                    " ",
+                                                style: const TextStyle(
+                                                    fontSize: 15,
+                                                    fontWeight: FontWeight.w500,
+                                                    color: Colors.white),
+                                              ),
+                                              const SizedBox(
+                                                width: 5,
+                                              ),
+                                              Container(
+                                                height: 5,
+                                                width: 5,
+                                                decoration: BoxDecoration(
+                                                    color: Colors.white,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            2.5)),
+                                              ),
+                                              const SizedBox(
+                                                width: 7,
+                                              ),
+                                              Text(
+                                                widget.location,
+                                                style: const TextStyle(
+                                                    fontSize: 15,
+                                                    fontWeight: FontWeight.w500,
+                                                    color: Colors.white),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  ],
+                                      SizedBox(
+                                        height: 15,
+                                      )
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),

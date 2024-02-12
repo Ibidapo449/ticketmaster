@@ -328,9 +328,6 @@ class _UpcomingState extends State<Upcoming> {
             ),
           );
         } else {
-          //  print(snapshot.data!.docs[]);
-// doc_id = snapshot.data!.docs;
-
           return ListView.builder(
             shrinkWrap: true,
 
