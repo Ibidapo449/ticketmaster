@@ -17,10 +17,7 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      throw UnsupportedError(
-        'DefaultFirebaseOptions have not been configured for web - '
-        'you can reconfigure this by running the FlutterFire CLI again.',
-      );
+      return web;
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -29,7 +26,10 @@ class DefaultFirebaseOptions {
           'you can reconfigure this by running the FlutterFire CLI again.',
         );
       case TargetPlatform.iOS:
-        return ios;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for ios - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.macOS:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for macos - '
@@ -52,13 +52,14 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyD1wo0fgUv0h9prvz1mt5wMc3Lvofxzs8w',
-    appId: '1:172881875812:ios:b0936bb3485c5ce1eba071',
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyBd2yXeP9VMzRoD961WSpAfdHFBgIftogU',
+    appId: '1:172881875812:web:9e4809d1e8148d55eba071',
     messagingSenderId: '172881875812',
     projectId: 'ticket-d5d35',
+    authDomain: 'ticket-d5d35.firebaseapp.com',
     databaseURL: 'https://ticket-d5d35-default-rtdb.firebaseio.com',
     storageBucket: 'ticket-d5d35.appspot.com',
-    iosBundleId: 'com.example.ticketmaster',
+    measurementId: 'G-MT76D27HG1',
   );
 }
