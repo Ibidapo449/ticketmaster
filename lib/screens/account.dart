@@ -19,6 +19,14 @@ class _AccountState extends State<Account> {
     });
   }
 
+     int visibleContainerIndex1 = 0;
+
+  void switchContainer1() {
+    setState(() {
+      visibleContainerIndex1 = (visibleContainerIndex1 + 1) % 3;
+    });
+  }
+
   bool isSwitched = false;
   bool isSwitched2 = false;
 
@@ -112,9 +120,7 @@ class _AccountState extends State<Account> {
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 22),
-                            ),
-              
-                    
+                            ),                   
                     ),
                     const SizedBox(
                       height: 5,
@@ -199,10 +205,49 @@ class _AccountState extends State<Account> {
                     padding: const EdgeInsets.only(left: 10, top: 20),
                     child: Column(
                       children: [
-                        locationSettingsRow(
-                            image: 'assets/images/location-2.png',
-                            text: "My Location",
-                            textt: "All of USA"),
+                        GestureDetector(
+                            onTap: () {
+                                          switchContainer1();
+                                        },
+                          child: Stack(
+                            children: [
+                              AnimatedOpacity(
+                                 duration: const Duration(
+                                                milliseconds: 500),
+                                            opacity: visibleContainerIndex1 == 0
+                                                ? 1.0
+                                                : 0.0,
+                                child: locationSettingsRow(
+                                  image: 'assets/images/location-2.png',
+                                  text: "My Location",
+                                  textt: "All of USA"),
+                              ),
+
+                              AnimatedOpacity(
+                                 duration: const Duration(
+                                                milliseconds: 500),
+                                            opacity: visibleContainerIndex1 == 1
+                                                ? 1.0
+                                                : 0.0,
+                                child: locationSettingsRow(
+                                  image: 'assets/images/location-2.png',
+                                  text: "My Location",
+                                  textt: "All of Uk"),
+                              ),
+
+                              AnimatedOpacity(
+                                 duration: const Duration(
+                                                milliseconds: 500),
+                                            opacity: visibleContainerIndex1 == 2
+                                                ? 1.0
+                                                : 0.0,
+                                child: locationSettingsRow(
+                                  image: 'assets/images/location-2.png',
+                                  text: "My Location",
+                                  textt: "All of Canada"),
+                              ),
+                                              ]),
+                        ),
                         const SizedBox(
                           height: 15,
                         ),
