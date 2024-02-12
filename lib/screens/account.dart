@@ -90,11 +90,20 @@ class _AccountState extends State<Account> {
                               controller: _textEditingController1,
                               style: const TextStyle(color: Colors.white),
                               onSubmitted: (newText) {
-                                _saveText(newText, 'saved_text1');
+                               if (newText.isNotEmpty){
+                                 _saveText(newText, 'saved_text1');
                                 setState(() {
                                   _displayText1 = newText;
                                   _isEditing1 = false;
                                 });
+                               } else {
+                               ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Name cannot be empty'),
+                            backgroundColor: Colors.red,
+                          ),
+                        );
+                               }
                               },
                             )
                           : Text(
@@ -123,11 +132,19 @@ class _AccountState extends State<Account> {
                               style: const TextStyle(color: Colors.white),
                               controller: _textEditingController,
                               onSubmitted: (newText) {
-                                _saveText(newText, 'saved_text');
+                                if (newText.isNotEmpty){
+                                  _saveText(newText, 'saved_text');
                                 setState(() {
                                   _displayText = newText;
                                   _isEditing = false;
                                 });
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('email cannot be empty'),
+                            backgroundColor: Colors.red,
+                          ));
+                                }
                               },
                             )
                           : Text(
