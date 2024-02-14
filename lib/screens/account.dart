@@ -11,8 +11,7 @@ class Account extends StatefulWidget {
 }
 
 class _AccountState extends State<Account> {
-
-   int visibleContainerIndex = 0;
+  int visibleContainerIndex = 0;
 
   void switchContainer() {
     setState(() {
@@ -20,7 +19,7 @@ class _AccountState extends State<Account> {
     });
   }
 
-     int visibleContainerIndex1 = 0;
+  int visibleContainerIndex1 = 0;
 
   void switchContainer1() {
     setState(() {
@@ -74,97 +73,93 @@ class _AccountState extends State<Account> {
                   fontWeight: FontWeight.w500)),
         ),
       ),
-      body: ListView(children: [
-        Column(
-          children: [
-            Container(
-              color: const Color(0xff1e252d),
-              height: 90,
-              width: double.infinity,
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-              child: ListView(
-                children : [
-               Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    GestureDetector(
-                      onLongPress: () {
-                        setState(() {
-                          _isEditing1 = true;
-                          _textEditingController1.text = _displayText1;
-                        });
-                      },
-                      child: _isEditing1
-                          ? TextField(
-                              controller: _textEditingController1,
-                              style: const TextStyle(color: Colors.white),
-                              onSubmitted: (newText) {
-                               if (newText.isNotEmpty){
-                                 _saveText(newText, 'saved_text1');
-                                setState(() {
-                                  _displayText1 = newText;
-                                  _isEditing1 = false;
-                                });
-                               } else {
-                               ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Name cannot be empty'),
-                            backgroundColor: Colors.red,
-                          ),
-                        );
-                               }
-                              },
-                            )
-                          : Text(
-                              _displayText1,
-                              style: const TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 22),
-                            ),                   
-                    ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                           
-                    GestureDetector(
-                      onLongPress: () {
-                        setState(() {
-                          _isEditing = true;
-                          _textEditingController.text = _displayText;
-                        });
-                      },
-                      child: _isEditing
-                          ? TextField(
-                              style: const TextStyle(color: Colors.white),
-                              controller: _textEditingController,
-                              onSubmitted: (newText) {
-                                if (newText.isNotEmpty){
-                                  _saveText(newText, 'saved_text');
-                                setState(() {
-                                  _displayText = newText;
-                                  _isEditing = false;
-                                });
-                                } else {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('email cannot be empty'),
-                            backgroundColor: Colors.red,
-                          ));
-                                }
-                              },
-                            )
-                          : Text(
-                              _displayText,
-                              style: const TextStyle(
-                                  color: Colors.white, fontSize: 16),
-                            ),
-                    )
-                  ],
+      body: Column(
+        children: [
+          Container(
+            color: const Color(0xff1e252d),
+            height: 90,
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                GestureDetector(
+                  onLongPress: () {
+                    setState(() {
+                      _isEditing1 = true;
+                      _textEditingController1.text = _displayText1;
+                    });
+                  },
+                  child: _isEditing1
+                      ? TextField(
+                          controller: _textEditingController1,
+                          style: const TextStyle(color: Colors.white),
+                          onSubmitted: (newText) {
+                            if (newText.isNotEmpty) {
+                              _saveText(newText, 'saved_text1');
+                              setState(() {
+                                _displayText1 = newText;
+                                _isEditing1 = false;
+                              });
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('Name cannot be empty'),
+                                  backgroundColor: Colors.red,
+                                ),
+                              );
+                            }
+                          },
+                        )
+                      : Text(
+                          _displayText1,
+                          style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 22),
+                        ),
                 ),
-          ]),
+                const SizedBox(
+                  height: 5,
+                ),
+                GestureDetector(
+                  onLongPress: () {
+                    setState(() {
+                      _isEditing = true;
+                      _textEditingController.text = _displayText;
+                    });
+                  },
+                  child: _isEditing
+                      ? TextField(
+                          style: const TextStyle(color: Colors.white),
+                          controller: _textEditingController,
+                          onSubmitted: (newText) {
+                            if (newText.isNotEmpty) {
+                              _saveText(newText, 'saved_text');
+                              setState(() {
+                                _displayText = newText;
+                                _isEditing = false;
+                              });
+                            } else {
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(const SnackBar(
+                                content: Text('email cannot be empty'),
+                                backgroundColor: Colors.red,
+                              ));
+                            }
+                          },
+                        )
+                      : Text(
+                          _displayText,
+                          style: const TextStyle(
+                              color: Colors.white, fontSize: 16),
+                        ),
+                )
+              ],
             ),
-            Padding(
+          ),
+          Expanded (
+            child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 13.0),
               child: ListView(
                 scrollDirection: Axis.vertical,
@@ -207,94 +202,69 @@ class _AccountState extends State<Account> {
                     child: Column(
                       children: [
                         GestureDetector(
-                            onTap: () {
-                                          switchContainer1();
-                                        },
-                          child: Stack(
-                            children: [
-                              AnimatedOpacity(
-                                 duration: const Duration(
-                                                milliseconds: 500),
-                                            opacity: visibleContainerIndex1 == 0
-                                                ? 1.0
-                                                : 0.0,
-                                child: locationSettingsRow(
+                          onTap: () {
+                            switchContainer1();
+                          },
+                          child: Stack(children: [
+                            AnimatedOpacity(
+                              duration: const Duration(milliseconds: 500),
+                              opacity: visibleContainerIndex1 == 0 ? 1.0 : 0.0,
+                              child: locationSettingsRow(
                                   image: 'assets/images/location-2.png',
                                   text: "My Location",
                                   textt: "All of USA"),
-                              ),
-      
-                              AnimatedOpacity(
-                                 duration: const Duration(
-                                                milliseconds: 500),
-                                            opacity: visibleContainerIndex1 == 1
-                                                ? 1.0
-                                                : 0.0,
-                                child: locationSettingsRow(
+                            ),
+                            AnimatedOpacity(
+                              duration: const Duration(milliseconds: 500),
+                              opacity: visibleContainerIndex1 == 1 ? 1.0 : 0.0,
+                              child: locationSettingsRow(
                                   image: 'assets/images/location-2.png',
                                   text: "My Location",
                                   textt: "All of Uk"),
-                              ),
-      
-                              AnimatedOpacity(
-                                 duration: const Duration(
-                                                milliseconds: 500),
-                                            opacity: visibleContainerIndex1 == 2
-                                                ? 1.0
-                                                : 0.0,
-                                child: locationSettingsRow(
+                            ),
+                            AnimatedOpacity(
+                              duration: const Duration(milliseconds: 500),
+                              opacity: visibleContainerIndex1 == 2 ? 1.0 : 0.0,
+                              child: locationSettingsRow(
                                   image: 'assets/images/location-2.png',
                                   text: "My Location",
                                   textt: "All of Canada"),
-                              ),
-                                              ]),
+                            ),
+                          ]),
                         ),
                         const SizedBox(
                           height: 15,
                         ),
                         GestureDetector(
-                           onTap: () {
-                                          switchContainer();
-                                        },
-                          child: Stack(
-                            children: [
+                          onTap: () {
+                            switchContainer();
+                          },
+                          child: Stack(children: [
                             AnimatedOpacity(
-                              
-                               duration: const Duration(
-                                                milliseconds: 500),
-                                            opacity: visibleContainerIndex == 0
-                                                ? 1.0
-                                                : 0.0,
+                              duration: const Duration(milliseconds: 500),
+                              opacity: visibleContainerIndex == 0 ? 1.0 : 0.0,
                               child: locationSettingsRow(
                                   image: 'assets/images/usa-icon.png',
                                   text: "My Country",
                                   textt: "United States"),
                             ),
-      
-                                 AnimatedOpacity(
-                                   duration: const Duration(
-                                                milliseconds: 500),
-                                            opacity: visibleContainerIndex == 1
-                                                ? 1.0
-                                                : 0.0,
-                                   child: locationSettingsRow(
-                                                                 image: 'assets/images/Ellipse 2.png',
-                                                                 text: "My Country",
-                                                                 textt: "United Kingdom"),
-                                 ),
-      
-                                 AnimatedOpacity(
-                                  duration: const Duration(
-                                                milliseconds: 500),
-                                            opacity: visibleContainerIndex == 2
-                                                ? 1.0
-                                                : 0.0,
-                                   child: locationSettingsRow(
-                                                                 image: 'assets/images/Ellipse 3.png',
-                                                                 text: "My Country",
-                                                                 textt: "Canada"),
-                                 ),
-                                              ]),
+                            AnimatedOpacity(
+                              duration: const Duration(milliseconds: 500),
+                              opacity: visibleContainerIndex == 1 ? 1.0 : 0.0,
+                              child: locationSettingsRow(
+                                  image: 'assets/images/Ellipse 2.png',
+                                  text: "My Country",
+                                  textt: "United Kingdom"),
+                            ),
+                            AnimatedOpacity(
+                              duration: const Duration(milliseconds: 500),
+                              opacity: visibleContainerIndex == 2 ? 1.0 : 0.0,
+                              child: locationSettingsRow(
+                                  image: 'assets/images/Ellipse 3.png',
+                                  text: "My Country",
+                                  textt: "Canada"),
+                            ),
+                          ]),
                         ),
                         const SizedBox(
                           height: 15,
@@ -323,36 +293,35 @@ class _AccountState extends State<Account> {
                         const SizedBox(
                           height: 10,
                         ),
-      
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
                             Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Row(
-          children: [
-             SvgPicture.asset(
-                                                                'assets/images/Vector 1.svg',
-                                                                height: 22,
-                                                                width: 22,
-                                                                ),
-            const SizedBox(
-              width: 10,
-            ),
-            const Text(
-             "Saved Paymment Methods",
-              style: TextStyle(
-                  fontWeight: FontWeight.w400,
-                  color: Color(0xff1e252d),
-                  fontSize: 18),
-            )
-          ],
-        ),
-        const Icon(
-          Icons.keyboard_arrow_right,
-          color: Colors.grey,
-          size: 35,
-        )
-      ],
-        ),
+                              children: [
+                                SvgPicture.asset(
+                                  'assets/images/Vector 1.svg',
+                                  height: 22,
+                                  width: 22,
+                                ),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                const Text(
+                                  "Saved Paymment Methods",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w400,
+                                      color: Color(0xff1e252d),
+                                      fontSize: 18),
+                                )
+                              ],
+                            ),
+                            const Icon(
+                              Icons.keyboard_arrow_right,
+                              color: Colors.grey,
+                              size: 35,
+                            )
+                          ],
+                        ),
                         const SizedBox(
                           height: 10,
                         ),
@@ -422,10 +391,10 @@ class _AccountState extends State<Account> {
                   ),
                 ],
               ),
-            )
-          ],
-        ),
-      ]),
+            ),
+          )
+        ],
+      ),
     );
   }
 
@@ -512,7 +481,7 @@ class _AccountState extends State<Account> {
             const SizedBox(
               width: 5,
             ),
-             Container(
+            Container(
               width: 20,
               height: 20,
               decoration: const BoxDecoration(
