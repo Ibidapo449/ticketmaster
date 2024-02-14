@@ -670,7 +670,7 @@ class _EventDetailsState extends State<EventDetails> {
                                                                 'assets/images/barcode1.svg',
                                                                 height: 30,
                                                                 width: 40,
-                                                                color: Color
+                                                                color: const Color
                                                                     .fromARGB(
                                                                         255,
                                                                         236,
@@ -874,28 +874,28 @@ class _EventDetailsState extends State<EventDetails> {
                     children: [
                       Row(
                         children: [
-                          Text("Sec "),
+                          const Text("Sec "),
                           Text(
                             '${widget.section} ,',
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                            style: const TextStyle(fontWeight: FontWeight.bold),
                           )
                         ],
                       ),
                       Row(
                         children: [
-                          Text("Row "),
+                          const Text("Row "),
                           Text(
                             '${widget.row} ,',
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                            style: const TextStyle(fontWeight: FontWeight.bold),
                           )
                         ],
                       ),
                       Row(
                         children: [
-                          Text("Seat "),
-                          Text(
-                            '${widget.seat}',
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                          const Text("Seat "),
+                           Text(
+                            widget.seat,
+                            style: const TextStyle(fontWeight: FontWeight.bold),
                           )
                         ],
                       ),
@@ -919,12 +919,12 @@ class _EventDetailsState extends State<EventDetails> {
                   const SizedBox(
                     height: 15,
                   ),
-                  const Text("Email or Mobile Number"),
+                  const Text("Email"),
                   const SizedBox(
                     height: 3,
                   ),
                   transferTicketContainer(context,
-                      text: "Email or Mobile Number", height: 35.0),
+                      text: "Email", height: 35.0),
                   const SizedBox(
                     height: 15,
                   ),
@@ -995,7 +995,7 @@ class _EventDetailsState extends State<EventDetails> {
                             widget.number_of_ticket == 1
                                 ? "Transfer Ticket"
                                 : "Transfer Tickets",
-                            style: TextStyle(color: Colors.white),
+                            style: const TextStyle(color: Colors.white),
                           )),
                         ),
                       ),

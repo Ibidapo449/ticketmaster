@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Account extends StatefulWidget {
@@ -222,7 +223,7 @@ class _AccountState extends State<Account> {
                                   text: "My Location",
                                   textt: "All of USA"),
                               ),
-
+      
                               AnimatedOpacity(
                                  duration: const Duration(
                                                 milliseconds: 500),
@@ -234,7 +235,7 @@ class _AccountState extends State<Account> {
                                   text: "My Location",
                                   textt: "All of Uk"),
                               ),
-
+      
                               AnimatedOpacity(
                                  duration: const Duration(
                                                 milliseconds: 500),
@@ -269,7 +270,7 @@ class _AccountState extends State<Account> {
                                   text: "My Country",
                                   textt: "United States"),
                             ),
-
+      
                                  AnimatedOpacity(
                                    duration: const Duration(
                                                 milliseconds: 500),
@@ -281,7 +282,7 @@ class _AccountState extends State<Account> {
                                                                  text: "My Country",
                                                                  textt: "United Kingdom"),
                                  ),
-
+      
                                  AnimatedOpacity(
                                   duration: const Duration(
                                                 milliseconds: 500),
@@ -322,9 +323,36 @@ class _AccountState extends State<Account> {
                         const SizedBox(
                           height: 10,
                         ),
-                        accountRow(
-                            image: 'assets/images/payment.png',
-                            text: "Saved Paymment Methods"),
+      
+                            Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Row(
+          children: [
+             SvgPicture.asset(
+                                                                'assets/images/Vector 1.svg',
+                                                                height: 22,
+                                                                width: 22,
+                                                                ),
+            const SizedBox(
+              width: 10,
+            ),
+            const Text(
+             "Saved Paymment Methods",
+              style: TextStyle(
+                  fontWeight: FontWeight.w400,
+                  color: Color(0xff1e252d),
+                  fontSize: 18),
+            )
+          ],
+        ),
+        const Icon(
+          Icons.keyboard_arrow_right,
+          color: Colors.grey,
+          size: 35,
+        )
+      ],
+        ),
                         const SizedBox(
                           height: 10,
                         ),
