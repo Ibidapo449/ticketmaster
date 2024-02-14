@@ -92,6 +92,24 @@ class _HomeNavBarState extends State<HomeNavBar> {
             BottomNavigationBarItem(
               icon: ColorFiltered(
                 colorFilter:
+                    const ColorFilter.mode(Colors.grey, BlendMode.srcIn),
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 5),
+                  child: Container(
+                    width: 25,
+                    height: 25,
+                    decoration: const BoxDecoration(
+                      image: DecorationImage(
+                          image: AssetImage(
+                            'assets/images/myevent.png',
+                          ),
+                          fit: BoxFit.cover),
+                    ),
+                  ),
+                ),
+              ),
+              activeIcon: ColorFiltered(
+                colorFilter:
                     const ColorFilter.mode(Color(0xff0267d3), BlendMode.srcIn),
                 child: Padding(
                   padding: const EdgeInsets.only(bottom: 5),
@@ -128,17 +146,39 @@ class _HomeNavBarState extends State<HomeNavBar> {
               label: 'Sell',
             ),
             BottomNavigationBarItem(
-              icon: Padding(
-                padding: const EdgeInsets.only(bottom: 5),
-                child: Container(
-                  width: 25,
-                  height: 25,
-                  decoration: const BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage(
-                          'assets/images/person.png',
-                        ),
-                        fit: BoxFit.cover),
+              activeIcon: ColorFiltered(
+                colorFilter:
+                    const ColorFilter.mode(Color(0xff0267d3), BlendMode.srcIn),
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 5),
+                  child: Container(
+                    width: 25,
+                    height: 25,
+                    decoration: const BoxDecoration(
+                      image: DecorationImage(
+                          image: AssetImage(
+                            'assets/images/person.png',
+                          ),
+                          fit: BoxFit.cover),
+                    ),
+                  ),
+                ),
+              ),
+              icon: ColorFiltered(
+                colorFilter:
+                    const ColorFilter.mode(Colors.grey, BlendMode.srcIn),
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 5),
+                  child: Container(
+                    width: 25,
+                    height: 25,
+                    decoration: const BoxDecoration(
+                      image: DecorationImage(
+                          image: AssetImage(
+                            'assets/images/person.png',
+                          ),
+                          fit: BoxFit.cover),
+                    ),
                   ),
                 ),
               ),

@@ -26,10 +26,7 @@ class DefaultFirebaseOptions {
           'you can reconfigure this by running the FlutterFire CLI again.',
         );
       case TargetPlatform.iOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for ios - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return ios;
       case TargetPlatform.macOS:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for macos - '
@@ -61,5 +58,15 @@ class DefaultFirebaseOptions {
     databaseURL: 'https://ticket-d5d35-default-rtdb.firebaseio.com',
     storageBucket: 'ticket-d5d35.appspot.com',
     measurementId: 'G-MT76D27HG1',
+  );
+
+  static const FirebaseOptions ios = FirebaseOptions(
+    apiKey: 'AIzaSyD1wo0fgUv0h9prvz1mt5wMc3Lvofxzs8w',
+    appId: '1:172881875812:ios:616e086f8eb59550eba071',
+    messagingSenderId: '172881875812',
+    projectId: 'ticket-d5d35',
+    databaseURL: 'https://ticket-d5d35-default-rtdb.firebaseio.com',
+    storageBucket: 'ticket-d5d35.appspot.com',
+    iosBundleId: 'com.ticketmaster.caleboruta',
   );
 }

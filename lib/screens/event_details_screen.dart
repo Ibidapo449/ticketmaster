@@ -211,68 +211,108 @@ class _EventDetailsState extends State<EventDetails> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
                                     children: [
-                                      Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          const Text(
-                                            "SEC",
-                                            style: TextStyle(
-                                              color: Colors.white,
+                                      Container(
+                                        height: 50,
+                                        width: 50,
+                                        child: Stack(
+                                          children: [
+                                            const Align(
+                                              alignment: Alignment.topCenter,
+                                              child: const Text(
+                                                "SEC",
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                ),
+                                              ),
                                             ),
-                                          ),
-                                          Text(
-                                            widget.section,
-                                            style: const TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 25,
-                                                fontWeight: FontWeight.w700),
-                                          ),
-                                        ],
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 10.0),
+                                              child: Align(
+                                                alignment: Alignment.center,
+                                                child: Text(
+                                                  widget.section,
+                                                  style: const TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 25,
+                                                      fontWeight:
+                                                          FontWeight.w700),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                      Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          const Text(
-                                            "ROW",
-                                            style: TextStyle(
-                                              color: Colors.white,
+                                      SizedBox(
+                                        height: 50,
+                                        width: 50,
+                                        child: Stack(
+                                          children: [
+                                            const Align(
+                                              alignment: Alignment.topCenter,
+                                              child: Text(
+                                                "ROW",
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                ),
+                                              ),
                                             ),
-                                          ),
-                                          Text(
-                                            widget.row,
-                                            style: const TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 25,
-                                                fontWeight: FontWeight.w700),
-                                          ),
-                                        ],
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 10.0),
+                                              child: Align(
+                                                alignment: Alignment.center,
+                                                child: Text(
+                                                  widget.row,
+                                                  style: const TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 25,
+                                                      fontWeight:
+                                                          FontWeight.w700),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                      Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          const Text(
-                                            "SEAT",
-                                            style: TextStyle(
-                                              color: Colors.white,
+                                      SizedBox(
+                                        height: 50,
+                                        width: 50,
+                                        child: Stack(
+                                          children: [
+                                            const Align(
+                                              alignment: Alignment.topCenter,
+                                              child: Text(
+                                                "SEAT",
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                ),
+                                              ),
                                             ),
-                                          ),
-                                          Text(
-                                            widget.seat == '1'
-                                                ? ''
-                                                : widget.seat == '-'
-                                                    ? widget.seat
-                                                    : (int.parse(widget.seat) +
-                                                            index)
-                                                        .toString(),
-                                            style: const TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 25,
-                                                fontWeight: FontWeight.w700),
-                                          ),
-                                        ],
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 10.0),
+                                              child: Align(
+                                                alignment: Alignment.center,
+                                                child: Text(
+                                                  widget.seat == '1'
+                                                      ? ''
+                                                      : widget.seat == '-'
+                                                          ? widget.seat
+                                                          : (int.parse(widget
+                                                                      .seat) +
+                                                                  index)
+                                                              .toString(),
+                                                  style: const TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 25,
+                                                      fontWeight:
+                                                          FontWeight.w700),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       )
                                     ],
                                   ),
