@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Account extends StatefulWidget {
@@ -16,6 +17,14 @@ class _AccountState extends State<Account> {
   void switchContainer() {
     setState(() {
       visibleContainerIndex = (visibleContainerIndex + 1) % 3;
+    });
+  }
+
+     int visibleContainerIndex1 = 0;
+
+  void switchContainer1() {
+    setState(() {
+      visibleContainerIndex1 = (visibleContainerIndex1 + 1) % 3;
     });
   }
 
@@ -90,11 +99,20 @@ class _AccountState extends State<Account> {
                               controller: _textEditingController1,
                               style: const TextStyle(color: Colors.white),
                               onSubmitted: (newText) {
-                                _saveText(newText, 'saved_text1');
+                               if (newText.isNotEmpty){
+                                 _saveText(newText, 'saved_text1');
                                 setState(() {
                                   _displayText1 = newText;
                                   _isEditing1 = false;
                                 });
+                               } else {
+                               ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Name cannot be empty'),
+                            backgroundColor: Colors.red,
+                          ),
+                        );
+                               }
                               },
                             )
                           : Text(
@@ -103,9 +121,7 @@ class _AccountState extends State<Account> {
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 22),
-                            ),
-              
-                    
+                            ),                   
                     ),
                     const SizedBox(
                       height: 5,
@@ -123,11 +139,19 @@ class _AccountState extends State<Account> {
                               style: const TextStyle(color: Colors.white),
                               controller: _textEditingController,
                               onSubmitted: (newText) {
-                                _saveText(newText, 'saved_text');
+                                if (newText.isNotEmpty){
+                                  _saveText(newText, 'saved_text');
                                 setState(() {
                                   _displayText = newText;
                                   _isEditing = false;
                                 });
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('email cannot be empty'),
+                            backgroundColor: Colors.red,
+                          ));
+                                }
                               },
                             )
                           : Text(
@@ -182,10 +206,49 @@ class _AccountState extends State<Account> {
                     padding: const EdgeInsets.only(left: 10, top: 20),
                     child: Column(
                       children: [
-                        locationSettingsRow(
-                            image: 'assets/images/location-2.png',
-                            text: "My Location",
-                            textt: "All of USA"),
+                        GestureDetector(
+                            onTap: () {
+                                          switchContainer1();
+                                        },
+                          child: Stack(
+                            children: [
+                              AnimatedOpacity(
+                                 duration: const Duration(
+                                                milliseconds: 500),
+                                            opacity: visibleContainerIndex1 == 0
+                                                ? 1.0
+                                                : 0.0,
+                                child: locationSettingsRow(
+                                  image: 'assets/images/location-2.png',
+                                  text: "My Location",
+                                  textt: "All of USA"),
+                              ),
+      
+                              AnimatedOpacity(
+                                 duration: const Duration(
+                                                milliseconds: 500),
+                                            opacity: visibleContainerIndex1 == 1
+                                                ? 1.0
+                                                : 0.0,
+                                child: locationSettingsRow(
+                                  image: 'assets/images/location-2.png',
+                                  text: "My Location",
+                                  textt: "All of Uk"),
+                              ),
+      
+                              AnimatedOpacity(
+                                 duration: const Duration(
+                                                milliseconds: 500),
+                                            opacity: visibleContainerIndex1 == 2
+                                                ? 1.0
+                                                : 0.0,
+                                child: locationSettingsRow(
+                                  image: 'assets/images/location-2.png',
+                                  text: "My Location",
+                                  textt: "All of Canada"),
+                              ),
+                                              ]),
+                        ),
                         const SizedBox(
                           height: 15,
                         ),
@@ -207,7 +270,7 @@ class _AccountState extends State<Account> {
                                   text: "My Country",
                                   textt: "United States"),
                             ),
-
+      
                                  AnimatedOpacity(
                                    duration: const Duration(
                                                 milliseconds: 500),
@@ -219,7 +282,7 @@ class _AccountState extends State<Account> {
                                                                  text: "My Country",
                                                                  textt: "United Kingdom"),
                                  ),
-
+      
                                  AnimatedOpacity(
                                   duration: const Duration(
                                                 milliseconds: 500),
@@ -260,9 +323,36 @@ class _AccountState extends State<Account> {
                         const SizedBox(
                           height: 10,
                         ),
-                        accountRow(
-                            image: 'assets/images/payment.png',
-                            text: "Saved Paymment Methods"),
+      
+                            Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Row(
+          children: [
+             SvgPicture.asset(
+                                                                'assets/images/Vector 1.svg',
+                                                                height: 22,
+                                                                width: 22,
+                                                                ),
+            const SizedBox(
+              width: 10,
+            ),
+            const Text(
+             "Saved Paymment Methods",
+              style: TextStyle(
+                  fontWeight: FontWeight.w400,
+                  color: Color(0xff1e252d),
+                  fontSize: 18),
+            )
+          ],
+        ),
+        const Icon(
+          Icons.keyboard_arrow_right,
+          color: Colors.grey,
+          size: 35,
+        )
+      ],
+        ),
                         const SizedBox(
                           height: 10,
                         ),
