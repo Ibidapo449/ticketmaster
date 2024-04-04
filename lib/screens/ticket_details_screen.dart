@@ -1,7 +1,101 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class TicketDetails extends StatelessWidget {
+class TicketDetails extends StatefulWidget {
   const TicketDetails({super.key});
+
+  @override
+  State<TicketDetails> createState() => _TicketDetailsState();
+}
+
+class _TicketDetailsState extends State<TicketDetails> {
+  String _seatLocation = 'LAWN30 / GA3 / -';
+  String _entryInfo = 'ALLENGIANT LAWN';
+  String _orderNumber = '55036484';
+  String _ticketType = 'Seated Ticket - Side view';
+  String _purchaseDate = 'Sun, Jan 15 2023 - view';
+  String _dateOfTheTour = 'Tue, Jul 18, 6:30pm. Blossom Music Center';
+  String _nameOfTheTour = 'Fall Out Boy - So Much For (Tour) Dust';
+  String _nameOfEventCenter = 'Blossom Music Center';
+  String _addressOfEventCenter = 'Cuyahoga Falls OH US';
+  String _ticketPrice = '\$16.35';
+  String _ticketFee = '\$16.35';
+  String _ticketTax = '\$16.35';
+  String _ticketGrandTotal = '\$16.35';
+
+  bool _isEditingSeatLocation = false;
+  bool _isEditingEntryInfo = false;
+  bool _isEditingOrderNumber = false;
+  bool _isEditingTicketType = false;
+  bool _isEditingPurchaseDate = false;
+  bool _isEditingDateOfTheTour = false;
+  bool _isEditingNameOfTheTour = false;
+  bool _isEditingNameOfEventCenter = false;
+  bool _isEditingAddressOfEventCenter = false;
+  bool _isEditingTicketPrice = false;
+  bool _isEditingTicketFee = false;
+  bool _isEditingTicketTax = false;
+  bool _isEditingTicketGrandTotal = false;
+
+  final TextEditingController _seatLocationEditingController =
+      TextEditingController();
+  final TextEditingController _entryInfoEditingController =
+      TextEditingController();
+  final TextEditingController _orderNumberEditingController =
+      TextEditingController();
+  final TextEditingController _ticketTypeEditingController =
+      TextEditingController();
+  final TextEditingController _purchaseDateEditingController =
+      TextEditingController();
+  final TextEditingController _dateOfTheTourEditingController =
+      TextEditingController();
+  final TextEditingController _nameOfTheTourEditingController =
+      TextEditingController();
+  final TextEditingController _nameOfEventCenterEditingController =
+      TextEditingController();
+  final TextEditingController _addressOfEventCenterEditingController =
+      TextEditingController();
+  final TextEditingController _ticketPriceEditingController =
+      TextEditingController();
+  final TextEditingController _ticketFeeEditingController =
+      TextEditingController();
+  final TextEditingController _ticketTaxEditingController =
+      TextEditingController();
+  final TextEditingController _ticketGrandTotalEditingController =
+      TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _loadSavedText();
+  }
+
+  _loadSavedText() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _seatLocation = prefs.getString('seat_location') ?? _seatLocation;
+      _entryInfo = prefs.getString('entry_info') ?? _entryInfo;
+      _orderNumber = prefs.getString('order_number') ?? _orderNumber;
+      _ticketType = prefs.getString('ticket_type') ?? _ticketType;
+      _purchaseDate = prefs.getString('purchase_date') ?? _purchaseDate;
+      _dateOfTheTour = prefs.getString('dateof_thetour') ?? _dateOfTheTour;
+      _nameOfTheTour = prefs.getString('nameof_thetour') ?? _nameOfTheTour;
+      _nameOfEventCenter =
+          prefs.getString('nameof_eventcenter') ?? _nameOfEventCenter;
+      _addressOfEventCenter =
+          prefs.getString('addressof_eventcenter') ?? _addressOfEventCenter;
+      _ticketPrice = prefs.getString('ticket_price') ?? _ticketPrice;
+      _ticketFee = prefs.getString('ticket_fee') ?? _ticketFee;
+      _ticketTax = prefs.getString('ticket_tax') ?? _ticketTax;
+      _ticketGrandTotal =
+          prefs.getString('ticket_grandtotal') ?? _ticketGrandTotal;
+    });
+  }
+
+  _saveText(String newText, String key) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString(key, newText);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +132,124 @@ class TicketDetails extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              myColumn(text: "Seat Location", textt: "LAWN30 / GA3 / -"),
+              myColumn(
+                text: "Seat Location",
+              ),
+              GestureDetector(
+                onLongPress: () {
+                  setState(() {
+                    _isEditingSeatLocation = true;
+                    _seatLocationEditingController.text = _seatLocation;
+                  });
+                },
+                child: _isEditingSeatLocation
+                    ? TextField(
+                        controller: _seatLocationEditingController,
+                        style: const TextStyle(color: Colors.grey),
+                        onSubmitted: (newText) {
+                          if (newText.isNotEmpty) {
+                            _saveText(newText, 'seat_location');
+                            setState(() {
+                              _seatLocation = newText;
+                              _isEditingSeatLocation = false;
+                            });
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Seat number cannot be empty'),
+                                backgroundColor: Colors.red,
+                              ),
+                            );
+                          }
+                        },
+                      )
+                    : Text(
+                        _seatLocation,
+                        style: const TextStyle(
+                          color: Colors.grey,
+                        ),
+                      ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              const Divider(),
+              const SizedBox(
+                height: 10,
+              ),
+              GestureDetector(
+                onLongPress: () {
+                  setState(() {
+                    _isEditingNameOfTheTour = true;
+                    _nameOfTheTourEditingController.text = _nameOfTheTour;
+                  });
+                },
+                child: _isEditingNameOfTheTour
+                    ? TextField(
+                        controller: _nameOfTheTourEditingController,
+                        style: const TextStyle(color: Colors.grey),
+                        onSubmitted: (newText) {
+                          if (newText.isNotEmpty) {
+                            _saveText(newText, 'nameof_thetour');
+                            setState(() {
+                              _nameOfTheTour = newText;
+                              _isEditingNameOfTheTour = false;
+                            });
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content:
+                                    Text('Name of the tour cannot be empty'),
+                                backgroundColor: Colors.red,
+                              ),
+                            );
+                          }
+                        },
+                      )
+                    : Text(
+                        _nameOfTheTour,
+                        style: const TextStyle(fontWeight: FontWeight.w600),
+                      ),
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              GestureDetector(
+                onLongPress: () {
+                  setState(() {
+                    _isEditingDateOfTheTour = true;
+                    _dateOfTheTourEditingController.text = _dateOfTheTour;
+                  });
+                },
+                child: _isEditingDateOfTheTour
+                    ? TextField(
+                        controller: _dateOfTheTourEditingController,
+                        style: const TextStyle(color: Colors.grey),
+                        onSubmitted: (newText) {
+                          if (newText.isNotEmpty) {
+                            _saveText(newText, 'dateof_thetour');
+                            setState(() {
+                              _dateOfTheTour = newText;
+                              _isEditingDateOfTheTour = false;
+                            });
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content:
+                                    Text('Date of the tour cannot be empty'),
+                                backgroundColor: Colors.red,
+                              ),
+                            );
+                          }
+                        },
+                      )
+                    : Text(
+                        _dateOfTheTour,
+                        style: const TextStyle(
+                          color: Colors.grey,
+                        ),
+                      ),
+              ),
               const SizedBox(
                 height: 10,
               ),
@@ -47,16 +258,43 @@ class TicketDetails extends StatelessWidget {
                 height: 10,
               ),
               myColumn(
-                  text: "Fall Out Boy - So Much For (Tour) Dust",
-                  textt: "Tue, Jul 18, 6:30pm. Blossom Music Center"),
-              const SizedBox(
-                height: 10,
+                text: "Entry Info",
               ),
-              const Divider(),
-              const SizedBox(
-                height: 10,
+              GestureDetector(
+                onLongPress: () {
+                  setState(() {
+                    _isEditingEntryInfo = true;
+                    _entryInfoEditingController.text = _entryInfo;
+                  });
+                },
+                child: _isEditingEntryInfo
+                    ? TextField(
+                        controller: _entryInfoEditingController,
+                        style: const TextStyle(color: Colors.grey),
+                        onSubmitted: (newText) {
+                          if (newText.isNotEmpty) {
+                            _saveText(newText, 'entry_info');
+                            setState(() {
+                              _entryInfo = newText;
+                              _isEditingEntryInfo = false;
+                            });
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Entry Info cannot be empty'),
+                                backgroundColor: Colors.red,
+                              ),
+                            );
+                          }
+                        },
+                      )
+                    : Text(
+                        _entryInfo,
+                        style: const TextStyle(
+                          color: Colors.grey,
+                        ),
+                      ),
               ),
-              myColumn(text: "Entry Info", textt: "ALLENGIANT LAWN"),
               const SizedBox(
                 height: 10,
               ),
@@ -89,24 +327,126 @@ class TicketDetails extends StatelessWidget {
               const SizedBox(
                 height: 10,
               ),
+              GestureDetector(
+                onLongPress: () {
+                  setState(() {
+                    _isEditingNameOfEventCenter = true;
+                    _nameOfEventCenterEditingController.text =
+                        _nameOfEventCenter;
+                  });
+                },
+                child: _isEditingNameOfEventCenter
+                    ? TextField(
+                        controller: _nameOfEventCenterEditingController,
+                        style: const TextStyle(color: Colors.grey),
+                        onSubmitted: (newText) {
+                          if (newText.isNotEmpty) {
+                            _saveText(newText, 'nameof_eventcenter');
+                            setState(() {
+                              _nameOfEventCenter = newText;
+                              _isEditingNameOfEventCenter = false;
+                            });
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text(
+                                    'Name of the Event Center cannot be empty'),
+                                backgroundColor: Colors.red,
+                              ),
+                            );
+                          }
+                        },
+                      )
+                    : Text(
+                        _nameOfEventCenter,
+                        style: const TextStyle(fontWeight: FontWeight.w600),
+                      ),
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              GestureDetector(
+                onLongPress: () {
+                  setState(() {
+                    _isEditingAddressOfEventCenter = true;
+                    _addressOfEventCenterEditingController.text =
+                        _addressOfEventCenter;
+                  });
+                },
+                child: _isEditingAddressOfEventCenter
+                    ? TextField(
+                        controller: _addressOfEventCenterEditingController,
+                        style: const TextStyle(color: Colors.grey),
+                        onSubmitted: (newText) {
+                          if (newText.isNotEmpty) {
+                            _saveText(newText, 'addressof_eventcenter');
+                            setState(() {
+                              _addressOfEventCenter = newText;
+                              _isEditingAddressOfEventCenter = false;
+                            });
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text(
+                                    'Address of event center cannot be empty'),
+                                backgroundColor: Colors.red,
+                              ),
+                            );
+                          }
+                        },
+                      )
+                    : Text(
+                        _addressOfEventCenter,
+                        style: const TextStyle(
+                          color: Colors.grey,
+                        ),
+                      ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              const Divider(),
+              const SizedBox(
+                height: 10,
+              ),
               myColumn(
-                  text: "Blossom Music Center", textt: "Cuyahoga Falls OH US"),
-              const SizedBox(
-                height: 10,
+                text: "Order Number",
               ),
-              const Divider(),
-              const SizedBox(
-                height: 10,
+              GestureDetector(
+                onLongPress: () {
+                  setState(() {
+                    _isEditingOrderNumber = true;
+                    _orderNumberEditingController.text = _orderNumber;
+                  });
+                },
+                child: _isEditingOrderNumber
+                    ? TextField(
+                        controller: _orderNumberEditingController,
+                        style: const TextStyle(color: Colors.grey),
+                        onSubmitted: (newText) {
+                          if (newText.isNotEmpty) {
+                            _saveText(newText, 'order_number');
+                            setState(() {
+                              _orderNumber = newText;
+                              _isEditingOrderNumber = false;
+                            });
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Order number cannot be empty'),
+                                backgroundColor: Colors.red,
+                              ),
+                            );
+                          }
+                        },
+                      )
+                    : Text(
+                        _orderNumber,
+                        style: const TextStyle(
+                          color: Colors.grey,
+                        ),
+                      ),
               ),
-              myColumn(text: "Order Number", textt: "55036484"),
-              const SizedBox(
-                height: 10,
-              ),
-              const Divider(),
-              const SizedBox(
-                height: 10,
-              ),
-              myColumn(text: "Ticket Type", textt: "Seated Ticket - Side view"),
               const SizedBox(
                 height: 10,
               ),
@@ -115,7 +455,88 @@ class TicketDetails extends StatelessWidget {
                 height: 10,
               ),
               myColumn(
-                  text: "Purchase Date", textt: "Sun, Jan 15 2023 - 10:51a.m"),
+                text: "Ticket Type",
+              ),
+              GestureDetector(
+                onLongPress: () {
+                  setState(() {
+                    _isEditingTicketType = true;
+                    _ticketTypeEditingController.text = _ticketType;
+                  });
+                },
+                child: _isEditingTicketType
+                    ? TextField(
+                        controller: _ticketTypeEditingController,
+                        style: const TextStyle(color: Colors.grey),
+                        onSubmitted: (newText) {
+                          if (newText.isNotEmpty) {
+                            _saveText(newText, 'ticket_type');
+                            setState(() {
+                              _ticketType = newText;
+                              _isEditingTicketType = false;
+                            });
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Ticket type cannot be empty'),
+                                backgroundColor: Colors.red,
+                              ),
+                            );
+                          }
+                        },
+                      )
+                    : Text(
+                        _ticketType,
+                        style: const TextStyle(
+                          color: Colors.grey,
+                        ),
+                      ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              const Divider(),
+              const SizedBox(
+                height: 10,
+              ),
+              myColumn(
+                text: "Purchase Date",
+              ),
+              GestureDetector(
+                onLongPress: () {
+                  setState(() {
+                    _isEditingPurchaseDate = true;
+                    _purchaseDateEditingController.text = _purchaseDate;
+                  });
+                },
+                child: _isEditingPurchaseDate
+                    ? TextField(
+                        controller: _purchaseDateEditingController,
+                        style: const TextStyle(color: Colors.grey),
+                        onSubmitted: (newText) {
+                          if (newText.isNotEmpty) {
+                            _saveText(newText, 'purchase_date');
+                            setState(() {
+                              _purchaseDate = newText;
+                              _isEditingPurchaseDate = false;
+                            });
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Purchase Date cannot be empty'),
+                                backgroundColor: Colors.red,
+                              ),
+                            );
+                          }
+                        },
+                      )
+                    : Text(
+                        _purchaseDate,
+                        style: const TextStyle(
+                          color: Colors.grey,
+                        ),
+                      ),
+              ),
               const SizedBox(
                 height: 10,
               ),
@@ -133,21 +554,209 @@ class TicketDetails extends StatelessWidget {
                   const SizedBox(
                     height: 5,
                   ),
-                  myRow(
-                      text: "Take A Seat Bundle (lawn Ticket + Lawn Chair)",
-                      textt: "\$54.50"),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      myRow(
+                        text: "Take A Seat Bundle(lawn Ticket + Lawn Chair)",
+                      ),
+                      GestureDetector(
+                        onLongPress: () {
+                          setState(() {
+                            _isEditingTicketPrice = true;
+                            _ticketPriceEditingController.text = _ticketPrice;
+                          });
+                        },
+                        child: _isEditingTicketPrice
+                            ? SizedBox(
+                                width: 80,
+                                child: TextField(
+                                  controller: _ticketPriceEditingController,
+                                  style: const TextStyle(color: Colors.grey),
+                                  onSubmitted: (newText) {
+                                    if (newText.isNotEmpty) {
+                                      _saveText(newText, 'ticket_price');
+                                      setState(() {
+                                        _ticketPrice = newText;
+                                        _isEditingTicketPrice = false;
+                                      });
+                                    } else {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                          content: Text(
+                                              'Ticket Price cannot be empty'),
+                                          backgroundColor: Colors.red,
+                                        ),
+                                      );
+                                    }
+                                  },
+                                ),
+                              )
+                            : Text(
+                                _ticketPrice,
+                                style: const TextStyle(
+                                  color: Colors.grey,
+                                ),
+                              ),
+                      ),
+                    ],
+                  ),
                   const SizedBox(
                     height: 3,
                   ),
-                  myRow(text: "Fee", textt: "\$16.35"),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      myRow(
+                        text: "Fee",
+                      ),
+                      GestureDetector(
+                        onLongPress: () {
+                          setState(() {
+                            _isEditingTicketFee = true;
+                            _ticketFeeEditingController.text = _ticketFee;
+                          });
+                        },
+                        child: _isEditingTicketFee
+                            ? SizedBox(
+                                width: 80,
+                                child: TextField(
+                                  controller: _ticketFeeEditingController,
+                                  style: const TextStyle(color: Colors.grey),
+                                  onSubmitted: (newText) {
+                                    if (newText.isNotEmpty) {
+                                      _saveText(newText, 'ticket_fee');
+                                      setState(() {
+                                        _ticketFee = newText;
+                                        _isEditingTicketFee = false;
+                                      });
+                                    } else {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                          content: Text(
+                                              'Ticket Fee cannot be empty'),
+                                          backgroundColor: Colors.red,
+                                        ),
+                                      );
+                                    }
+                                  },
+                                ),
+                              )
+                            : Text(
+                                _ticketFee,
+                                style: const TextStyle(
+                                  color: Colors.grey,
+                                ),
+                              ),
+                      ),
+                    ],
+                  ),
                   const SizedBox(
                     height: 3,
                   ),
-                  myRow(text: "Tax", textt: "\$1.64"),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      myRow(
+                        text: "Tax",
+                      ),
+                      GestureDetector(
+                        onLongPress: () {
+                          setState(() {
+                            _isEditingTicketTax = true;
+                            _ticketTaxEditingController.text = _ticketTax;
+                          });
+                        },
+                        child: _isEditingTicketTax
+                            ? SizedBox(
+                                width: 80,
+                                child: TextField(
+                                  controller: _ticketTaxEditingController,
+                                  style: const TextStyle(color: Colors.grey),
+                                  onSubmitted: (newText) {
+                                    if (newText.isNotEmpty) {
+                                      _saveText(newText, 'ticket_tax');
+                                      setState(() {
+                                        _ticketTax = newText;
+                                        _isEditingTicketTax = false;
+                                      });
+                                    } else {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                          content: Text(
+                                              'Ticket Tax cannot be empty'),
+                                          backgroundColor: Colors.red,
+                                        ),
+                                      );
+                                    }
+                                  },
+                                ),
+                              )
+                            : Text(
+                                _ticketTax,
+                                style: const TextStyle(
+                                  color: Colors.grey,
+                                ),
+                              ),
+                      ),
+                    ],
+                  ),
                   const SizedBox(
                     height: 3,
                   ),
-                  myRow(text: "GRAND TOTAL", textt: "\$72.49"),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      myRow(
+                        text: "GRAND TOTAL",
+                      ),
+                      GestureDetector(
+                        onLongPress: () {
+                          setState(() {
+                            _isEditingTicketGrandTotal = true;
+                            _ticketGrandTotalEditingController.text =
+                                _ticketGrandTotal;
+                          });
+                        },
+                        child: _isEditingTicketGrandTotal
+                            ? SizedBox(
+                                width: 80,
+                                child: TextField(
+                                  controller:
+                                      _ticketGrandTotalEditingController,
+                                  style: const TextStyle(color: Colors.grey),
+                                  onSubmitted: (newText) {
+                                    if (newText.isNotEmpty) {
+                                      _saveText(newText, 'ticket_grandtotal');
+                                      setState(() {
+                                        _ticketGrandTotal = newText;
+                                        _isEditingTicketGrandTotal = false;
+                                      });
+                                    } else {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                          content: Text(
+                                              'Ticket Grand Total cannot be empty'),
+                                          backgroundColor: Colors.red,
+                                        ),
+                                      );
+                                    }
+                                  },
+                                ),
+                              )
+                            : Text(
+                                _ticketGrandTotal,
+                                style: const TextStyle(
+                                  color: Colors.grey,
+                                ),
+                              ),
+                      ),
+                    ],
+                  ),
                 ],
               )
             ],
@@ -162,7 +771,9 @@ class TicketDetails extends StatelessWidget {
         style: const TextStyle(color: Colors.grey),
       );
 
-  Row myRow({text, textt}) {
+  Row myRow({
+    text,
+  }) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -170,15 +781,17 @@ class TicketDetails extends StatelessWidget {
           text,
           style: const TextStyle(color: Colors.grey),
         ),
-        Text(
-          textt,
-          style: const TextStyle(color: Colors.grey),
-        )
+        // Text(
+        //   textt,
+        //   style: const TextStyle(color: Colors.grey),
+        // )
       ],
     );
   }
 
-  Column myColumn({text, textt}) {
+  Column myColumn({
+    text,
+  }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -190,10 +803,6 @@ class TicketDetails extends StatelessWidget {
         ),
         const SizedBox(
           height: 5,
-        ),
-        Text(
-          textt,
-          style: const TextStyle(color: Colors.grey),
         ),
       ],
     );
