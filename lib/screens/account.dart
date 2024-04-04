@@ -158,7 +158,7 @@ class _AccountState extends State<Account> {
               ],
             ),
           ),
-          Expanded (
+          Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 13.0),
               child: ListView(

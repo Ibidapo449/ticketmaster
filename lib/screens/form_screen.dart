@@ -580,23 +580,7 @@ class _FormScreenState extends State<FormScreen> {
         .doc(token.toString())
         .collection('messages')
         .add(newform.toMap());
-    //   final dbref = FirebaseDatabase.instance.ref('ticket/$token');
 
-    // dbref.push().child('').set({
-    //   'id': token,
-    //   'artistName': artistname,
-    //   'eventname': eventname,
-    //   'section': section,
-    //   'row': row,
-    //   'seat': seat,
-    //   'date': date,
-    //   'location': location,
-    //   'time': time,
-    //   'ticketype': ticketype,
-    //   'level': level,
-    //   'numticket': numticket,
-    //   'image': image
-    // });
   }
 }
 

@@ -203,7 +203,7 @@ class _EventDetailsState extends State<EventDetails> {
                                 padding: EdgeInsets.symmetric(
                                     horizontal:
                                         MediaQuery.of(context).size.width *
-                                            0.09),
+                                            0.03),
                                 child: Center(
                                   child: Row(
                                     mainAxisAlignment:
@@ -213,7 +213,9 @@ class _EventDetailsState extends State<EventDetails> {
                                     children: [
                                       Container(
                                         height: 50,
-                                        width: 50,
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.2,
                                         child: Stack(
                                           children: [
                                             const Align(
@@ -225,18 +227,20 @@ class _EventDetailsState extends State<EventDetails> {
                                                 ),
                                               ),
                                             ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 10.0),
-                                              child: Align(
-                                                alignment: Alignment.center,
-                                                child: Text(
-                                                  widget.section,
-                                                  style: const TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 25,
-                                                      fontWeight:
-                                                          FontWeight.w700),
+                                            Align(
+                                              alignment: Alignment.center,
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    top: 10.0),
+                                                child: FittedBox(
+                                                  child: Text(
+                                                    widget.section,
+                                                    style: const TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 25,
+                                                        fontWeight:
+                                                            FontWeight.w700),
+                                                  ),
                                                 ),
                                               ),
                                             ),
@@ -245,7 +249,9 @@ class _EventDetailsState extends State<EventDetails> {
                                       ),
                                       SizedBox(
                                         height: 50,
-                                        width: 50,
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.2,
                                         child: Stack(
                                           children: [
                                             const Align(
@@ -257,11 +263,11 @@ class _EventDetailsState extends State<EventDetails> {
                                                 ),
                                               ),
                                             ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 10.0),
-                                              child: Align(
-                                                alignment: Alignment.center,
+                                            Align(
+                                              alignment: Alignment.center,
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    top: 10.0),
                                                 child: Text(
                                                   widget.row,
                                                   style: const TextStyle(
@@ -277,7 +283,9 @@ class _EventDetailsState extends State<EventDetails> {
                                       ),
                                       SizedBox(
                                         height: 50,
-                                        width: 50,
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.2,
                                         child: Stack(
                                           children: [
                                             const Align(
@@ -289,11 +297,11 @@ class _EventDetailsState extends State<EventDetails> {
                                                 ),
                                               ),
                                             ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 10.0),
-                                              child: Align(
-                                                alignment: Alignment.center,
+                                            Align(
+                                              alignment: Alignment.center,
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    top: 10.0),
                                                 child: Text(
                                                   widget.seat == '1'
                                                       ? ''
@@ -712,10 +720,10 @@ class _EventDetailsState extends State<EventDetails> {
                                                                 width: 40,
                                                                 color: const Color
                                                                     .fromARGB(
-                                                                        255,
-                                                                        236,
-                                                                        236,
-                                                                        236)),
+                                                                    255,
+                                                                    236,
+                                                                    236,
+                                                                    236)),
                                                           ],
                                                         ),
                                                         const SizedBox(
@@ -933,7 +941,7 @@ class _EventDetailsState extends State<EventDetails> {
                       Row(
                         children: [
                           const Text("Seat "),
-                           Text(
+                          Text(
                             widget.seat,
                             style: const TextStyle(fontWeight: FontWeight.bold),
                           )
@@ -963,8 +971,7 @@ class _EventDetailsState extends State<EventDetails> {
                   const SizedBox(
                     height: 3,
                   ),
-                  transferTicketContainer(context,
-                      text: "Email", height: 35.0),
+                  transferTicketContainer(context, text: "Email", height: 35.0),
                   const SizedBox(
                     height: 15,
                   ),
