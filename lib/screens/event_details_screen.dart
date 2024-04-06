@@ -58,7 +58,8 @@ class _EventDetailsState extends State<EventDetails> {
   bool _isEditingNumberOfTicketSelected = false;
   bool _isEditingSeat = false;
 
-  final TextEditingController _numberOfTicketSelectedEditingController = TextEditingController();
+  final TextEditingController _numberOfTicketSelectedEditingController =
+      TextEditingController();
   final TextEditingController _seatEditingController = TextEditingController();
 
   @override
@@ -70,13 +71,9 @@ class _EventDetailsState extends State<EventDetails> {
   _loadSavedText() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      _numberOfTicketSelected = prefs.getString('numberof_ticketselected') ?? _numberOfTicketSelected;
+      _numberOfTicketSelected =
+          prefs.getString('numberof_ticketselected') ?? _numberOfTicketSelected;
       _seat = prefs.getString('seat') ?? _seat;
-      
-
-
-
-
     });
   }
 
@@ -85,14 +82,11 @@ class _EventDetailsState extends State<EventDetails> {
     prefs.setString(key, newText);
   }
 
-
   int currentIndex = 0;
   List<String> images = [
     'assets/images/event.jpg',
     'assets/images/event.jpg',
   ];
-
- 
 
   @override
   Widget build(BuildContext context) {
@@ -901,257 +895,279 @@ class _EventDetailsState extends State<EventDetails> {
   }
 
   void _showBottomSheet(
-    BuildContext context, 
+    BuildContext context,
   ) {
     showModalBottomSheet(
       isScrollControlled: true,
       context: context,
       builder: (BuildContext context) {
-        return FractionallySizedBox(
-          heightFactor: 0.63,
-          child: Scaffold(
-            body: Container(
-              decoration: const BoxDecoration(color: Colors.white),
-              // height: MediaQuery.of(context).size.height * 0.62,
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: ListView(
-          
-                  shrinkWrap: true,
-                  // crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Align(
-                        alignment: Alignment.center,
-                        child: Text('TRANSFER TICKET')),
-                    const Divider(),
-                    GestureDetector(
-                    onTap: () {
+        return StatefulBuilder(builder: (context, StateSetter setstate1) {
+          return FractionallySizedBox(
+            heightFactor: 0.63,
+            child: Scaffold(
+              body: Container(
+                decoration: const BoxDecoration(color: Colors.white),
+                // height: MediaQuery.of(context).size.height * 0.62,
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: ListView(
+                    shrinkWrap: true,
+                    // crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Align(
+                          alignment: Alignment.center,
+                          child: Text('TRANSFER TICKET')),
+                      const Divider(),
+                      GestureDetector(
+                        onTap: () {
+                          setstate1(() {
+                            _isEditingNumberOfTicketSelected = true;
+                            _numberOfTicketSelectedEditingController.text =
+                                _numberOfTicketSelected;
+                          });
                           setState(() {
                             _isEditingNumberOfTicketSelected = true;
-                            _numberOfTicketSelectedEditingController.text = _numberOfTicketSelected;
+                            _numberOfTicketSelectedEditingController.text =
+                                _numberOfTicketSelected;
                           });
                         },
-                     child: _isEditingNumberOfTicketSelected
+                        child: _isEditingNumberOfTicketSelected
                             ? TextField(
-                              
-                                controller: _numberOfTicketSelectedEditingController,
+                                controller:
+                                    _numberOfTicketSelectedEditingController,
                                 style: const TextStyle(color: Colors.grey),
                                 onSubmitted: (newText) {
-                                 if (newText.isNotEmpty){
-                                   _saveText(newText, 'numberof_ticketselected');
-                                  setState(() {
-                                    _numberOfTicketSelected = newText;
-                                    _isEditingNumberOfTicketSelected = false;
-                                  });
-                                 } else {
-                                 ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Ticket Price cannot be empty'),
-                              backgroundColor: Colors.red,
-                            ),
-                                                  );
-                                 }
+                                  if (newText.isNotEmpty) {
+                                    _saveText(
+                                        newText, 'numberof_ticketselected');
+                                    setstate1(() {
+                                      _numberOfTicketSelected = newText;
+                                      _isEditingNumberOfTicketSelected = false;
+                                    });
+                                    setState(() {
+                                      _numberOfTicketSelected = newText;
+                                      _isEditingNumberOfTicketSelected = false;
+                                    });
+                                  } else {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text(
+                                            'Ticket Price cannot be empty'),
+                                        backgroundColor: Colors.red,
+                                      ),
+                                    );
+                                  }
                                 },
                               )
                             : Text(
                                 _numberOfTicketSelected,
                                 style: const TextStyle(
-                                    color: Colors.grey,
-                                   
-                                    ),
-                              ),                
-                   ),
-                    // const Text("1 Ticket Selected"),
-                    // widget.number_of_ticket == 1
-                    //     ? Text(
-                    //         "${widget.number_of_ticket.toString()} Ticket Selected")
-                    //     : Text(
-                    //         "${widget.number_of_ticket.toString()} Tickets Selected"),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    Row(
-                      children: [
-                        Row(
-                          children: [
-                            const Text("Sec "),
-                            Text(
-                              '${widget.section} ,',
-                              style: const TextStyle(fontWeight: FontWeight.bold),
-                            )
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            const Text("Row "),
-                            Text(
-                              '${widget.row} ,',
-                              style: const TextStyle(fontWeight: FontWeight.bold),
-                            )
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            const Text("Seat "),
-                             GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            _isEditingSeat = true;
-                            _seatEditingController.text = _seat;
-                          });
-                        },
-                        child: _isEditingSeat
-                            ? Container(
-                              color: Colors.transparent,
-                                width: 180,
-                                child: TextField(
-                                  controller: _seatEditingController,
-                                  style: const TextStyle(color: Colors.grey),
-                                  onSubmitted: (newText) {
-                                    if (newText.isNotEmpty) {
-                                      _saveText(newText, 'seat');
-                                      setState(() {
-                                        _seat = newText;
-                                        _isEditingSeat = false;
-                                      });
-                                    } else {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        const SnackBar(
-                                          content: Text(
-                                              'Seat cannot be empty'),
-                                          backgroundColor: Colors.red,
-                                        ),
-                                      );
-                                    }
-                                  },
+                                  color: Colors.grey,
                                 ),
-                              )
-                            : Text(
-                                _seat,
-                                
-                                  style: const TextStyle(fontWeight: FontWeight.bold),
-                                
                               ),
-                                            ),
-                        
-                            //  Text(
-                            //   widget.seat,
-                            //   style: const TextStyle(fontWeight: FontWeight.bold),
-                            // )
-                          ],
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    const Text("First Name"),
-                    transferTicketContainer(context,
-                        text: "First Name", height: 35.0),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    const Text("Last Name"),
-                    const SizedBox(
-                      height: 3,
-                    ),
-                    transferTicketContainer(context,
-                        text: "Last Name", height: 35.0),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    const Text("Email"),
-                    const SizedBox(
-                      height: 3,
-                    ),
-                    transferTicketContainer(context,
-                        text: "Email", height: 35.0),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    const Text("Note"),
-                    const SizedBox(
-                      height: 3,
-                    ),
-                    Container(
-                        height: 120,
-                        width: MediaQuery.of(context).size.width,
-                        decoration: BoxDecoration(
-                            border: Border.all(color: Colors.black)),
-                        child: const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 8),
-                          child: TextField(
-                            cursorColor: Colors.black,
-                            decoration: InputDecoration(
-                                border: InputBorder.none,
-                                focusedBorder: UnderlineInputBorder(
-                                    borderSide:
-                                        BorderSide(color: Colors.transparent))),
-                          ),
-                        )),
-                    const SizedBox(
-                      height: 25,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.of(context).pop();
-                          },
-                          child: const Row(
+                      ),
+                      // const Text("1 Ticket Selected"),
+                      // widget.number_of_ticket == 1
+                      //     ? Text(
+                      //         "${widget.number_of_ticket.toString()} Ticket Selected")
+                      //     : Text(
+                      //         "${widget.number_of_ticket.toString()} Tickets Selected"),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      Row(
+                        children: [
+                          Row(
                             children: [
-                              Icon(
-                                Icons.keyboard_arrow_left,
-                                color: Color(0xff006ce7),
-                              ),
+                              const Text("Sec "),
                               Text(
-                                "BACK",
-                                style: TextStyle(
-                                  color: Color(0xff006ce7),
-                                ),
+                                '${widget.section} ,',
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold),
                               )
                             ],
                           ),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.of(context).pop();
-                            AwesomeDialog(
-                              context: context,
-                              headerAnimationLoop: false,
-                              animType: AnimType.bottomSlide,
-                              dialogType: DialogType.noHeader,
-                              body: const TicketTransferSuccessfullModal(),
-                            ).show();
-                          },
-                          child: Container(
-                            height: 40,
-                            width: 210,
-                            decoration: const BoxDecoration(
-                              color: Color(0xff006ce7),
-                            ),
-                            child: Center(
-                                child: Text(
-                              widget.number_of_ticket == 1
-                                  ? "Transfer Ticket"
-                                  : "Transfer Tickets",
-                              style: const TextStyle(color: Colors.white),
-                            )),
+                          Row(
+                            children: [
+                              const Text("Row "),
+                              Text(
+                                '${widget.row} ,',
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold),
+                              )
+                            ],
                           ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 400,
-                    )
-                  ],
+                          Row(
+                            children: [
+                              const Text("Seat "),
+                              GestureDetector(
+                                onTap: () {
+                                  setstate1(() {
+                                    _isEditingSeat = true;
+                                    _seatEditingController.text = _seat;
+                                  });
+                                  setState(() {
+                                    _isEditingSeat = true;
+                                    _seatEditingController.text = _seat;
+                                  });
+                                },
+                                child: _isEditingSeat
+                                    ? Container(
+                                        color: Colors.transparent,
+                                        width: 180,
+                                        child: TextField(
+                                          controller: _seatEditingController,
+                                          style: const TextStyle(
+                                              color: Colors.grey),
+                                          onSubmitted: (newText) {
+                                            if (newText.isNotEmpty) {
+                                              _saveText(newText, 'seat');
+                                              setstate1(() {
+                                                _seat = newText;
+                                                _isEditingSeat = false;
+                                              });
+                                              setState(() {
+                                                _seat = newText;
+                                                _isEditingSeat = false;
+                                              });
+                                            } else {
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(
+                                                const SnackBar(
+                                                  content: Text(
+                                                      'Seat cannot be empty'),
+                                                  backgroundColor: Colors.red,
+                                                ),
+                                              );
+                                            }
+                                          },
+                                        ),
+                                      )
+                                    : Text(
+                                        _seat,
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                              ),
+
+                              //  Text(
+                              //   widget.seat,
+                              //   style: const TextStyle(fontWeight: FontWeight.bold),
+                              // )
+                            ],
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      const Text("First Name"),
+                      transferTicketContainer(context,
+                          text: "First Name", height: 35.0),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      const Text("Last Name"),
+                      const SizedBox(
+                        height: 3,
+                      ),
+                      transferTicketContainer(context,
+                          text: "Last Name", height: 35.0),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      const Text("Email"),
+                      const SizedBox(
+                        height: 3,
+                      ),
+                      transferTicketContainer(context,
+                          text: "Email", height: 35.0),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      const Text("Note"),
+                      const SizedBox(
+                        height: 3,
+                      ),
+                      Container(
+                          height: 120,
+                          width: MediaQuery.of(context).size.width,
+                          decoration: BoxDecoration(
+                              border: Border.all(color: Colors.black)),
+                          child: const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 8),
+                            child: TextField(
+                              cursorColor: Colors.black,
+                              decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  focusedBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.transparent))),
+                            ),
+                          )),
+                      const SizedBox(
+                        height: 25,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: const Row(
+                              children: [
+                                Icon(
+                                  Icons.keyboard_arrow_left,
+                                  color: Color(0xff006ce7),
+                                ),
+                                Text(
+                                  "BACK",
+                                  style: TextStyle(
+                                    color: Color(0xff006ce7),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).pop();
+                              AwesomeDialog(
+                                context: context,
+                                headerAnimationLoop: false,
+                                animType: AnimType.bottomSlide,
+                                dialogType: DialogType.noHeader,
+                                body: const TicketTransferSuccessfullModal(),
+                              ).show();
+                            },
+                            child: Container(
+                              height: 40,
+                              width: 210,
+                              decoration: const BoxDecoration(
+                                color: Color(0xff006ce7),
+                              ),
+                              child: Center(
+                                  child: Text(
+                                widget.number_of_ticket == 1
+                                    ? "Transfer Ticket"
+                                    : "Transfer Tickets",
+                                style: const TextStyle(color: Colors.white),
+                              )),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 400,
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-        );
+          );
+        });
       },
     );
   }
