@@ -51,36 +51,48 @@ class _EventDetailsState extends State<EventDetails> {
   final PageController _pageController = PageController(
     viewportFraction: 0.9, // Adjust the fraction as needed
   );
+
+  String _numberOfTicketSelected = '1 Ticket Selected';
+  String _seat = '15, 16, 17, 18';
+
+  bool _isEditingNumberOfTicketSelected = false;
+  bool _isEditingSeat = false;
+
+  final TextEditingController _numberOfTicketSelectedEditingController = TextEditingController();
+  final TextEditingController _seatEditingController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _loadSavedText();
+  }
+
+  _loadSavedText() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _numberOfTicketSelected = prefs.getString('numberof_ticketselected') ?? _numberOfTicketSelected;
+      _seat = prefs.getString('seat') ?? _seat;
+      
+
+
+
+
+    });
+  }
+
+  _saveText(String newText, String key) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString(key, newText);
+  }
+
+
   int currentIndex = 0;
   List<String> images = [
     'assets/images/event.jpg',
     'assets/images/event.jpg',
   ];
 
-  @override
-  void initState() {
-    super.initState();
-    _loadSavedData();
-  }
-
-  Future<void> _loadSavedData() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      // _artistName = prefs.getString('artistName') ?? 'N/A';
-      // _eventName = prefs.getString('eventName') ?? 'N/A';
-      // _section = prefs.getString('section') ?? 'N/A';
-      // _row = prefs.getString('row') ?? 'N/A';
-      // _seat = prefs.getString('seat') ?? '1';
-
-      // _date = prefs.getString('date') ?? 'N/A';
-      // _location = prefs.getString('location') ?? 'N/A';
-      // _time = prefs.getString('time') ?? 'N/A';
-      // _image = prefs.getString('image') ?? '';
-      // _ticketType = prefs.getString('ticketType') ?? 'N/A';
-      // _level = prefs.getString('level') ?? 'N/A';
-      // number_of_ticket = prefs.getInt('numberOfTicket') ?? 1;
-    });
-  }
+ 
 
   @override
   Widget build(BuildContext context) {
@@ -889,7 +901,7 @@ class _EventDetailsState extends State<EventDetails> {
   }
 
   void _showBottomSheet(
-    BuildContext context,
+    BuildContext context, 
   ) {
     showModalBottomSheet(
       isScrollControlled: true,
@@ -897,161 +909,245 @@ class _EventDetailsState extends State<EventDetails> {
       builder: (BuildContext context) {
         return FractionallySizedBox(
           heightFactor: 0.63,
-          child: Container(
-            decoration: const BoxDecoration(color: Colors.white),
-            // height: MediaQuery.of(context).size.height * 0.62,
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: ListView(
-                shrinkWrap: true,
-                // crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Align(
-                      alignment: Alignment.center,
-                      child: Text('TRANSFER TICKET')),
-                  const Divider(),
-                  widget.number_of_ticket == 1
-                      ? Text(
-                          "${widget.number_of_ticket.toString()} Ticket Selected")
-                      : Text(
-                          "${widget.number_of_ticket.toString()} Tickets Selected"),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  Row(
-                    children: [
-                      Row(
-                        children: [
-                          const Text("Sec "),
-                          Text(
-                            '${widget.section} ,',
-                            style: const TextStyle(fontWeight: FontWeight.bold),
-                          )
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          const Text("Row "),
-                          Text(
-                            '${widget.row} ,',
-                            style: const TextStyle(fontWeight: FontWeight.bold),
-                          )
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          const Text("Seat "),
-                          Text(
-                            widget.seat,
-                            style: const TextStyle(fontWeight: FontWeight.bold),
-                          )
-                        ],
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  const Text("First Name"),
-                  transferTicketContainer(context,
-                      text: "First Name", height: 35.0),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  const Text("Last Name"),
-                  const SizedBox(
-                    height: 3,
-                  ),
-                  transferTicketContainer(context,
-                      text: "Last Name", height: 35.0),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  const Text("Email"),
-                  const SizedBox(
-                    height: 3,
-                  ),
-                  transferTicketContainer(context, text: "Email", height: 35.0),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  const Text("Note"),
-                  const SizedBox(
-                    height: 3,
-                  ),
-                  Container(
-                      height: 120,
-                      width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(
-                          border: Border.all(color: Colors.black)),
-                      child: const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 8),
-                        child: TextField(
-                          cursorColor: Colors.black,
-                          decoration: InputDecoration(
-                              border: InputBorder.none,
-                              focusedBorder: UnderlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: Colors.transparent))),
-                        ),
-                      )),
-                  const SizedBox(
-                    height: 25,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).pop();
+          child: Scaffold(
+            body: Container(
+              decoration: const BoxDecoration(color: Colors.white),
+              // height: MediaQuery.of(context).size.height * 0.62,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: ListView(
+          
+                  shrinkWrap: true,
+                  // crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Align(
+                        alignment: Alignment.center,
+                        child: Text('TRANSFER TICKET')),
+                    const Divider(),
+                    GestureDetector(
+                    onTap: () {
+                          setState(() {
+                            _isEditingNumberOfTicketSelected = true;
+                            _numberOfTicketSelectedEditingController.text = _numberOfTicketSelected;
+                          });
                         },
-                        child: const Row(
-                          children: [
-                            Icon(
-                              Icons.keyboard_arrow_left,
-                              color: Color(0xff006ce7),
+                     child: _isEditingNumberOfTicketSelected
+                            ? TextField(
+                              
+                                controller: _numberOfTicketSelectedEditingController,
+                                style: const TextStyle(color: Colors.grey),
+                                onSubmitted: (newText) {
+                                 if (newText.isNotEmpty){
+                                   _saveText(newText, 'numberof_ticketselected');
+                                  setState(() {
+                                    _numberOfTicketSelected = newText;
+                                    _isEditingNumberOfTicketSelected = false;
+                                  });
+                                 } else {
+                                 ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Ticket Price cannot be empty'),
+                              backgroundColor: Colors.red,
                             ),
+                                                  );
+                                 }
+                                },
+                              )
+                            : Text(
+                                _numberOfTicketSelected,
+                                style: const TextStyle(
+                                    color: Colors.grey,
+                                   
+                                    ),
+                              ),                
+                   ),
+                    // const Text("1 Ticket Selected"),
+                    // widget.number_of_ticket == 1
+                    //     ? Text(
+                    //         "${widget.number_of_ticket.toString()} Ticket Selected")
+                    //     : Text(
+                    //         "${widget.number_of_ticket.toString()} Tickets Selected"),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    Row(
+                      children: [
+                        Row(
+                          children: [
+                            const Text("Sec "),
                             Text(
-                              "BACK",
-                              style: TextStyle(
-                                color: Color(0xff006ce7),
-                              ),
+                              '${widget.section} ,',
+                              style: const TextStyle(fontWeight: FontWeight.bold),
                             )
                           ],
                         ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).pop();
-                          AwesomeDialog(
-                            context: context,
-                            headerAnimationLoop: false,
-                            animType: AnimType.bottomSlide,
-                            dialogType: DialogType.noHeader,
-                            body: const TicketTransferSuccessfullModal(),
-                          ).show();
-                        },
-                        child: Container(
-                          height: 40,
-                          width: 210,
-                          decoration: const BoxDecoration(
-                            color: Color(0xff006ce7),
-                          ),
-                          child: Center(
-                              child: Text(
-                            widget.number_of_ticket == 1
-                                ? "Transfer Ticket"
-                                : "Transfer Tickets",
-                            style: const TextStyle(color: Colors.white),
-                          )),
+                        Row(
+                          children: [
+                            const Text("Row "),
+                            Text(
+                              '${widget.row} ,',
+                              style: const TextStyle(fontWeight: FontWeight.bold),
+                            )
+                          ],
                         ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 400,
-                  )
-                ],
+                        Row(
+                          children: [
+                            const Text("Seat "),
+                             GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            _isEditingSeat = true;
+                            _seatEditingController.text = _seat;
+                          });
+                        },
+                        child: _isEditingSeat
+                            ? Container(
+                              color: Colors.transparent,
+                                width: 180,
+                                child: TextField(
+                                  controller: _seatEditingController,
+                                  style: const TextStyle(color: Colors.grey),
+                                  onSubmitted: (newText) {
+                                    if (newText.isNotEmpty) {
+                                      _saveText(newText, 'seat');
+                                      setState(() {
+                                        _seat = newText;
+                                        _isEditingSeat = false;
+                                      });
+                                    } else {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                          content: Text(
+                                              'Seat cannot be empty'),
+                                          backgroundColor: Colors.red,
+                                        ),
+                                      );
+                                    }
+                                  },
+                                ),
+                              )
+                            : Text(
+                                _seat,
+                                
+                                  style: const TextStyle(fontWeight: FontWeight.bold),
+                                
+                              ),
+                                            ),
+                        
+                            //  Text(
+                            //   widget.seat,
+                            //   style: const TextStyle(fontWeight: FontWeight.bold),
+                            // )
+                          ],
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    const Text("First Name"),
+                    transferTicketContainer(context,
+                        text: "First Name", height: 35.0),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    const Text("Last Name"),
+                    const SizedBox(
+                      height: 3,
+                    ),
+                    transferTicketContainer(context,
+                        text: "Last Name", height: 35.0),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    const Text("Email"),
+                    const SizedBox(
+                      height: 3,
+                    ),
+                    transferTicketContainer(context,
+                        text: "Email", height: 35.0),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    const Text("Note"),
+                    const SizedBox(
+                      height: 3,
+                    ),
+                    Container(
+                        height: 120,
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
+                            border: Border.all(color: Colors.black)),
+                        child: const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 8),
+                          child: TextField(
+                            cursorColor: Colors.black,
+                            decoration: InputDecoration(
+                                border: InputBorder.none,
+                                focusedBorder: UnderlineInputBorder(
+                                    borderSide:
+                                        BorderSide(color: Colors.transparent))),
+                          ),
+                        )),
+                    const SizedBox(
+                      height: 25,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: const Row(
+                            children: [
+                              Icon(
+                                Icons.keyboard_arrow_left,
+                                color: Color(0xff006ce7),
+                              ),
+                              Text(
+                                "BACK",
+                                style: TextStyle(
+                                  color: Color(0xff006ce7),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).pop();
+                            AwesomeDialog(
+                              context: context,
+                              headerAnimationLoop: false,
+                              animType: AnimType.bottomSlide,
+                              dialogType: DialogType.noHeader,
+                              body: const TicketTransferSuccessfullModal(),
+                            ).show();
+                          },
+                          child: Container(
+                            height: 40,
+                            width: 210,
+                            decoration: const BoxDecoration(
+                              color: Color(0xff006ce7),
+                            ),
+                            child: Center(
+                                child: Text(
+                              widget.number_of_ticket == 1
+                                  ? "Transfer Ticket"
+                                  : "Transfer Tickets",
+                              style: const TextStyle(color: Colors.white),
+                            )),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 400,
+                    )
+                  ],
+                ),
               ),
             ),
           ),
