@@ -22,6 +22,8 @@ class _TicketDetailsState extends State<TicketDetails> {
   String _ticketFee = '\$16.35';
   String _ticketTax = '\$16.35';
   String _ticketGrandTotal = '\$16.35';
+   String _ticketName = 'Take A Seat Bundle(Lawn Ticket + Lawn Chair)';
+
 
   bool _isEditingSeatLocation = false;
   bool _isEditingEntryInfo = false;
@@ -36,6 +38,7 @@ class _TicketDetailsState extends State<TicketDetails> {
   bool _isEditingTicketFee = false;
   bool _isEditingTicketTax = false;
   bool _isEditingTicketGrandTotal = false;
+   bool _isEditingTicketName = false;
 
   final TextEditingController _seatLocationEditingController =
       TextEditingController();
@@ -63,6 +66,8 @@ class _TicketDetailsState extends State<TicketDetails> {
       TextEditingController();
   final TextEditingController _ticketGrandTotalEditingController =
       TextEditingController();
+  final TextEditingController _ticketNameEditingController =
+      TextEditingController();
 
   @override
   void initState() {
@@ -89,6 +94,8 @@ class _TicketDetailsState extends State<TicketDetails> {
       _ticketTax = prefs.getString('ticket_tax') ?? _ticketTax;
       _ticketGrandTotal =
           prefs.getString('ticket_grandtotal') ?? _ticketGrandTotal;
+    _ticketName =
+          prefs.getString('ticket_name') ?? _ticketName;
     });
   }
 
@@ -557,8 +564,53 @@ class _TicketDetailsState extends State<TicketDetails> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      myRow(
-                        text: "Take A Seat Bundle(lawn Ticket + Lawn Chair)",
+                      Row(
+                        children: [
+                          GestureDetector(
+                        onLongPress: () {
+                          setState(() {
+                            _isEditingTicketName = true;
+                            _ticketNameEditingController.text =
+                                _ticketName;
+                          });
+                        },
+                        child: _isEditingTicketName
+                            ? SizedBox(
+                                width: MediaQuery.of(context).size.width * 0.8,
+                                child: TextField(
+                                  controller:
+                                      _ticketNameEditingController,
+                                  style: const TextStyle(color: Colors.grey),
+                                  onSubmitted: (newText) {
+                                    if (newText.isNotEmpty) {
+                                      _saveText(newText, 'ticket_name');
+                                      setState(() {
+                                        _ticketName = newText;
+                                        _isEditingTicketName = false;
+                                      });
+                                    } else {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                          content: Text(
+                                              'Ticket name cannot be empty'),
+                                          backgroundColor: Colors.red,
+                                        ),
+                                      );
+                                    }
+                                  },
+                                ),
+                              )
+                            : Text(
+                                _ticketName,
+                                style: const TextStyle(
+                                  color: Colors.grey,
+                                ),
+                              ),
+                      ),
+                       
+                        ],
+                        
                       ),
                       GestureDetector(
                         onLongPress: () {
