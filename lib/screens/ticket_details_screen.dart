@@ -21,6 +21,12 @@ class _TicketDetailsState extends State<TicketDetails> {
   String _ticketPrice = '\$16.35';
   String _ticketFee = '\$16.35';
   String _ticketTax = '\$16.35';
+  String _ticketInfo1 = "LIVE NATION PRESENTS";
+  String _ticketInfo2 = "FALL OUT BOY";
+  String _ticketInfo3 = "SO MUCH FOR (TOUR) DUST";
+  String _ticketInfo4 = "BLOSSOM MUSIC CAREER";
+  String _ticketInfo5 = "RAIN OR SHINE EVENT";
+  String _ticketInfo6 = "TUE JUL 18 2023 6:30 PM";
   String _ticketGrandTotal = '\$16.35';
 
   bool _isEditingSeatLocation = false;
@@ -35,6 +41,13 @@ class _TicketDetailsState extends State<TicketDetails> {
   bool _isEditingTicketPrice = false;
   bool _isEditingTicketFee = false;
   bool _isEditingTicketTax = false;
+  bool _isEditingTicketInfo = false;
+  bool _isEditingTicketInfo2 = false;
+  bool _isEditingTicketInfo3 = false;
+  bool _isEditingTicketInfo4 = false;
+  bool _isEditingTicketInfo5 = false;
+  bool _isEditingTicketInfo6 = false;
+
   bool _isEditingTicketGrandTotal = false;
 
   final TextEditingController _seatLocationEditingController =
@@ -61,6 +74,19 @@ class _TicketDetailsState extends State<TicketDetails> {
       TextEditingController();
   final TextEditingController _ticketTaxEditingController =
       TextEditingController();
+  final TextEditingController _ticketInfo1EditingController =
+      TextEditingController();
+  final TextEditingController _ticketInfo2EditingController =
+      TextEditingController();
+  final TextEditingController _ticketInfo3EditingController =
+      TextEditingController();
+  final TextEditingController _ticketInfo4EditingController =
+      TextEditingController();
+  final TextEditingController _ticketInfo5EditingController =
+      TextEditingController();
+  final TextEditingController _ticketInfo6EditingController =
+      TextEditingController();
+
   final TextEditingController _ticketGrandTotalEditingController =
       TextEditingController();
 
@@ -87,6 +113,12 @@ class _TicketDetailsState extends State<TicketDetails> {
       _ticketPrice = prefs.getString('ticket_price') ?? _ticketPrice;
       _ticketFee = prefs.getString('ticket_fee') ?? _ticketFee;
       _ticketTax = prefs.getString('ticket_tax') ?? _ticketTax;
+      _ticketInfo1 = prefs.getString('ticket_info1') ?? _ticketInfo1;
+      _ticketInfo2 = prefs.getString('ticket_info2') ?? _ticketInfo2;
+      _ticketInfo3 = prefs.getString('ticket_info3') ?? _ticketInfo3;
+      _ticketInfo4 = prefs.getString('ticket_info4') ?? _ticketInfo4;
+      _ticketInfo5 = prefs.getString('ticket_info5') ?? _ticketInfo5;
+      _ticketInfo6 = prefs.getString('ticket_info6') ?? _ticketInfo6;
       _ticketGrandTotal =
           prefs.getString('ticket_grandtotal') ?? _ticketGrandTotal;
     });
@@ -265,6 +297,12 @@ class _TicketDetailsState extends State<TicketDetails> {
                   setState(() {
                     _isEditingEntryInfo = true;
                     _entryInfoEditingController.text = _entryInfo;
+                    _ticketInfo1EditingController.text = _ticketInfo1;
+                    _ticketInfo2EditingController.text = _ticketInfo2;
+                    _ticketInfo3EditingController.text = _ticketInfo3;
+                    _ticketInfo4EditingController.text = _ticketInfo4;
+                    _ticketInfo5EditingController.text = _ticketInfo5;
+                    _ticketInfo6EditingController.text = _ticketInfo6;
                   });
                 },
                 child: _isEditingEntryInfo
@@ -312,12 +350,292 @@ class _TicketDetailsState extends State<TicketDetails> {
                   const SizedBox(
                     height: 5,
                   ),
-                  ticketInfoText(text: "LIVE NATION PRESENTS"),
-                  ticketInfoText(text: "FALL OUT BOY"),
-                  ticketInfoText(text: "SO MUCH FOR (TOUR) DUST"),
-                  ticketInfoText(text: "BLOSSOM MUSIC CAREER"),
-                  ticketInfoText(text: "RAIN OR SHINE EVENT"),
-                  ticketInfoText(text: "TUE JUL 18 2023 6:30 PM"),
+                  GestureDetector(
+                    onLongPress: () {
+                      setState(() {
+                        _isEditingTicketInfo = true;
+                        _entryInfoEditingController.text = _entryInfo;
+                        _ticketInfo1EditingController.text = _ticketInfo1;
+                        _ticketInfo2EditingController.text = _ticketInfo2;
+                        _ticketInfo3EditingController.text = _ticketInfo3;
+                        _ticketInfo4EditingController.text = _ticketInfo4;
+                        _ticketInfo5EditingController.text = _ticketInfo5;
+                        _ticketInfo6EditingController.text = _ticketInfo6;
+                      });
+                    },
+                    child: _isEditingTicketInfo
+                        ? SizedBox(
+                            width: 280,
+                            child: TextField(
+                              controller: _ticketInfo1EditingController,
+                              style: const TextStyle(color: Colors.grey),
+                              onSubmitted: (newText) {
+                                if (newText.isNotEmpty) {
+                                  _saveText(newText, 'ticket_info1');
+                                  setState(() {
+                                    _ticketInfo1 = newText;
+                                    _isEditingTicketInfo = false;
+                                  });
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content:
+                                          Text('Ticket Tax cannot be empty'),
+                                      backgroundColor: Colors.red,
+                                    ),
+                                  );
+                                }
+                              },
+                            ),
+                          )
+                        : Text(
+                            _ticketInfo1,
+                            style: const TextStyle(
+                              color: Colors.grey,
+                            ),
+                          ),
+                  ),
+                  GestureDetector(
+                    onLongPress: () {
+                      setState(() {
+                        _isEditingTicketInfo = true;
+                        _entryInfoEditingController.text = _entryInfo;
+                        _ticketInfo1EditingController.text = _ticketInfo1;
+                        _ticketInfo2EditingController.text = _ticketInfo2;
+                        _ticketInfo3EditingController.text = _ticketInfo3;
+                        _ticketInfo4EditingController.text = _ticketInfo4;
+                        _ticketInfo5EditingController.text = _ticketInfo5;
+                        _ticketInfo6EditingController.text = _ticketInfo6;
+                      });
+                    },
+                    child: _isEditingTicketInfo
+                        ? SizedBox(
+                            width: 280,
+                            child: TextField(
+                              controller: _ticketInfo2EditingController,
+                              style: const TextStyle(color: Colors.grey),
+                              onSubmitted: (newText) {
+                                if (newText.isNotEmpty) {
+                                  _saveText(newText, 'ticket_info2');
+                                  setState(() {
+                                    _ticketInfo2 = newText;
+                                    _isEditingTicketInfo = false;
+                                  });
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content:
+                                          Text('Ticket Tax cannot be empty'),
+                                      backgroundColor: Colors.red,
+                                    ),
+                                  );
+                                }
+                              },
+                            ),
+                          )
+                        : Text(
+                            _ticketInfo2,
+                            style: const TextStyle(
+                              color: Colors.grey,
+                            ),
+                          ),
+                  ),
+                  _ticketInfo3 != '' || _isEditingTicketInfo
+                      ? GestureDetector(
+                          onLongPress: () {
+                            setState(() {
+                              _isEditingTicketInfo = true;
+                              _entryInfoEditingController.text = _entryInfo;
+                              _ticketInfo1EditingController.text = _ticketInfo1;
+                              _ticketInfo2EditingController.text = _ticketInfo2;
+                              _ticketInfo3EditingController.text = _ticketInfo3;
+                              _ticketInfo4EditingController.text = _ticketInfo4;
+                              _ticketInfo5EditingController.text = _ticketInfo5;
+                              _ticketInfo6EditingController.text = _ticketInfo6;
+                            });
+                          },
+                          child: _isEditingTicketInfo
+                              ? SizedBox(
+                                  width: 280,
+                                  child: TextField(
+                                    controller: _ticketInfo3EditingController,
+                                    style: const TextStyle(color: Colors.grey),
+                                    onSubmitted: (newText) {
+                                      if (newText.isNotEmpty) {
+                                        _saveText(newText, 'ticket_info3');
+                                        setState(() {
+                                          _ticketInfo3 = newText;
+                                          _isEditingTicketInfo = false;
+                                        });
+                                      } else {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          const SnackBar(
+                                            content: Text(
+                                                'Ticket Tax cannot be empty'),
+                                            backgroundColor: Colors.red,
+                                          ),
+                                        );
+                                      }
+                                    },
+                                  ),
+                                )
+                              : Text(
+                                  _ticketInfo3,
+                                  style: const TextStyle(
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                        )
+                      : SizedBox(),
+                  _ticketInfo4 != '' || _isEditingTicketInfo
+                      ? GestureDetector(
+                          onLongPress: () {
+                            setState(() {
+                              _isEditingTicketInfo = true;
+                              _entryInfoEditingController.text = _entryInfo;
+                              _ticketInfo1EditingController.text = _ticketInfo1;
+                              _ticketInfo2EditingController.text = _ticketInfo2;
+                              _ticketInfo3EditingController.text = _ticketInfo3;
+                              _ticketInfo4EditingController.text = _ticketInfo4;
+                              _ticketInfo5EditingController.text = _ticketInfo5;
+                              _ticketInfo6EditingController.text = _ticketInfo6;
+                            });
+                          },
+                          child: _isEditingTicketInfo
+                              ? SizedBox(
+                                  width: 280,
+                                  child: TextField(
+                                    controller: _ticketInfo4EditingController,
+                                    style: const TextStyle(color: Colors.grey),
+                                    onSubmitted: (newText) {
+                                      if (newText.isNotEmpty) {
+                                        _saveText(newText, 'ticket_info4');
+                                        setState(() {
+                                          _ticketInfo4 = newText;
+                                          _isEditingTicketInfo = false;
+                                        });
+                                      } else {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          const SnackBar(
+                                            content: Text(
+                                                'Ticket Tax cannot be empty'),
+                                            backgroundColor: Colors.red,
+                                          ),
+                                        );
+                                      }
+                                    },
+                                  ),
+                                )
+                              : Text(
+                                  _ticketInfo4,
+                                  style: const TextStyle(
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                        )
+                      : SizedBox(),
+                  _ticketInfo5 != '' || _isEditingTicketInfo
+                      ? GestureDetector(
+                          onLongPress: () {
+                            setState(() {
+                              _isEditingTicketInfo = true;
+                              _entryInfoEditingController.text = _entryInfo;
+                              _ticketInfo1EditingController.text = _ticketInfo1;
+                              _ticketInfo2EditingController.text = _ticketInfo2;
+                              _ticketInfo3EditingController.text = _ticketInfo3;
+                              _ticketInfo4EditingController.text = _ticketInfo4;
+                              _ticketInfo5EditingController.text = _ticketInfo5;
+                              _ticketInfo6EditingController.text = _ticketInfo6;
+                            });
+                          },
+                          child: _isEditingTicketInfo
+                              ? SizedBox(
+                                  width: 280,
+                                  child: TextField(
+                                    controller: _ticketInfo5EditingController,
+                                    style: const TextStyle(color: Colors.grey),
+                                    onSubmitted: (newText) {
+                                      if (newText.isNotEmpty) {
+                                        _saveText(newText, 'ticket_info5');
+                                        setState(() {
+                                          _ticketInfo5 = newText;
+                                          _isEditingTicketInfo = false;
+                                        });
+                                      } else {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          const SnackBar(
+                                            content: Text(
+                                                'Ticket Tax cannot be empty'),
+                                            backgroundColor: Colors.red,
+                                          ),
+                                        );
+                                      }
+                                    },
+                                  ),
+                                )
+                              : Text(
+                                  _ticketInfo5,
+                                  style: const TextStyle(
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                        )
+                      : SizedBox(),
+                  _ticketInfo6 != '' || _isEditingTicketInfo
+                      ? GestureDetector(
+                          onLongPress: () {
+                            setState(() {
+                              _isEditingTicketInfo = true;
+                              _entryInfoEditingController.text = _entryInfo;
+                              _ticketInfo1EditingController.text = _ticketInfo1;
+                              _ticketInfo2EditingController.text = _ticketInfo2;
+                              _ticketInfo3EditingController.text = _ticketInfo3;
+                              _ticketInfo4EditingController.text = _ticketInfo4;
+                              _ticketInfo5EditingController.text = _ticketInfo5;
+                              _ticketInfo6EditingController.text = _ticketInfo6;
+                            });
+                          },
+                          child: _isEditingTicketInfo
+                              ? SizedBox(
+                                  width: 280,
+                                  child: TextField(
+                                    controller: _ticketInfo6EditingController,
+                                    style: const TextStyle(color: Colors.grey),
+                                    onSubmitted: (newText) {
+                                      _saveText(newText, 'ticket_info');
+                                      setState(() {
+                                        _ticketInfo6 = newText;
+                                        _isEditingTicketInfo = false;
+                                      });
+                                      // if (newText.isNotEmpty) {
+                                      //   _saveText(newText, 'ticket_info6');
+                                      //   setState(() {
+                                      //     _ticketInfo6 = newText;
+                                      //     _isEditingTicketInfo6 = false;
+                                      //   });
+                                      // } else {
+                                      //   ScaffoldMessenger.of(context).showSnackBar(
+                                      //     const SnackBar(
+                                      //       content:
+                                      //           Text('Ticket Tax cannot be empty'),
+                                      //       backgroundColor: Colors.red,
+                                      //     ),
+                                      //   );
+                                      // }
+                                    },
+                                  ),
+                                )
+                              : Text(
+                                  _ticketInfo6,
+                                  style: const TextStyle(
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                        )
+                      : SizedBox()
                 ],
               ),
               const SizedBox(
