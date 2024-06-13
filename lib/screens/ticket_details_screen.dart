@@ -612,26 +612,11 @@ class _TicketDetailsState extends State<TicketDetails> {
                                     controller: _ticketInfo6EditingController,
                                     style: const TextStyle(color: Colors.grey),
                                     onSubmitted: (newText) {
-                                      _saveText(newText, 'ticket_info');
+                                      _saveText(newText, 'ticket_info6');
                                       setState(() {
                                         _ticketInfo6 = newText;
                                         _isEditingTicketInfo = false;
                                       });
-                                      // if (newText.isNotEmpty) {
-                                      //   _saveText(newText, 'ticket_info6');
-                                      //   setState(() {
-                                      //     _ticketInfo6 = newText;
-                                      //     _isEditingTicketInfo6 = false;
-                                      //   });
-                                      // } else {
-                                      //   ScaffoldMessenger.of(context).showSnackBar(
-                                      //     const SnackBar(
-                                      //       content:
-                                      //           Text('Ticket Tax cannot be empty'),
-                                      //       backgroundColor: Colors.red,
-                                      //     ),
-                                      //   );
-                                      // }
                                     },
                                   ),
                                 )

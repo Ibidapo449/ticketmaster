@@ -2,6 +2,7 @@
 
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ticketmaster/screens/ticket_details_screen.dart';
 import 'package:ticketmaster/screens/widgets/ticket_successful_modal.dart';
@@ -44,7 +45,7 @@ class _EventDetailsState extends State<EventDetails> {
 
   void switchContainer() {
     setState(() {
-      visibleContainerIndex = (visibleContainerIndex + 1) % 3;
+      visibleContainerIndex = (visibleContainerIndex + 1) % 5;
     });
   }
 
@@ -430,7 +431,7 @@ class _EventDetailsState extends State<EventDetails> {
                                           ),
                                         ),
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         height: 15,
                                       )
                                     ],
@@ -438,30 +439,27 @@ class _EventDetailsState extends State<EventDetails> {
                                 ),
                               ),
                             ),
-                            SizedBox(
+                            Container(
+                                // color: Colors.green,
                                 width: MediaQuery.of(context).size.width,
                                 height:
                                     MediaQuery.of(context).size.height * 0.28,
                                 child: Padding(
-                                  padding: EdgeInsets.only(
-                                      top: 10,
-                                      // left: MediaQuery.of(context).size.width *
-                                      //     0.1,
-                                      // right: MediaQuery.of(context).size.width *
-                                      //     0.1
-                                          ),
+                                  padding: const EdgeInsets.only(
+                                    top: 10,
+                                  ),
                                   child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
+                                    // crossAxisAlignment:
+                                    //     CrossAxisAlignment.center,
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceEvenly,
                                     children: [
-                                      Text(
-                                        widget.level,
-                                        style: const TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w500),
-                                      ),
+                                      // Text(
+                                      //   widget.level,
+                                      //   style: const TextStyle(
+                                      //       fontSize: 16,
+                                      //       fontWeight: FontWeight.w500),
+                                      // ),
                                       GestureDetector(
                                         onTap: () {
                                           switchContainer();
@@ -475,6 +473,16 @@ class _EventDetailsState extends State<EventDetails> {
                                                 : 0.0,
                                             child: Column(
                                               children: [
+                                                Text(
+                                                  widget.level,
+                                                  style: const TextStyle(
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.w500),
+                                                ),
+                                                const SizedBox(
+                                                  height: 50,
+                                                ),
                                                 Container(
                                                   height: 45,
                                                   width: MediaQuery.of(context)
@@ -517,7 +525,7 @@ class _EventDetailsState extends State<EventDetails> {
                                                           ),
                                                         )),
                                                         const SizedBox(
-                                                          width: 20,
+                                                          width: 15,
                                                         ),
                                                         const FittedBox(
                                                           child: Text(
@@ -539,24 +547,33 @@ class _EventDetailsState extends State<EventDetails> {
                                                   height: 30,
                                                 ),
                                                 Padding(
-                                                  padding: const EdgeInsets.symmetric(horizontal: 35),
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
+                                                      horizontal: 35),
                                                   child: Row(
                                                     mainAxisAlignment:
-                                                        MainAxisAlignment.center,
+                                                        MainAxisAlignment
+                                                            .center,
                                                     children: [
                                                       const Text(
                                                         "View Barcode",
                                                         style: TextStyle(
-                                                            color: Color.fromARGB(
-                                                                255, 51, 90, 135),
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    51,
+                                                                    90,
+                                                                    135),
                                                             fontSize: 13,
                                                             fontWeight:
-                                                                FontWeight.w600),
+                                                                FontWeight
+                                                                    .w600),
                                                       ),
                                                       const Spacer(),
                                                       GestureDetector(
                                                           onTap: () {
-                                                            Navigator.of(context)
+                                                            Navigator.of(
+                                                                    context)
                                                                 .push(
                                                                     MaterialPageRoute(
                                                               builder: (context) =>
@@ -591,6 +608,16 @@ class _EventDetailsState extends State<EventDetails> {
                                                 : 0.0,
                                             child: Column(
                                               children: [
+                                                Text(
+                                                  widget.level,
+                                                  style: const TextStyle(
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.w500),
+                                                ),
+                                                const SizedBox(
+                                                  height: 50,
+                                                ),
                                                 Container(
                                                   height: 45,
                                                   width: MediaQuery.of(context)
@@ -632,7 +659,7 @@ class _EventDetailsState extends State<EventDetails> {
                                                                       .white,
                                                                 ))),
                                                         const SizedBox(
-                                                          width: 20,
+                                                          width: 15,
                                                         ),
                                                         const FittedBox(
                                                           child: Text(
@@ -654,24 +681,33 @@ class _EventDetailsState extends State<EventDetails> {
                                                   height: 30,
                                                 ),
                                                 Padding(
-                                                  padding: const EdgeInsets.symmetric(horizontal: 35),
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
+                                                      horizontal: 35),
                                                   child: Row(
                                                     mainAxisAlignment:
-                                                        MainAxisAlignment.center,
+                                                        MainAxisAlignment
+                                                            .center,
                                                     children: [
                                                       const Text(
                                                         "View Barcode",
                                                         style: TextStyle(
-                                                            color: Color.fromARGB(
-                                                                255, 51, 90, 135),
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    51,
+                                                                    90,
+                                                                    135),
                                                             fontSize: 13,
                                                             fontWeight:
-                                                                FontWeight.w600),
+                                                                FontWeight
+                                                                    .w600),
                                                       ),
                                                       const Spacer(),
                                                       GestureDetector(
                                                           onTap: () {
-                                                            Navigator.of(context)
+                                                            Navigator.of(
+                                                                    context)
                                                                 .push(
                                                                     MaterialPageRoute(
                                                               builder: (context) =>
@@ -682,8 +718,11 @@ class _EventDetailsState extends State<EventDetails> {
                                                             "Ticket Details",
                                                             style: TextStyle(
                                                                 color: const Color
-                                                                    .fromARGB(255,
-                                                                    51, 90, 135),
+                                                                    .fromARGB(
+                                                                    255,
+                                                                    51,
+                                                                    90,
+                                                                    135),
                                                                 fontSize: 13,
                                                                 fontWeight:
                                                                     FontWeight
@@ -703,6 +742,16 @@ class _EventDetailsState extends State<EventDetails> {
                                                 : 0.0,
                                             child: Column(
                                               children: [
+                                                Text(
+                                                  widget.level,
+                                                  style: const TextStyle(
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.w500),
+                                                ),
+                                                const SizedBox(
+                                                  height: 50,
+                                                ),
                                                 Container(
                                                   height: 45,
                                                   width: MediaQuery.of(context)
@@ -730,11 +779,13 @@ class _EventDetailsState extends State<EventDetails> {
                                                             Container(
                                                               height: 17,
                                                               width: 30,
-                                                              decoration: BoxDecoration(
-                                                                
-                                                                image: DecorationImage(
-                                                                  image: AssetImage(
-                                                                 'assets/images/smarticon.png',
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                image:
+                                                                    DecorationImage(
+                                                                        image:
+                                                                            AssetImage(
+                                                                  'assets/images/smarticon.png',
                                                                   // height: 30,
                                                                   // width: 40,
                                                                   // color: const Color
@@ -744,24 +795,24 @@ class _EventDetailsState extends State<EventDetails> {
                                                                   //     236,
                                                                   //     236)
                                                                   // )
-                                                                  )
+                                                                )),
+                                                                // child: SvgPicture.asset(
+                                                                //     'assets/images/smarticon.png',
+                                                                //     height: 30,
+                                                                //     width: 40,
+                                                                //     color: const Color
+                                                                //         .fromARGB(
+                                                                //         255,
+                                                                //         236,
+                                                                //         236,
+                                                                //         236)
+                                                                //         ),
                                                               ),
-                                                              // child: SvgPicture.asset(
-                                                              //     'assets/images/smarticon.png',
-                                                              //     height: 30,
-                                                              //     width: 40,
-                                                              //     color: const Color
-                                                              //         .fromARGB(
-                                                              //         255,
-                                                              //         236,
-                                                              //         236,
-                                                              //         236)
-                                                              //         ),
-                                                            ),
-                                                        )],
+                                                            )
+                                                          ],
                                                         ),
                                                         const SizedBox(
-                                                          width: 15,
+                                                          width: 8,
                                                         ),
                                                         const FittedBox(
                                                           child: Text(
@@ -814,7 +865,240 @@ class _EventDetailsState extends State<EventDetails> {
                                                 )
                                               ],
                                             ),
-                                          )
+                                          ),
+                                          AnimatedOpacity(
+                                            duration: const Duration(
+                                                milliseconds: 500),
+                                            opacity: visibleContainerIndex == 3
+                                                ? 1.0
+                                                : 0.0,
+                                            child: Column(
+                                              children: [
+                                                Container(
+                                                  // color: Colors.red,
+                                                  child: Column(
+                                                    children: [
+                                                      SizedBox(
+                                                          height: 25,
+                                                          width: 25,
+                                                          child: Image.asset(
+                                                            "assets/images/verified.png",
+                                                            color: Colors.black,
+                                                          )),
+                                                      const SizedBox(
+                                                        height: 10,
+                                                      ),
+                                                      const Text(
+                                                        "Your tickets aren't quite ready yet.",
+                                                        style: TextStyle(
+                                                            fontSize: 15,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      ),
+                                                      const Text(
+                                                        "Please check back later",
+                                                        style: TextStyle(
+                                                            fontSize: 15,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w500),
+                                                      ),
+                                                      const SizedBox(
+                                                        height: 50,
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                                // const SizedBox(
+                                                //   height: 30,
+                                                // ),
+                                                Padding(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
+                                                      horizontal: 35),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      const Text(
+                                                        "View Barcode",
+                                                        style: TextStyle(
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    51,
+                                                                    90,
+                                                                    135),
+                                                            fontSize: 13,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w600),
+                                                      ),
+                                                      const Spacer(),
+                                                      GestureDetector(
+                                                          onTap: () {
+                                                            Navigator.of(
+                                                                    context)
+                                                                .push(
+                                                                    MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  const TicketDetails(),
+                                                            ));
+                                                          },
+                                                          child: const Text(
+                                                            "Ticket Details",
+                                                            style: TextStyle(
+                                                                color: Color
+                                                                    .fromARGB(
+                                                                        255,
+                                                                        51,
+                                                                        90,
+                                                                        135),
+                                                                fontSize: 13,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600),
+                                                          ))
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          AnimatedOpacity(
+                                            duration: const Duration(
+                                                milliseconds: 500),
+                                            opacity: visibleContainerIndex == 4
+                                                ? 1.0
+                                                : 0.0,
+                                            child: Column(
+                                              children: [
+                                                Text(
+                                                  widget.level,
+                                                  style: const TextStyle(
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.w500),
+                                                ),
+                                                const SizedBox(
+                                                  height: 50,
+                                                ),
+                                                Container(
+                                                  height: 45,
+                                                  width: MediaQuery.of(context)
+                                                          .size
+                                                          .width *
+                                                      0.75,
+                                                  decoration: BoxDecoration(
+                                                      color: const Color(
+                                                          0xff006ce7),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              1)),
+                                                  child: Center(
+                                                      child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            4.0),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        Stack(
+                                                          children: [
+                                                            Container(
+                                                              height: 17,
+                                                              width: 30,
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                image:
+                                                                    DecorationImage(
+                                                                        image:
+                                                                            AssetImage(
+                                                                  'assets/images/smarticon.png',
+                                                                  // height: 30,
+                                                                  // width: 40,
+                                                                  // color: const Color
+                                                                  //     .fromARGB(
+                                                                  //     255,
+                                                                  //     236,
+                                                                  //     236,
+                                                                  //     236)
+                                                                  // )
+                                                                )),
+                                                                // child: SvgPicture.asset(
+                                                                //     'assets/images/smarticon.png',
+                                                                //     height: 30,
+                                                                //     width: 40,
+                                                                //     color: const Color
+                                                                //         .fromARGB(
+                                                                //         255,
+                                                                //         236,
+                                                                //         236,
+                                                                //         236)
+                                                                //         ),
+                                                              ),
+                                                            )
+                                                          ],
+                                                        ),
+                                                        const SizedBox(
+                                                          width: 8,
+                                                        ),
+                                                        const FittedBox(
+                                                          child: Text(
+                                                            "View Ticket",
+                                                            style: TextStyle(
+                                                                fontSize: 13,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                color: Color
+                                                                    .fromARGB(
+                                                                        255,
+                                                                        236,
+                                                                        236,
+                                                                        236)),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  )),
+                                                ),
+                                                const SizedBox(
+                                                  height: 30,
+                                                ),
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    GestureDetector(
+                                                        onTap: () {
+                                                          Navigator.of(context)
+                                                              .push(
+                                                                  MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                const TicketDetails(),
+                                                          ));
+                                                        },
+                                                        child: const Text(
+                                                          "Ticket Details",
+                                                          style: TextStyle(
+                                                              color: const Color
+                                                                  .fromARGB(255,
+                                                                  51, 90, 135),
+                                                              fontSize: 13,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600),
+                                                        ))
+                                                  ],
+                                                )
+                                              ],
+                                            ),
+                                          ),
                                         ]),
                                       ),
                                     ],
@@ -990,7 +1274,7 @@ class _EventDetailsState extends State<EventDetails> {
                             : Text(
                                 _numberOfTicketSelected,
                                 style: const TextStyle(
-                                  color: Colors.grey,
+                                  color: Colors.black,
                                 ),
                               ),
                       ),
@@ -1007,27 +1291,39 @@ class _EventDetailsState extends State<EventDetails> {
                         children: [
                           Row(
                             children: [
-                              const Text("Sec "),
+                              Text(
+                                "Sec ",
+                                style: TextStyle(
+                                    color: Colors.black.withOpacity(.4)),
+                              ),
                               Text(
                                 '${widget.section} ,',
                                 style: const TextStyle(
-                                    fontWeight: FontWeight.bold),
+                                    fontWeight: FontWeight.w600),
                               )
                             ],
                           ),
                           Row(
                             children: [
-                              const Text("Row "),
+                              Text(
+                                "Row ",
+                                style: TextStyle(
+                                    color: Colors.black.withOpacity(.4)),
+                              ),
                               Text(
                                 '${widget.row} ,',
                                 style: const TextStyle(
-                                    fontWeight: FontWeight.bold),
+                                    fontWeight: FontWeight.w600),
                               )
                             ],
                           ),
                           Row(
                             children: [
-                              const Text("Seat "),
+                              Text(
+                                "Seat ",
+                                style: TextStyle(
+                                    color: Colors.black.withOpacity(.4)),
+                              ),
                               GestureDetector(
                                 onTap: () {
                                   setstate1(() {
@@ -1074,7 +1370,7 @@ class _EventDetailsState extends State<EventDetails> {
                                     : Text(
                                         _seat,
                                         style: const TextStyle(
-                                            fontWeight: FontWeight.bold),
+                                            fontWeight: FontWeight.w600),
                                       ),
                               ),
 
@@ -1091,7 +1387,7 @@ class _EventDetailsState extends State<EventDetails> {
                       ),
                       const Text("First Name"),
                       transferTicketContainer(context,
-                          text: "First Name", height: 35.0),
+                          text: "First Name", height: 40.0),
                       const SizedBox(
                         height: 15,
                       ),
@@ -1100,7 +1396,7 @@ class _EventDetailsState extends State<EventDetails> {
                         height: 3,
                       ),
                       transferTicketContainer(context,
-                          text: "Last Name", height: 35.0),
+                          text: "Last Name", height: 40.0),
                       const SizedBox(
                         height: 15,
                       ),
@@ -1109,7 +1405,7 @@ class _EventDetailsState extends State<EventDetails> {
                         height: 3,
                       ),
                       transferTicketContainer(context,
-                          text: "Email", height: 35.0),
+                          text: "Email", height: 40.0),
                       const SizedBox(
                         height: 15,
                       ),

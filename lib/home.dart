@@ -31,6 +31,14 @@ class _HomePageState extends State<HomePage>
     super.dispose();
   }
 
+  int visibleContainerIndex1 = 0;
+
+  void switchContainer1() {
+    setState(() {
+      visibleContainerIndex1 = (visibleContainerIndex1 + 1) % 4;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final eventprovider = context.watch<EventProvider>();
@@ -41,10 +49,57 @@ class _HomePageState extends State<HomePage>
           Icons.ac_unit,
           color: Color(0xff1f262e),
         ),
-        title: const Text(
-          "My Events",
-          style: TextStyle(
-              fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold),
+        title: GestureDetector(
+          onTap: () {
+            switchContainer1();
+          },
+          child: Row(
+            children: [
+              const SizedBox(
+                width: 80,
+              ),
+              const Text(
+                "My Events",
+                style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(
+                width: 8,
+              ),
+              Stack(children: [
+                AnimatedOpacity(
+                  duration: const Duration(milliseconds: 500),
+                  opacity: visibleContainerIndex1 == 0 ? 1.0 : 0.0,
+                  child: Container(
+                    color: const Color(0xff1f262e),
+                  ),
+                ),
+                AnimatedOpacity(
+                  duration: const Duration(milliseconds: 500),
+                  opacity: visibleContainerIndex1 == 1 ? 1.0 : 0.0,
+                  child: myContainer(
+                    image: 'assets/images/usa-icon.png',
+                  ),
+                ),
+                AnimatedOpacity(
+                  duration: const Duration(milliseconds: 500),
+                  opacity: visibleContainerIndex1 == 2 ? 1.0 : 0.0,
+                  child: myContainer(
+                    image: 'assets/images/Ellipse 2.png',
+                  ),
+                ),
+                AnimatedOpacity(
+                  duration: const Duration(milliseconds: 500),
+                  opacity: visibleContainerIndex1 == 3 ? 1.0 : 0.0,
+                  child: myContainer(
+                    image: 'assets/images/Ellipse 3.png',
+                  ),
+                ),
+              ]),
+            ],
+          ),
         ),
         actions: [
           GestureDetector(
@@ -107,7 +162,7 @@ class _HomePageState extends State<HomePage>
                         controller: tabController,
                         tabs: [
                           Tab(text: "UPCOMING(${eventprovider.datalength})"),
-                          Tab(
+                          const Tab(
                             text: "PAST(0)",
                           )
                         ])
@@ -119,6 +174,24 @@ class _HomePageState extends State<HomePage>
               children: const [Upcoming(), Past()],
             ))
           ],
+        ),
+      ),
+    );
+  }
+
+  Container myContainer({
+    required String image,
+  }) {
+    return Container(
+      child: Container(
+        width: 25,
+        height: 25,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage(
+                image,
+              ),
+              fit: BoxFit.cover),
         ),
       ),
     );
