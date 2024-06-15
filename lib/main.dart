@@ -9,6 +9,7 @@ import 'package:ticketmaster/home_navbar.dart';
 import 'package:ticketmaster/providers/event_providers.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:ticketmaster/screens/login_screen.dart';
 
 void main() async {
   runApp(const MyApp());
@@ -33,7 +34,8 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         ),
-        home: const HomeNavBar(),
+        // home: const HomeNavBar(),
+        home: const SignIn(),
       ),
     );
   }

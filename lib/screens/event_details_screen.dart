@@ -1400,12 +1400,12 @@ class _EventDetailsState extends State<EventDetails> {
                       const SizedBox(
                         height: 15,
                       ),
-                      const Text("Email"),
+                      const Text("Email or Mobile Number"),
                       const SizedBox(
                         height: 3,
                       ),
                       transferTicketContainer(context,
-                          text: "Email", height: 40.0),
+                          text: "Email or Mobile Number", height: 40.0),
                       const SizedBox(
                         height: 15,
                       ),
