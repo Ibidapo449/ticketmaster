@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:ticketmaster/home_navbar.dart';
 
 class SignIn extends StatelessWidget {
