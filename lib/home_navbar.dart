@@ -1,8 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ticketmaster/home.dart';
 import 'package:ticketmaster/providers/event_providers.dart';
 import 'package:ticketmaster/screens/account.dart';
+import 'package:ticketmaster/screens/login_screen.dart';
 
 class HomeNavBar extends StatefulWidget {
   const HomeNavBar({super.key});
@@ -20,6 +24,75 @@ class _HomeNavBarState extends State<HomeNavBar> {
     Container(),
     Account(),
   ];
+  Timer? _usageTimer;
+
+  bool _fiveMinutesElapsed = false;
+  Duration _elapsedTime = Duration.zero;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _startUsageTimer();
+  }
+
+  void _startUsageTimer() {
+    _usageTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      setState(() {
+        _elapsedTime += const Duration(seconds: 1);
+        if (_elapsedTime >= const Duration(minutes: 1) &&
+            !_fiveMinutesElapsed) {
+          _fiveMinutesElapsed = true;
+          _onFiveMinutesElapsed();
+        }
+      });
+    });
+  }
+
+  Future<DateTime> getTime() async {
+    final pref = await SharedPreferences.getInstance();
+    final accessString = pref.getString('accesstime');
+    DateTime date;
+    date = DateTime.parse(accessString!);
+    return date;
+  }
+
+  void compareDates(DateTime date2) async {
+    DateTime storedTime = await getTime();
+    if (storedTime.isAfter(date2)) {
+      print("storedTime is more recent than date2");
+    } else if (storedTime.isBefore(date2)) {
+      final pref = await SharedPreferences.getInstance();
+      pref.remove('accesstime');
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(
+          builder: (context) => SignIn(),
+        ),
+        (Route<dynamic> route) => false,
+      );
+      print("storedTime is earlier than date2");
+    } else if (storedTime.isAtSameMomentAs(date2)) {
+      print("storedTime and date2 are the same");
+    }
+  }
+
+  void _onFiveMinutesElapsed() async {
+    print("5 minutes of app usage has elapsed!");
+
+    setState(() {
+      _fiveMinutesElapsed = false;
+      _elapsedTime = Duration.zero;
+    });
+    compareDates(DateTime.now());
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _usageTimer!.cancel();
+  }
+
   @override
   Widget build(BuildContext context) {
     context.read<EventProvider>().loadSavedData();

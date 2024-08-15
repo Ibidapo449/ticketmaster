@@ -12,11 +12,17 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:ticketmaster/screens/login_screen.dart';
 
 void main() async {
-  runApp(const MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  final pref = await SharedPreferences.getInstance();
+  final string = pref.getString('accesstime');
+  runApp(MyApp(
+    islogged: string,
+  ));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final String? islogged;
+  const MyApp({super.key, required this.islogged});
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +40,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         ),
-        home: const HomeNavBar(),
+        home: islogged == null ? SignIn() : HomeNavBar(),
         // home: const SignIn(),
       ),
     );
