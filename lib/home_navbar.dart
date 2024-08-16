@@ -37,10 +37,10 @@ class _HomeNavBarState extends State<HomeNavBar> {
   }
 
   void _startUsageTimer() {
-    _usageTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+    _usageTimer = Timer.periodic(const Duration(minutes: 2), (timer) {
       setState(() {
-        _elapsedTime += const Duration(seconds: 1);
-        if (_elapsedTime >= const Duration(minutes: 1) &&
+        _elapsedTime += const Duration(minutes: 2);
+        if (_elapsedTime >= const Duration(minutes: 5) &&
             !_fiveMinutesElapsed) {
           _fiveMinutesElapsed = true;
           _onFiveMinutesElapsed();

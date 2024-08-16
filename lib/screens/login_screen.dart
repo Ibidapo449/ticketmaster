@@ -93,7 +93,7 @@ class SignIn extends StatelessWidget {
                             print("No matching documents found");
                             SmartDialog.dismiss();
                             SmartDialog.showToast(
-                                'Account Validated Successfully');
+                                'No matching documents found');
                           }
                         }).catchError((error) {
                           print("Error getting documents: $error");
