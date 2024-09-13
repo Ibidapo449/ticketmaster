@@ -140,63 +140,60 @@ class _EventDetailsState extends State<EventDetails> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Container(
-                height: MediaQuery.of(context).size.height * 0.72,
-                width: MediaQuery.of(context).size.width,
-                decoration:
-                    BoxDecoration(borderRadius: BorderRadius.circular(5)),
-                child: PageView.builder(
-                  controller: _pageController,
-                  onPageChanged: (index) {
-                    setState(() {
-                      currentIndex = index;
-                    });
-                  },
-                  itemCount: widget.number_of_ticket,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 5),
-                      child: Container(
-                        height: MediaQuery.of(context).size.height * 0.2,
-                        width: MediaQuery.of(context).size.width,
-                        clipBehavior: Clip.hardEdge,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        child: Column(
-                          children: [
-                            Expanded(
-                              child: ConstrainedBox(
-                                constraints: BoxConstraints(
-                                  maxWidth: MediaQuery.of(context).size.width,
-                                  maxHeight:
-                                      MediaQuery.of(context).size.height * 0.04,
-                                ),
-                                child: Container(
-                                  width: double.infinity,
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.04,
-                                  color: const Color(0xff006ce7),
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 10),
-                                    child: Center(
-                                      child: FittedBox(
-                                        fit: BoxFit.fitWidth,
-                                        child: ConstrainedBox(
-                                          constraints: const BoxConstraints(
-                                              minHeight: 1, minWidth: 1),
-                                          child: Text(
-                                            widget.ticketType,
-                                            //  maxLines: 1,
-                                            style: const TextStyle(
-                                                fontWeight: FontWeight.w400,
-                                                color: Colors.white,
-                                                fontSize: 16),
-                                          ),
+        child: Column(
+          children: [
+            Container(
+              height: MediaQuery.of(context).size.height * 0.66,
+              width: MediaQuery.of(context).size.width,
+              decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
+              child: PageView.builder(
+                controller: _pageController,
+                onPageChanged: (index) {
+                  setState(() {
+                    currentIndex = index;
+                  });
+                },
+                itemCount: widget.number_of_ticket,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                    child: Container(
+                      height: MediaQuery.of(context).size.height * 0.2,
+                      width: MediaQuery.of(context).size.width,
+                      clipBehavior: Clip.hardEdge,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      child: Column(
+                        children: [
+                          Expanded(
+                            child: ConstrainedBox(
+                              constraints: BoxConstraints(
+                                maxWidth: MediaQuery.of(context).size.width,
+                                maxHeight:
+                                    MediaQuery.of(context).size.height * 0.04,
+                              ),
+                              child: Container(
+                                width: double.infinity,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.04,
+                                color: const Color(0xff006ce7),
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10),
+                                  child: Center(
+                                    child: FittedBox(
+                                      fit: BoxFit.fitWidth,
+                                      child: ConstrainedBox(
+                                        constraints: const BoxConstraints(
+                                            minHeight: 1, minWidth: 1),
+                                        child: Text(
+                                          widget.ticketType,
+                                          //  maxLines: 1,
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.w400,
+                                              color: Colors.white,
+                                              fontSize: 16),
                                         ),
                                       ),
                                     ),
@@ -204,81 +201,44 @@ class _EventDetailsState extends State<EventDetails> {
                                 ),
                               ),
                             ),
-                            Container(
-                              width: MediaQuery.of(context).size.width,
-                              height: MediaQuery.of(context).size.height * 0.1,
-                              color: const Color(0xff006ce7),
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal:
-                                        MediaQuery.of(context).size.width *
-                                            0.03),
-                                child: Center(
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Container(
-                                        height: 50,
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.2,
-                                        child: Stack(
-                                          children: [
-                                            const Align(
-                                              alignment: Alignment.topCenter,
-                                              child: Text(
-                                                "SEC",
-                                                style: TextStyle(
-                                                  color: Colors.white,
-                                                ),
+                          ),
+                          Container(
+                            width: MediaQuery.of(context).size.width,
+                            height: MediaQuery.of(context).size.height * 0.1,
+                            color: const Color(0xff006ce7),
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal:
+                                      MediaQuery.of(context).size.width * 0.03),
+                              child: Center(
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      height: 50,
+                                      width: MediaQuery.of(context).size.width *
+                                          0.2,
+                                      child: Stack(
+                                        children: [
+                                          const Align(
+                                            alignment: Alignment.topCenter,
+                                            child: Text(
+                                              "SEC",
+                                              style: TextStyle(
+                                                color: Colors.white,
                                               ),
                                             ),
-                                            Align(
-                                              alignment: Alignment.center,
-                                              child: Padding(
-                                                padding: const EdgeInsets.only(
-                                                    top: 10.0),
-                                                child: FittedBox(
-                                                  child: Text(
-                                                    widget.section,
-                                                    style: const TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 25,
-                                                        fontWeight:
-                                                            FontWeight.w700),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: 50,
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.2,
-                                        child: Stack(
-                                          children: [
-                                            const Align(
-                                              alignment: Alignment.topCenter,
-                                              child: Text(
-                                                "ROW",
-                                                style: TextStyle(
-                                                  color: Colors.white,
-                                                ),
-                                              ),
-                                            ),
-                                            Align(
-                                              alignment: Alignment.center,
-                                              child: Padding(
-                                                padding: const EdgeInsets.only(
-                                                    top: 10.0),
+                                          ),
+                                          Align(
+                                            alignment: Alignment.center,
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 10.0),
+                                              child: FittedBox(
                                                 child: Text(
-                                                  widget.row,
+                                                  widget.section,
                                                   style: const TextStyle(
                                                       color: Colors.white,
                                                       fontSize: 25,
@@ -287,562 +247,310 @@ class _EventDetailsState extends State<EventDetails> {
                                                 ),
                                               ),
                                             ),
-                                          ],
-                                        ),
+                                          ),
+                                        ],
                                       ),
-                                      SizedBox(
-                                        height: 50,
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.2,
-                                        child: Stack(
-                                          children: [
-                                            const Align(
-                                              alignment: Alignment.topCenter,
+                                    ),
+                                    SizedBox(
+                                      height: 50,
+                                      width: MediaQuery.of(context).size.width *
+                                          0.2,
+                                      child: Stack(
+                                        children: [
+                                          const Align(
+                                            alignment: Alignment.topCenter,
+                                            child: Text(
+                                              "ROW",
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ),
+                                          Align(
+                                            alignment: Alignment.center,
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 10.0),
                                               child: Text(
-                                                "SEAT",
-                                                style: TextStyle(
-                                                  color: Colors.white,
-                                                ),
+                                                widget.row,
+                                                style: const TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 25,
+                                                    fontWeight:
+                                                        FontWeight.w700),
                                               ),
                                             ),
-                                            Align(
-                                              alignment: Alignment.center,
-                                              child: Padding(
-                                                padding: const EdgeInsets.only(
-                                                    top: 10.0),
-                                                child: Text(
-                                                  widget.seat == '1'
-                                                      ? ''
-                                                      : widget.seat == '-'
-                                                          ? widget.seat
-                                                          : (int.parse(widget
-                                                                      .seat) +
-                                                                  index)
-                                                              .toString(),
-                                                  style: const TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 25,
-                                                      fontWeight:
-                                                          FontWeight.w700),
-                                                ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 50,
+                                      width: MediaQuery.of(context).size.width *
+                                          0.2,
+                                      child: Stack(
+                                        children: [
+                                          const Align(
+                                            alignment: Alignment.topCenter,
+                                            child: Text(
+                                              "SEAT",
+                                              style: TextStyle(
+                                                color: Colors.white,
                                               ),
                                             ),
-                                          ],
-                                        ),
-                                      )
-                                    ],
-                                  ),
+                                          ),
+                                          Align(
+                                            alignment: Alignment.center,
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 10.0),
+                                              child: Text(
+                                                widget.seat == '1'
+                                                    ? ''
+                                                    : widget.seat == '-'
+                                                        ? widget.seat
+                                                        : (int.parse(widget
+                                                                    .seat) +
+                                                                index)
+                                                            .toString(),
+                                                style: const TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 25,
+                                                    fontWeight:
+                                                        FontWeight.w700),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  ],
                                 ),
                               ),
                             ),
-                            Container(
-                              width: MediaQuery.of(context).size.width,
-                              height: MediaQuery.of(context).size.height * 0.26,
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  fit: BoxFit.cover,
-                                  image: NetworkImage(
-                                    widget.image, // Replace with your image URL
-                                  ),
+                          ),
+                          Container(
+                            width: MediaQuery.of(context).size.width,
+                            height: MediaQuery.of(context).size.height * 0.26,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                fit: BoxFit.cover,
+                                image: NetworkImage(
+                                  widget.image, // Replace with your image URL
                                 ),
                               ),
-                              child: Container(
-                                width: MediaQuery.of(context).size.width,
-                                decoration: BoxDecoration(
-                                    gradient: LinearGradient(
-                                  colors: [
-                                    Colors.transparent,
-                                    Colors.black.withOpacity(.98),
+                            ),
+                            child: Container(
+                              width: MediaQuery.of(context).size.width,
+                              decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                colors: [
+                                  Colors.transparent,
+                                  Colors.black.withOpacity(.98),
+                                ],
+                                stops: [0.0, 1],
+                                begin: FractionalOffset.topCenter,
+                                end: FractionalOffset.bottomCenter,
+                              )),
+                              child: Align(
+                                alignment: Alignment.bottomCenter,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                        left: 10,
+                                        right: 10,
+                                        top: 8,
+                                      ),
+                                      child: Text(
+                                        widget.eventName == ''
+                                            ? widget.artistName
+                                            : widget.artistName +
+                                                ' | ' +
+                                                widget.eventName,
+                                        maxLines: 2,
+                                        textAlign: TextAlign.center,
+                                        style: const TextStyle(
+                                            fontSize: 21,
+                                            fontWeight: FontWeight.w400,
+                                            color: Colors.white),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 3,
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                        left: 8,
+                                        right: 8,
+                                      ),
+                                      child: FittedBox(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              widget.date +
+                                                  " " +
+                                                  widget.time +
+                                                  " ",
+                                              style: const TextStyle(
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: Colors.white),
+                                            ),
+                                            const SizedBox(
+                                              width: 5,
+                                            ),
+                                            Container(
+                                              height: 5,
+                                              width: 5,
+                                              decoration: BoxDecoration(
+                                                  color: Colors.white,
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          2.5)),
+                                            ),
+                                            const SizedBox(
+                                              width: 7,
+                                            ),
+                                            Text(
+                                              widget.location,
+                                              style: const TextStyle(
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: Colors.white),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 15,
+                                    )
                                   ],
-                                  stops: [0.0, 1],
-                                  begin: FractionalOffset.topCenter,
-                                  end: FractionalOffset.bottomCenter,
-                                )),
-                                child: Align(
-                                  alignment: Alignment.bottomCenter,
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                          left: 10,
-                                          right: 10,
-                                          top: 8,
-                                        ),
-                                        child: Text(
-                                          widget.eventName == ''
-                                              ? widget.artistName
-                                              : widget.artistName +
-                                                  ' | ' +
-                                                  widget.eventName,
-                                          maxLines: 2,
-                                          textAlign: TextAlign.center,
-                                          style: const TextStyle(
-                                              fontSize: 21,
-                                              fontWeight: FontWeight.w400,
-                                              color: Colors.white),
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        height: 3,
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                          left: 8,
-                                          right: 8,
-                                        ),
-                                        child: FittedBox(
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                              width: MediaQuery.of(context).size.width,
+                              height: MediaQuery.of(context).size.height * 0.23,
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                  top: 20,
+                                ),
+                                child: Column(
+                                  children: [
+                                    // Text(
+                                    //   widget.level,
+                                    //   style: const TextStyle(
+                                    //       fontSize: 16,
+                                    //       fontWeight: FontWeight.w500),
+                                    // ),
+                                    GestureDetector(
+                                      onTap: () {
+                                        switchContainer();
+                                      },
+                                      child: Stack(children: [
+                                        AnimatedOpacity(
+                                          duration:
+                                              const Duration(milliseconds: 500),
+                                          opacity: visibleContainerIndex == 4
+                                              ? 1.0
+                                              : 0.0,
+                                          child: Column(
                                             children: [
                                               Text(
-                                                widget.date +
-                                                    " " +
-                                                    widget.time +
-                                                    " ",
+                                                widget.level,
                                                 style: const TextStyle(
-                                                    fontSize: 15,
-                                                    fontWeight: FontWeight.w500,
-                                                    color: Colors.white),
+                                                    fontSize: 16,
+                                                    fontWeight:
+                                                        FontWeight.w500),
                                               ),
                                               const SizedBox(
-                                                width: 5,
+                                                height: 40,
                                               ),
                                               Container(
-                                                height: 5,
-                                                width: 5,
+                                                height: 40,
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.8,
                                                 decoration: BoxDecoration(
-                                                    color: Colors.white,
+                                                    color: Colors.black,
                                                     borderRadius:
                                                         BorderRadius.circular(
-                                                            2.5)),
+                                                            2)),
+                                                child: Center(
+                                                    child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(4.0),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Center(
+                                                          child: Container(
+                                                        height: 25,
+                                                        width: 40,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(5),
+                                                          image:
+                                                              const DecorationImage(
+                                                                  image:
+                                                                      AssetImage(
+                                                                    'assets/images/applewallet.png',
+                                                                  ),
+                                                                  fit: BoxFit
+                                                                      .cover),
+                                                        ),
+                                                      )),
+                                                      const SizedBox(
+                                                        width: 15,
+                                                      ),
+                                                      const FittedBox(
+                                                        child: Text(
+                                                          "Add to Apple Wallet",
+                                                          style: TextStyle(
+                                                              fontSize: 13,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              color:
+                                                                  Colors.white),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                )),
                                               ),
                                               const SizedBox(
-                                                width: 7,
+                                                height: 30,
                                               ),
-                                              Text(
-                                                widget.location,
-                                                style: const TextStyle(
-                                                    fontSize: 15,
-                                                    fontWeight: FontWeight.w500,
-                                                    color: Colors.white),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        height: 15,
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Container(
-                                // color: Colors.green,
-                                width: MediaQuery.of(context).size.width,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.28,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(
-                                    top: 10,
-                                  ),
-                                  child: Column(
-                                    // crossAxisAlignment:
-                                    //     CrossAxisAlignment.center,
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      // Text(
-                                      //   widget.level,
-                                      //   style: const TextStyle(
-                                      //       fontSize: 16,
-                                      //       fontWeight: FontWeight.w500),
-                                      // ),
-                                      GestureDetector(
-                                        onTap: () {
-                                          switchContainer();
-                                        },
-                                        child: Stack(children: [
-                                          AnimatedOpacity(
-                                            duration: const Duration(
-                                                milliseconds: 500),
-                                            opacity: visibleContainerIndex == 0
-                                                ? 1.0
-                                                : 0.0,
-                                            child: Column(
-                                              children: [
-                                                Text(
-                                                  widget.level,
-                                                  style: const TextStyle(
-                                                      fontSize: 16,
-                                                      fontWeight:
-                                                          FontWeight.w500),
-                                                ),
-                                                const SizedBox(
-                                                  height: 50,
-                                                ),
-                                                Container(
-                                                  height: 45,
-                                                  width: MediaQuery.of(context)
-                                                          .size
-                                                          .width *
-                                                      0.8,
-                                                  decoration: BoxDecoration(
-                                                      color: Colors.black,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              2)),
-                                                  child: Center(
-                                                      child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            4.0),
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        Center(
-                                                            child: Container(
-                                                          height: 25,
-                                                          width: 40,
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        5),
-                                                            image:
-                                                                const DecorationImage(
-                                                                    image:
-                                                                        AssetImage(
-                                                                      'assets/images/applewallet.png',
-                                                                    ),
-                                                                    fit: BoxFit
-                                                                        .cover),
-                                                          ),
-                                                        )),
-                                                        const SizedBox(
-                                                          width: 15,
-                                                        ),
-                                                        const FittedBox(
-                                                          child: Text(
-                                                            "Add to Apple Wallet",
-                                                            style: TextStyle(
-                                                                fontSize: 13,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                color: Colors
-                                                                    .white),
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  )),
-                                                ),
-                                                const SizedBox(
-                                                  height: 30,
-                                                ),
-                                                Padding(
-                                                  padding: const EdgeInsets
-                                                      .symmetric(
-                                                      horizontal: 35),
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      const Text(
-                                                        "View Barcode",
-                                                        style: TextStyle(
-                                                            color:
-                                                                Color.fromARGB(
-                                                                    255,
-                                                                    51,
-                                                                    90,
-                                                                    135),
-                                                            fontSize: 13,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w600),
-                                                      ),
-                                                      const Spacer(),
-                                                      GestureDetector(
-                                                          onTap: () {
-                                                            Navigator.of(
-                                                                    context)
-                                                                .push(
-                                                                    MaterialPageRoute(
-                                                              builder: (context) =>
-                                                                  const TicketDetails(),
-                                                            ));
-                                                          },
-                                                          child: const Text(
-                                                            "Ticket Details",
-                                                            style: TextStyle(
-                                                                color: Color
-                                                                    .fromARGB(
-                                                                        255,
-                                                                        51,
-                                                                        90,
-                                                                        135),
-                                                                fontSize: 13,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w600),
-                                                          ))
-                                                    ],
-                                                  ),
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                          AnimatedOpacity(
-                                            duration: const Duration(
-                                                milliseconds: 500),
-                                            opacity: visibleContainerIndex == 1
-                                                ? 1.0
-                                                : 0.0,
-                                            child: Column(
-                                              children: [
-                                                Text(
-                                                  widget.level,
-                                                  style: const TextStyle(
-                                                      fontSize: 16,
-                                                      fontWeight:
-                                                          FontWeight.w500),
-                                                ),
-                                                const SizedBox(
-                                                  height: 50,
-                                                ),
-                                                Container(
-                                                  height: 45,
-                                                  width: MediaQuery.of(context)
-                                                          .size
-                                                          .width *
-                                                      0.75,
-                                                  decoration: BoxDecoration(
-                                                      color: const Color(
-                                                          0xff006ce7),
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              2)),
-                                                  child: Center(
-                                                      child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            4.0),
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        Center(
-                                                            child: Container(
-                                                                height: 26,
-                                                                width: 26,
-                                                                decoration: BoxDecoration(
-                                                                    border: Border.all(
-                                                                        color: Colors
-                                                                            .white),
-                                                                    borderRadius:
-                                                                        BorderRadius.circular(
-                                                                            13)),
-                                                                child:
-                                                                    const Icon(
-                                                                  Icons.check,
-                                                                  size: 13,
-                                                                  color: Colors
-                                                                      .white,
-                                                                ))),
-                                                        const SizedBox(
-                                                          width: 15,
-                                                        ),
-                                                        const FittedBox(
-                                                          child: Text(
-                                                            "View in wallet",
-                                                            style: TextStyle(
-                                                                fontSize: 13,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                color: Colors
-                                                                    .white),
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  )),
-                                                ),
-                                                const SizedBox(
-                                                  height: 30,
-                                                ),
-                                                Padding(
-                                                  padding: const EdgeInsets
-                                                      .symmetric(
-                                                      horizontal: 35),
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      const Text(
-                                                        "View Barcode",
-                                                        style: TextStyle(
-                                                            color:
-                                                                Color.fromARGB(
-                                                                    255,
-                                                                    51,
-                                                                    90,
-                                                                    135),
-                                                            fontSize: 13,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w600),
-                                                      ),
-                                                      const Spacer(),
-                                                      GestureDetector(
-                                                          onTap: () {
-                                                            Navigator.of(
-                                                                    context)
-                                                                .push(
-                                                                    MaterialPageRoute(
-                                                              builder: (context) =>
-                                                                  const TicketDetails(),
-                                                            ));
-                                                          },
-                                                          child: const Text(
-                                                            "Ticket Details",
-                                                            style: TextStyle(
-                                                                color: Color
-                                                                    .fromARGB(
-                                                                        255,
-                                                                        51,
-                                                                        90,
-                                                                        135),
-                                                                fontSize: 13,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w600),
-                                                          ))
-                                                    ],
-                                                  ),
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                          AnimatedOpacity(
-                                            duration: const Duration(
-                                                milliseconds: 500),
-                                            opacity: visibleContainerIndex == 2
-                                                ? 1.0
-                                                : 0.0,
-                                            child: Column(
-                                              children: [
-                                                Text(
-                                                  widget.level,
-                                                  style: const TextStyle(
-                                                      fontSize: 16,
-                                                      fontWeight:
-                                                          FontWeight.w500),
-                                                ),
-                                                const SizedBox(
-                                                  height: 50,
-                                                ),
-                                                Container(
-                                                  height: 45,
-                                                  width: MediaQuery.of(context)
-                                                          .size
-                                                          .width *
-                                                      0.75,
-                                                  decoration: BoxDecoration(
-                                                      color: const Color(
-                                                          0xff006ce7),
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              1)),
-                                                  child: Center(
-                                                      child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            4.0),
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        Stack(
-                                                          children: [
-                                                            Container(
-                                                              height: 17,
-                                                              width: 30,
-                                                              decoration:
-                                                                  const BoxDecoration(
-                                                                image:
-                                                                    DecorationImage(
-                                                                        image:
-                                                                            AssetImage(
-                                                                  'assets/images/smarticon.png',
-                                                                  // height: 30,
-                                                                  // width: 40,
-                                                                  // color: const Color
-                                                                  //     .fromARGB(
-                                                                  //     255,
-                                                                  //     236,
-                                                                  //     236,
-                                                                  //     236)
-                                                                  // )
-                                                                )),
-                                                                // child: SvgPicture.asset(
-                                                                //     'assets/images/smarticon.png',
-                                                                //     height: 30,
-                                                                //     width: 40,
-                                                                //     color: const Color
-                                                                //         .fromARGB(
-                                                                //         255,
-                                                                //         236,
-                                                                //         236,
-                                                                //         236)
-                                                                //         ),
-                                                              ),
-                                                            )
-                                                          ],
-                                                        ),
-                                                        const SizedBox(
-                                                          width: 8,
-                                                        ),
-                                                        const FittedBox(
-                                                          child: Text(
-                                                            "View Barcode",
-                                                            style: TextStyle(
-                                                                fontSize: 13,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                color: Color
-                                                                    .fromARGB(
-                                                                        255,
-                                                                        236,
-                                                                        236,
-                                                                        236)),
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  )),
-                                                ),
-                                                const SizedBox(
-                                                  height: 30,
-                                                ),
-                                                Row(
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 35),
+                                                child: Row(
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.center,
                                                   children: [
+                                                    const Text(
+                                                      "View Barcode",
+                                                      style: TextStyle(
+                                                          color: Color.fromARGB(
+                                                              255, 51, 90, 135),
+                                                          fontSize: 13,
+                                                          fontWeight:
+                                                              FontWeight.w600),
+                                                    ),
+                                                    const Spacer(),
                                                     GestureDetector(
                                                         onTap: () {
                                                           Navigator.of(context)
@@ -867,198 +575,108 @@ class _EventDetailsState extends State<EventDetails> {
                                                                       .w600),
                                                         ))
                                                   ],
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                          AnimatedOpacity(
-                                            duration: const Duration(
-                                                milliseconds: 500),
-                                            opacity: visibleContainerIndex == 3
-                                                ? 1.0
-                                                : 0.0,
-                                            child: Column(
-                                              children: [
-                                                Container(
-                                                  // color: Colors.red,
-                                                  child: Column(
-                                                    children: [
-                                                      SizedBox(
-                                                          height: 25,
-                                                          width: 25,
-                                                          child: Image.asset(
-                                                            "assets/images/verified.png",
-                                                            color: Colors.black,
-                                                          )),
-                                                      const SizedBox(
-                                                        height: 10,
-                                                      ),
-                                                      const Text(
-                                                        "Your tickets aren't quite ready yet.",
-                                                        style: TextStyle(
-                                                            fontSize: 15,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold),
-                                                      ),
-                                                      const Text(
-                                                        "Please check back later",
-                                                        style: TextStyle(
-                                                            fontSize: 15,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w500),
-                                                      ),
-                                                      const SizedBox(
-                                                        height: 50,
-                                                      )
-                                                    ],
-                                                  ),
                                                 ),
-                                                // const SizedBox(
-                                                //   height: 30,
-                                                // ),
-                                                Padding(
-                                                  padding: const EdgeInsets
-                                                      .symmetric(
-                                                      horizontal: 35),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                        AnimatedOpacity(
+                                          duration:
+                                              const Duration(milliseconds: 500),
+                                          opacity: visibleContainerIndex == 1
+                                              ? 1.0
+                                              : 0.0,
+                                          child: Column(
+                                            children: [
+                                              Text(
+                                                widget.level,
+                                                style: const TextStyle(
+                                                    fontSize: 16,
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                              ),
+                                              const SizedBox(
+                                                height: 40,
+                                              ),
+                                              Container(
+                                                height: 40,
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.75,
+                                                decoration: BoxDecoration(
+                                                    color:
+                                                        const Color(0xff006ce7),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            2)),
+                                                child: Center(
+                                                    child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(4.0),
                                                   child: Row(
                                                     mainAxisAlignment:
                                                         MainAxisAlignment
                                                             .center,
                                                     children: [
-                                                      const Text(
-                                                        "View Barcode",
-                                                        style: TextStyle(
-                                                            color:
-                                                                Color.fromARGB(
-                                                                    255,
-                                                                    51,
-                                                                    90,
-                                                                    135),
-                                                            fontSize: 13,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w600),
+                                                      Center(
+                                                          child: Container(
+                                                              height: 26,
+                                                              width: 26,
+                                                              decoration: BoxDecoration(
+                                                                  border: Border.all(
+                                                                      color: Colors
+                                                                          .white),
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              13)),
+                                                              child: const Icon(
+                                                                Icons.check,
+                                                                size: 13,
+                                                                color: Colors
+                                                                    .white,
+                                                              ))),
+                                                      const SizedBox(
+                                                        width: 15,
                                                       ),
-                                                      const Spacer(),
-                                                      GestureDetector(
-                                                          onTap: () {
-                                                            Navigator.of(
-                                                                    context)
-                                                                .push(
-                                                                    MaterialPageRoute(
-                                                              builder: (context) =>
-                                                                  const TicketDetails(),
-                                                            ));
-                                                          },
-                                                          child: const Text(
-                                                            "Ticket Details",
-                                                            style: TextStyle(
-                                                                color: Color
-                                                                    .fromARGB(
-                                                                        255,
-                                                                        51,
-                                                                        90,
-                                                                        135),
-                                                                fontSize: 13,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w600),
-                                                          ))
+                                                      const FittedBox(
+                                                        child: Text(
+                                                          "View in wallet",
+                                                          style: TextStyle(
+                                                              fontSize: 13,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              color:
+                                                                  Colors.white),
+                                                        ),
+                                                      ),
                                                     ],
                                                   ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          AnimatedOpacity(
-                                            duration: const Duration(
-                                                milliseconds: 500),
-                                            opacity: visibleContainerIndex == 4
-                                                ? 1.0
-                                                : 0.0,
-                                            child: Column(
-                                              children: [
-                                                Text(
-                                                  widget.level,
-                                                  style: const TextStyle(
-                                                      fontSize: 16,
-                                                      fontWeight:
-                                                          FontWeight.w500),
-                                                ),
-                                                const SizedBox(
-                                                  height: 50,
-                                                ),
-                                                Container(
-                                                  height: 45,
-                                                  width: MediaQuery.of(context)
-                                                          .size
-                                                          .width *
-                                                      0.75,
-                                                  decoration: BoxDecoration(
-                                                      color: const Color(
-                                                          0xff006ce7),
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              1)),
-                                                  child: Center(
-                                                      child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            4.0),
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        Stack(
-                                                          children: [
-                                                            Container(
-                                                              height: 17,
-                                                              width: 30,
-                                                              decoration:
-                                                                  const BoxDecoration(
-                                                                image:
-                                                                    DecorationImage(
-                                                                        image:
-                                                                            AssetImage(
-                                                                  'assets/images/smarticon.png',
-                                                                )),
-                                                              ),
-                                                            )
-                                                          ],
-                                                        ),
-                                                        const SizedBox(
-                                                          width: 8,
-                                                        ),
-                                                        const FittedBox(
-                                                          child: Text(
-                                                            "View Ticket",
-                                                            style: TextStyle(
-                                                                fontSize: 13,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                color: Color
-                                                                    .fromARGB(
-                                                                        255,
-                                                                        236,
-                                                                        236,
-                                                                        236)),
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  )),
-                                                ),
-                                                const SizedBox(
-                                                  height: 30,
-                                                ),
-                                                Row(
+                                                )),
+                                              ),
+                                              const SizedBox(
+                                                height: 30,
+                                              ),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 35),
+                                                child: Row(
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.center,
                                                   children: [
+                                                    const Text(
+                                                      "View Barcode",
+                                                      style: TextStyle(
+                                                          color: Color.fromARGB(
+                                                              255, 51, 90, 135),
+                                                          fontSize: 13,
+                                                          fontWeight:
+                                                              FontWeight.w600),
+                                                    ),
+                                                    const Spacer(),
                                                     GestureDetector(
                                                         onTap: () {
                                                           Navigator.of(context)
@@ -1071,101 +689,451 @@ class _EventDetailsState extends State<EventDetails> {
                                                         child: const Text(
                                                           "Ticket Details",
                                                           style: TextStyle(
-                                                              color: const Color
-                                                                  .fromARGB(255,
-                                                                  51, 90, 135),
+                                                              color: Color
+                                                                  .fromARGB(
+                                                                      255,
+                                                                      51,
+                                                                      90,
+                                                                      135),
                                                               fontSize: 13,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .w600),
                                                         ))
                                                   ],
-                                                )
-                                              ],
-                                            ),
+                                                ),
+                                              )
+                                            ],
                                           ),
-                                        ]),
-                                      ),
-                                    ],
-                                  ),
-                                )),
-                            const SizedBox(
-                              height: 0,
+                                        ),
+                                        AnimatedOpacity(
+                                          duration:
+                                              const Duration(milliseconds: 500),
+                                          opacity: visibleContainerIndex == 2
+                                              ? 1.0
+                                              : 0.0,
+                                          child: Column(
+                                            children: [
+                                              Text(
+                                                widget.level,
+                                                style: const TextStyle(
+                                                    fontSize: 16,
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                              ),
+                                              const SizedBox(
+                                                height: 40,
+                                              ),
+                                              Container(
+                                                height: 40,
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.75,
+                                                decoration: BoxDecoration(
+                                                    color:
+                                                        const Color(0xff006ce7),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            1)),
+                                                child: Center(
+                                                    child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(4.0),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Stack(
+                                                        children: [
+                                                          Container(
+                                                            height: 17,
+                                                            width: 30,
+                                                            decoration:
+                                                                const BoxDecoration(
+                                                              image:
+                                                                  DecorationImage(
+                                                                      image:
+                                                                          AssetImage(
+                                                                'assets/images/smarticon.png',
+                                                                // height: 30,
+                                                                // width: 40,
+                                                                // color: const Color
+                                                                //     .fromARGB(
+                                                                //     255,
+                                                                //     236,
+                                                                //     236,
+                                                                //     236)
+                                                                // )
+                                                              )),
+                                                              // child: SvgPicture.asset(
+                                                              //     'assets/images/smarticon.png',
+                                                              //     height: 30,
+                                                              //     width: 40,
+                                                              //     color: const Color
+                                                              //         .fromARGB(
+                                                              //         255,
+                                                              //         236,
+                                                              //         236,
+                                                              //         236)
+                                                              //         ),
+                                                            ),
+                                                          )
+                                                        ],
+                                                      ),
+                                                      const SizedBox(
+                                                        width: 8,
+                                                      ),
+                                                      const FittedBox(
+                                                        child: Text(
+                                                          "View Barcode",
+                                                          style: TextStyle(
+                                                              fontSize: 13,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              color: Color
+                                                                  .fromARGB(
+                                                                      255,
+                                                                      236,
+                                                                      236,
+                                                                      236)),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                )),
+                                              ),
+                                              const SizedBox(
+                                                height: 30,
+                                              ),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  GestureDetector(
+                                                      onTap: () {
+                                                        Navigator.of(context)
+                                                            .push(
+                                                                MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              const TicketDetails(),
+                                                        ));
+                                                      },
+                                                      child: const Text(
+                                                        "Ticket Details",
+                                                        style: TextStyle(
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    51,
+                                                                    90,
+                                                                    135),
+                                                            fontSize: 13,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w600),
+                                                      ))
+                                                ],
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                        AnimatedOpacity(
+                                          duration:
+                                              const Duration(milliseconds: 500),
+                                          opacity: visibleContainerIndex == 3
+                                              ? 1.0
+                                              : 0.0,
+                                          child: Column(
+                                            children: [
+                                              Container(
+                                                // color: Colors.red,
+                                                child: Column(
+                                                  children: [
+                                                    SizedBox(
+                                                        height: 25,
+                                                        width: 25,
+                                                        child: Image.asset(
+                                                          "assets/images/verified.png",
+                                                          color: Colors.black,
+                                                        )),
+                                                    const SizedBox(
+                                                      height: 10,
+                                                    ),
+                                                    const Text(
+                                                      "Your tickets aren't quite ready yet.",
+                                                      style: TextStyle(
+                                                          fontSize: 15,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                    const Text(
+                                                      "Please check back later",
+                                                      style: TextStyle(
+                                                          fontSize: 15,
+                                                          fontWeight:
+                                                              FontWeight.w500),
+                                                    ),
+                                                    const SizedBox(
+                                                      height: 50,
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                              // const SizedBox(
+                                              //   height: 30,
+                                              // ),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 35),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    const Text(
+                                                      "View Barcode",
+                                                      style: TextStyle(
+                                                          color: Color.fromARGB(
+                                                              255, 51, 90, 135),
+                                                          fontSize: 13,
+                                                          fontWeight:
+                                                              FontWeight.w600),
+                                                    ),
+                                                    const Spacer(),
+                                                    GestureDetector(
+                                                        onTap: () {
+                                                          Navigator.of(context)
+                                                              .push(
+                                                                  MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                const TicketDetails(),
+                                                          ));
+                                                        },
+                                                        child: const Text(
+                                                          "Ticket Details",
+                                                          style: TextStyle(
+                                                              color: Color
+                                                                  .fromARGB(
+                                                                      255,
+                                                                      51,
+                                                                      90,
+                                                                      135),
+                                                              fontSize: 13,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600),
+                                                        ))
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        AnimatedOpacity(
+                                          duration:
+                                              const Duration(milliseconds: 500),
+                                          opacity: visibleContainerIndex == 0
+                                              ? 1.0
+                                              : 0.0,
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              Text(
+                                                widget.level,
+                                                style: const TextStyle(
+                                                    fontSize: 16,
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                              ),
+                                              const SizedBox(
+                                                height: 40,
+                                              ),
+                                              Container(
+                                                height: 40,
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.75,
+                                                decoration: BoxDecoration(
+                                                    color:
+                                                        const Color(0xff006ce7),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            1)),
+                                                child: Center(
+                                                    child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(4.0),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Stack(
+                                                        children: [
+                                                          Container(
+                                                            height: 17,
+                                                            width: 30,
+                                                            decoration:
+                                                                const BoxDecoration(
+                                                              image:
+                                                                  DecorationImage(
+                                                                      image:
+                                                                          AssetImage(
+                                                                'assets/images/smarticon.png',
+                                                              )),
+                                                            ),
+                                                          )
+                                                        ],
+                                                      ),
+                                                      const SizedBox(
+                                                        width: 8,
+                                                      ),
+                                                      const FittedBox(
+                                                        child: Text(
+                                                          "View Ticket",
+                                                          style: TextStyle(
+                                                              fontSize: 13,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              color: Color
+                                                                  .fromARGB(
+                                                                      255,
+                                                                      236,
+                                                                      236,
+                                                                      236)),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                )),
+                                              ),
+                                              const SizedBox(
+                                                height: 30,
+                                              ),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  GestureDetector(
+                                                      onTap: () {
+                                                        Navigator.of(context)
+                                                            .push(
+                                                                MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              const TicketDetails(),
+                                                        ));
+                                                      },
+                                                      child: const Text(
+                                                        "Ticket Details",
+                                                        style: TextStyle(
+                                                            color: const Color
+                                                                .fromARGB(255,
+                                                                51, 90, 135),
+                                                            fontSize: 13,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w600),
+                                                      ))
+                                                ],
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ]),
+                                    ),
+                                  ],
+                                ),
+                              )),
+                          const SizedBox(
+                            height: 0,
+                          ),
+                          Container(
+                            width: MediaQuery.of(context).size.width,
+                            height: MediaQuery.of(context).size.height * 0.04,
+                            decoration: const BoxDecoration(
+                              borderRadius: BorderRadius.only(
+                                  bottomLeft: Radius.circular(8),
+                                  bottomRight: Radius.circular(8)),
+                              color: Color(0xff0361cb),
                             ),
-                            Container(
-                              width: MediaQuery.of(context).size.width,
-                              height: MediaQuery.of(context).size.height * 0.04,
-                              decoration: const BoxDecoration(
-                                borderRadius: BorderRadius.only(
-                                    bottomLeft: Radius.circular(8),
-                                    bottomRight: Radius.circular(8)),
-                                color: Color(0xff0361cb),
-                              ),
-                            ),
-                          ],
-                        ),
-                        // child: Image.asset(
-                        //   images[index % images.length],
-                        //   fit: BoxFit.cover,
-                        // ),
+                          ),
+                        ],
                       ),
+                      // child: Image.asset(
+                      //   images[index % images.length],
+                      //   fit: BoxFit.cover,
+                      // ),
+                    ),
+                  );
+                },
+              ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              for (var i = 0; i < widget.number_of_ticket; i++)
+                buildIndicator(currentIndex == i)
+            ]),
+            const SizedBox(
+              height: 15,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    // Navigator.of(context).pop();
+                    _showBottomSheet1(
+                      context,
                     );
                   },
-                ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                for (var i = 0; i < widget.number_of_ticket; i++)
-                  buildIndicator(currentIndex == i)
-              ]),
-              const SizedBox(
-                height: 20,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      // Navigator.of(context).pop();
-                      _showBottomSheet1(
-                        context,
-                      );
-                    },
-                    child: Container(
-                      height: 50,
-                      width: MediaQuery.of(context).size.width * 0.42,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: const Color(0xff0361cb),
-                      ),
-                      child: const Center(
-                          child: Text(
-                        "Transfer",
-                        style: TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.w700),
-                      )),
-                    ),
-                  ),
-                  Container(
+                  child: Container(
                     height: 50,
                     width: MediaQuery.of(context).size.width * 0.42,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      color: Colors.grey.shade200,
+                      color: const Color(0xff0361cb),
                     ),
                     child: const Center(
                         child: Text(
-                      "Sell",
+                      "Transfer",
                       style: TextStyle(
                           color: Colors.white, fontWeight: FontWeight.w700),
                     )),
-                  )
-                ],
-              )
-            ],
-          ),
+                  ),
+                ),
+                Container(
+                  height: 50,
+                  width: MediaQuery.of(context).size.width * 0.42,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: const Color(0xff0361cb),
+                  ),
+                  child: const Center(
+                      child: Text(
+                    "Sell",
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.w700),
+                  )),
+                )
+              ],
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Expanded(
+              child: Container(
+                color: Colors.red,
+              ),
+            )
+          ],
         ),
       ),
     );
