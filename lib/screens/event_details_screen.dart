@@ -1247,9 +1247,54 @@ class _EventDetailsState extends State<EventDetails> {
               const SizedBox(
                 height: 15,
               ),
-              Divider(
-                color: Colors.grey.shade200,
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Container(
+                  height: 90,
+                  width: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5),
+                    border: Border.all(color: Colors.black54),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Row(
+                     
+                      children: [
+                        Column(
+                          children: [
+                            Container(
+                              height: 30,
+                              width: 30,
+                              child: const Icon(Icons.info_outline_rounded, color: Colors.grey,),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(width: 7,),
+                         const Column(
+                          children: [
+                            Expanded(
+                              child: SizedBox(
+                                // color: Colors.black,
+                                child: FittedBox(
+                                  child: Text("Only transfer tickets to people you know and\ntrust to ensure everyone stays safe and\nsocially distanced.",
+                                  style: TextStyle(
+                                    color: Colors.black87,
+                                    fontSize: 18,
+                                  ),
+                                  ),
+                                ),
+           
+                              ),
+                            )
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                ),
               ),
+             const SizedBox(height: 10,),
               Padding(
                 padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 5),
                 child: Row(
@@ -1310,74 +1355,77 @@ class _EventDetailsState extends State<EventDetails> {
                       children: [
                         SizedBox(
                           height: 82,
-                          child: ListView.builder(
-                            physics: const ClampingScrollPhysics(),
-                            shrinkWrap: true,
-                            scrollDirection: Axis.horizontal,
-                            itemCount: widget.number_of_ticket,
-                            itemBuilder: (BuildContext context, int index) =>
-                                Padding(
-                              padding: const EdgeInsets.only(right: 20),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.grey),
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(10))),
-                                height: 82,
-                                width: 80,
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      decoration: const BoxDecoration(
-                                          color: Color(0xff0361cb),
-                                          borderRadius: BorderRadius.vertical(
-                                            top: Radius.circular(9),
-                                          )),
-                                      height: 30,
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              const Text(
-                                                "SEAT ",
-                                                style: TextStyle(
-                                                    color: Colors.white),
-                                              ),
-                                              Text(
-                                                widget.seat == '1'
-                                                    ? ''
-                                                    : widget.seat == '-'
-                                                        ? widget.seat
-                                                        : (int.parse(widget
-                                                                    .seat) +
-                                                                index)
-                                                            .toString(),
-                                                style: const TextStyle(
-                                                    color: Colors.white),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Container(
-                                      color: Colors.transparent,
-                                      height: 50,
-                                      child: Center(
-                                        child: CustomCircleCheckbox(
-                                          isChecked: _checkboxStates[index],
-                                          onChanged: (bool? value) {
-                                            setstate1(() {
-                                              _checkboxStates[index] =
-                                                  value ?? false;
-                                            });
-                                          },
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: ListView.builder(
+                              physics: const ClampingScrollPhysics(),
+                              shrinkWrap: true,
+                              scrollDirection: Axis.horizontal,
+                              itemCount: widget.number_of_ticket,
+                              itemBuilder: (BuildContext context, int index) =>
+                                  Padding(
+                                padding: const EdgeInsets.only(right: 20),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      border: Border.all(color: Colors.grey),
+                                      borderRadius: const BorderRadius.all(
+                                          Radius.circular(10))),
+                                  height: 82,
+                                  width: 80,
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        decoration: const BoxDecoration(
+                                            color: Color(0xff0361cb),
+                                            borderRadius: BorderRadius.vertical(
+                                              top: Radius.circular(9),
+                                            )),
+                                        height: 30,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                const Text(
+                                                  "SEAT ",
+                                                  style: TextStyle(
+                                                      color: Colors.white),
+                                                ),
+                                                Text(
+                                                  widget.seat == '1'
+                                                      ? ''
+                                                      : widget.seat == '-'
+                                                          ? widget.seat
+                                                          : (int.parse(widget
+                                                                      .seat) +
+                                                                  index)
+                                                              .toString(),
+                                                  style: const TextStyle(
+                                                      color: Colors.white),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
                                         ),
                                       ),
-                                    )
-                                  ],
+                                      Container(
+                                        color: Colors.transparent,
+                                        height: 50,
+                                        child: Center(
+                                          child: CustomCircleCheckbox(
+                                            isChecked: _checkboxStates[index],
+                                            onChanged: (bool? value) {
+                                              setstate1(() {
+                                                _checkboxStates[index] =
+                                                    value ?? false;
+                                              });
+                                            },
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
@@ -1820,6 +1868,7 @@ class _EventDetailsState extends State<EventDetails> {
                 const SizedBox(
                   height: 15,
                 ),
+
                 const Text("First Name"),
                 transferTicketContainer(context,
                     text: "First Name", height: 40.0),
@@ -1939,7 +1988,7 @@ class _EventDetailsState extends State<EventDetails> {
                   ],
                 ),
                 const SizedBox(
-                  height: 400,
+                  height: 10,
                 )
               ],
             ),
@@ -1972,7 +2021,7 @@ Container transferTicketContainer(BuildContext context, {height, text}) {
         child: Padding(
           padding: const EdgeInsets.only(
             left: 8,
-            top: 16,
+            bottom: 8,
           ),
           child: TextField(
             cursorColor: Colors.black,
