@@ -3,8 +3,11 @@
 import 'dart:async';
 
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ticketmaster/screens/ticket_details_screen.dart';
 import 'package:ticketmaster/screens/widgets/ticket_pending_modal.dart';
@@ -91,6 +94,7 @@ class _EventDetailsState extends State<EventDetails> {
     'assets/images/event.jpg',
   ];
 
+  int bottomsheetvisible = 1;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -236,9 +240,64 @@ class _EventDetailsState extends State<EventDetails> {
                                             child: Padding(
                                               padding: const EdgeInsets.only(
                                                   top: 10.0),
-                                              child: FittedBox(
+                                              child: SizedBox(
+                                                width: 60,
+                                                child: FittedBox(
+                                                  child: Text(
+                                                    widget.section,
+                                                    style: const TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 20,
+                                                        fontWeight:
+                                                            FontWeight.w700),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    if (widget.row == '' && widget.seat == '1')
+                                      Expanded(
+                                        flex:
+                                            2, // Take the space of two containers
+                                        child: Container(
+                                          height: 50,
+                                          child: Center(
+                                              child: Text(
+                                            'General Admission',
+                                            style: TextStyle(
+                                                fontSize: 20,
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.bold),
+                                          )),
+                                        ),
+                                      )
+                                    else ...[
+                                      SizedBox(
+                                        height: 50,
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.2,
+                                        child: Stack(
+                                          children: [
+                                            const Align(
+                                              alignment: Alignment.topCenter,
+                                              child: Text(
+                                                "ROW",
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                            ),
+                                            Align(
+                                              alignment: Alignment.center,
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    top: 10.0),
                                                 child: Text(
-                                                  widget.section,
+                                                  widget.row,
                                                   style: const TextStyle(
                                                       color: Colors.white,
                                                       fontSize: 25,
@@ -247,83 +306,51 @@ class _EventDetailsState extends State<EventDetails> {
                                                 ),
                                               ),
                                             ),
-                                          ),
-                                        ],
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                    SizedBox(
-                                      height: 50,
-                                      width: MediaQuery.of(context).size.width *
-                                          0.2,
-                                      child: Stack(
-                                        children: [
-                                          const Align(
-                                            alignment: Alignment.topCenter,
-                                            child: Text(
-                                              "ROW",
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                          ),
-                                          Align(
-                                            alignment: Alignment.center,
-                                            child: Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 10.0),
+                                      SizedBox(
+                                        height: 50,
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.2,
+                                        child: Stack(
+                                          children: [
+                                            const Align(
+                                              alignment: Alignment.topCenter,
                                               child: Text(
-                                                widget.row,
-                                                style: const TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 25,
-                                                    fontWeight:
-                                                        FontWeight.w700),
+                                                "SEAT",
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 50,
-                                      width: MediaQuery.of(context).size.width *
-                                          0.2,
-                                      child: Stack(
-                                        children: [
-                                          const Align(
-                                            alignment: Alignment.topCenter,
-                                            child: Text(
-                                              "SEAT",
-                                              style: TextStyle(
-                                                color: Colors.white,
+                                            Align(
+                                              alignment: Alignment.center,
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    top: 10.0),
+                                                child: Text(
+                                                  widget.seat == '1'
+                                                      ? ''
+                                                      : widget.seat == '-'
+                                                          ? widget.seat
+                                                          : (int.parse(widget
+                                                                      .seat) +
+                                                                  index)
+                                                              .toString(),
+                                                  style: const TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 25,
+                                                      fontWeight:
+                                                          FontWeight.w700),
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                          Align(
-                                            alignment: Alignment.center,
-                                            child: Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 10.0),
-                                              child: Text(
-                                                widget.seat == '1'
-                                                    ? ''
-                                                    : widget.seat == '-'
-                                                        ? widget.seat
-                                                        : (int.parse(widget
-                                                                    .seat) +
-                                                                index)
-                                                            .toString(),
-                                                style: const TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 25,
-                                                    fontWeight:
-                                                        FontWeight.w700),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    )
+                                          ],
+                                        ),
+                                      )
+                                    ]
                                   ],
                                 ),
                               ),
@@ -1130,8 +1157,14 @@ class _EventDetailsState extends State<EventDetails> {
             ),
             Expanded(
               child: Container(
-                color: Colors.red,
-              ),
+                  width: MediaQuery.of(context).size.width * .9,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: Image.asset(
+                      'assets/images/map2.png',
+                      fit: BoxFit.cover,
+                    ),
+                  )),
             )
           ],
         ),
@@ -1176,243 +1209,435 @@ class _EventDetailsState extends State<EventDetails> {
       context: context,
       builder: (BuildContext context) {
         return StatefulBuilder(builder: (context, StateSetter setstate1) {
-          return FractionallySizedBox(
-            heightFactor: 0.63,
-            child: Scaffold(
-              body: Container(
-                decoration: const BoxDecoration(color: Colors.white),
-                // height: MediaQuery.of(context).size.height * 0.62,
-                child: Column(
-                  // shrinkWrap: true,
-                  // crossAxisAlignment: CrossAxisAlignment.start,
+          bool _isDoubleTap = false;
+          return bottomsheetvisible == 1
+              ? bottomsheet1(_checkboxStates, setstate1, context, _countChecked)
+              : bottomsheetvisible == 2
+                  ? bottomsheet2(setstate1, context, _isDoubleTap)
+                  : bottomsheetvisible == 3
+                      ? bottomsheet3(
+                          _checkboxStates, setstate1, context, _countChecked)
+                      : SizedBox();
+        });
+      },
+    );
+  }
+
+  FractionallySizedBox bottomsheet1(List<bool> _checkboxStates,
+      StateSetter setstate1, BuildContext context, int _countChecked()) {
+    return FractionallySizedBox(
+      heightFactor: 0.63,
+      child: Scaffold(
+        body: Container(
+          decoration: const BoxDecoration(color: Colors.white),
+          // height: MediaQuery.of(context).size.height * 0.62,
+          child: Column(
+            // shrinkWrap: true,
+            // crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(
+                height: 20,
+              ),
+              const Align(
+                  alignment: Alignment.center,
+                  child: Text('SELECT TICKETS TRANSFER TICKET')),
+              Divider(
+                color: Colors.grey.shade200,
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              Divider(
+                color: Colors.grey.shade200,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 5),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              "Sec ",
+                              style: TextStyle(
+                                  color: Colors.black.withOpacity(.7),
+                                  fontSize: 16),
+                            ),
+                            Text(
+                              '${widget.section},',
+                              style: TextStyle(
+                                  color: Colors.black.withOpacity(.7),
+                                  fontSize: 16),
+                            )
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Text(
+                              " Row ",
+                              style: TextStyle(
+                                  color: Colors.black.withOpacity(.7),
+                                  fontSize: 16),
+                            ),
+                            Text(
+                              widget.row,
+                              style: TextStyle(
+                                  color: Colors.black.withOpacity(.7),
+                                  fontSize: 16),
+                            )
+                          ],
+                        ),
+                      ],
+                    ),
+                    Text(
+                      "${widget.number_of_ticket.toString()} Tickets",
+                      style: TextStyle(
+                        color: Colors.black.withOpacity(.7),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.only(left: 16.0, right: 16.0, top: 15),
+                child: SingleChildScrollView(
+                  child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          height: 82,
+                          child: ListView.builder(
+                            physics: const ClampingScrollPhysics(),
+                            shrinkWrap: true,
+                            scrollDirection: Axis.horizontal,
+                            itemCount: widget.number_of_ticket,
+                            itemBuilder: (BuildContext context, int index) =>
+                                Padding(
+                              padding: const EdgeInsets.only(right: 20),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    border: Border.all(color: Colors.grey),
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(10))),
+                                height: 82,
+                                width: 80,
+                                child: Column(
+                                  children: [
+                                    Container(
+                                      decoration: const BoxDecoration(
+                                          color: Color(0xff0361cb),
+                                          borderRadius: BorderRadius.vertical(
+                                            top: Radius.circular(9),
+                                          )),
+                                      height: 30,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              const Text(
+                                                "SEAT ",
+                                                style: TextStyle(
+                                                    color: Colors.white),
+                                              ),
+                                              Text(
+                                                widget.seat == '1'
+                                                    ? ''
+                                                    : widget.seat == '-'
+                                                        ? widget.seat
+                                                        : (int.parse(widget
+                                                                    .seat) +
+                                                                index)
+                                                            .toString(),
+                                                style: const TextStyle(
+                                                    color: Colors.white),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Container(
+                                      color: Colors.transparent,
+                                      height: 50,
+                                      child: Center(
+                                        child: CustomCircleCheckbox(
+                                          isChecked: _checkboxStates[index],
+                                          onChanged: (bool? value) {
+                                            setstate1(() {
+                                              _checkboxStates[index] =
+                                                  value ?? false;
+                                            });
+                                          },
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ]),
+                ),
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              Divider(
+                color: Colors.grey.shade300,
+              ),
+              const Spacer(),
+              Column(
+                children: [
+                  Container(
+                    height: 45,
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade100,
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "${_countChecked()} Selected",
+                            style: TextStyle(
+                              color: Colors.black.withOpacity(.7),
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              // Navigator.of(context).pop();
+                              // _showBottomSheet2(
+                              //   context,
+                              // );
+                              setstate1(() {
+                                bottomsheetvisible = 3;
+                              });
+                            },
+                            child: Row(
+                              children: [
+                                Text(
+                                  "TRAN...ER TO",
+                                  style: TextStyle(
+                                    color:
+                                        const Color(0xff0361cb).withOpacity(.8),
+                                  ),
+                                ),
+                                const Icon(
+                                  Icons.keyboard_arrow_right,
+                                  color: Colors.grey,
+                                  size: 25,
+                                )
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                  Container(
+                    height: 35,
+                    width: MediaQuery.of(context).size.width,
+                    decoration: const BoxDecoration(
+                      color: Colors.black,
+                    ),
+                  ),
+                ],
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  FractionallySizedBox bottomsheet3(List<bool> _checkboxStates,
+      StateSetter setstate1, BuildContext context, int _countChecked()) {
+    return FractionallySizedBox(
+      heightFactor: 0.63,
+      child: Scaffold(
+        body: SafeArea(
+          child: Container(
+            decoration: const BoxDecoration(color: Colors.white),
+            // height: MediaQuery.of(context).size.height * 0.62,
+            child: Column(
+              // shrinkWrap: true,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              // crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Column(
                   children: [
                     const SizedBox(
                       height: 20,
                     ),
                     const Align(
                         alignment: Alignment.center,
-                        child: Text('SELECT TICKETS TRANSFER TICKET')),
+                        child: Text('TRANSFER TO')),
                     Divider(
                       color: Colors.grey.shade200,
                     ),
                     const SizedBox(
                       height: 15,
                     ),
-                    Divider(
-                      color: Colors.grey.shade200,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                          left: 16.0, right: 16.0, top: 5),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              Row(
-                                children: [
-                                  Text(
-                                    "Sec ",
-                                    style: TextStyle(
-                                        color: Colors.black.withOpacity(.7),
-                                        fontSize: 16),
-                                  ),
-                                  Text(
-                                    '${widget.section},',
-                                    style: TextStyle(
-                                        color: Colors.black.withOpacity(.7),
-                                        fontSize: 16),
-                                  )
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  Text(
-                                    " Row ",
-                                    style: TextStyle(
-                                        color: Colors.black.withOpacity(.7),
-                                        fontSize: 16),
-                                  ),
-                                  Text(
-                                    widget.row,
-                                    style: TextStyle(
-                                        color: Colors.black.withOpacity(.7),
-                                        fontSize: 16),
-                                  )
-                                ],
-                              ),
-                            ],
-                          ),
-                          Text(
-                            "${widget.number_of_ticket.toString()} Tickets",
-                            style: TextStyle(
-                              color: Colors.black.withOpacity(.7),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                          left: 16.0, right: 16.0, top: 15),
-                      child: SingleChildScrollView(
-                        child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(
-                                height: 82,
-                                child: ListView.builder(
-                                  physics: const ClampingScrollPhysics(),
-                                  shrinkWrap: true,
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: widget.number_of_ticket,
-                                  itemBuilder:
-                                      (BuildContext context, int index) =>
-                                          Padding(
-                                    padding: const EdgeInsets.only(right: 20),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                          border:
-                                              Border.all(color: Colors.grey),
-                                          borderRadius: const BorderRadius.all(
-                                              Radius.circular(10))),
-                                      height: 82,
-                                      width: 80,
-                                      child: Column(
-                                        children: [
-                                          Container(
-                                            decoration: const BoxDecoration(
-                                                color: Color(0xff0361cb),
-                                                borderRadius:
-                                                    BorderRadius.vertical(
-                                                  top: Radius.circular(9),
-                                                )),
-                                            height: 30,
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Row(
-                                                  children: [
-                                                    const Text(
-                                                      "SEAT ",
-                                                      style: TextStyle(
-                                                          color: Colors.white),
-                                                    ),
-                                                    Text(
-                                                      widget.seat == '1'
-                                                          ? ''
-                                                          : widget.seat == '-'
-                                                              ? widget.seat
-                                                              : (int.parse(widget
-                                                                          .seat) +
-                                                                      index)
-                                                                  .toString(),
-                                                      style: const TextStyle(
-                                                          color: Colors.white),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Container(
-                                            color: Colors.transparent,
-                                            height: 50,
-                                            child: Center(
-                                              child: CustomCircleCheckbox(
-                                                isChecked:
-                                                    _checkboxStates[index],
-                                                onChanged: (bool? value) {
-                                                  setstate1(() {
-                                                    _checkboxStates[index] =
-                                                        value ?? false;
-                                                  });
-                                                },
-                                              ),
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ]),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    Divider(
-                      color: Colors.grey.shade300,
-                    ),
-                    const Spacer(),
                     Column(
                       children: [
                         Container(
-                          height: 45,
-                          width: MediaQuery.of(context).size.width,
+                          width: MediaQuery.of(context).size.width * .8,
+                          height: 40,
                           decoration: BoxDecoration(
-                            color: Colors.grey.shade100,
+                              border: Border.all(color: Color(0xff0377e2))),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Text(
+                                'Select From Contacts',
+                                style: TextStyle(
+                                    color: Color(0xff0377e2),
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                              SizedBox(
+                                width: 7,
+                              ),
+                              Image.asset(
+                                'assets/images/contact.jpg',
+                                height: 25,
+                                width: 25,
+                                fit: BoxFit.scaleDown,
+                              )
+                            ],
                           ),
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.only(left: 10.0, right: 10.0),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            setstate1(() {
+                              bottomsheetvisible = 2;
+                            });
+                          },
+                          child: Container(
+                            width: MediaQuery.of(context).size.width * .8,
+                            height: 40,
+                            decoration: BoxDecoration(
+                                border: Border.all(color: Color(0xff0377e2))),
                             child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text(
-                                  "${_countChecked()} Selected",
+                                const Text(
+                                  'Manually Enter A Recipient',
                                   style: TextStyle(
-                                    color: Colors.black.withOpacity(.7),
-                                  ),
+                                      color: Color(0xff0377e2),
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500),
                                 ),
-                                GestureDetector(
-                                  onTap: () {
-                                    Navigator.of(context).pop();
-                                    _showBottomSheet2(
-                                      context,
-                                    );
-                                  },
-                                  child: Row(
-                                    children: [
-                                      Text(
-                                        "TRAN...ER TO",
-                                        style: TextStyle(
-                                          color: const Color(0xff0361cb)
-                                              .withOpacity(.8),
-                                        ),
-                                      ),
-                                      const Icon(
-                                        Icons.keyboard_arrow_right,
-                                        color: Colors.grey,
-                                        size: 25,
-                                      )
-                                    ],
-                                  ),
+                                SizedBox(
+                                  width: 7,
+                                ),
+                                SvgPicture.asset(
+                                  'assets/images/add-circle.svg',
+                                  color: Color(0xff0377e2),
+                                  height: 25,
+                                  width: 25,
+                                  fit: BoxFit.scaleDown,
                                 )
                               ],
                             ),
                           ),
                         ),
-                        Container(
-                          height: 35,
-                          width: MediaQuery.of(context).size.width,
-                          decoration: const BoxDecoration(
-                            color: Colors.black,
-                          ),
-                        ),
                       ],
-                    )
+                    ),
                   ],
                 ),
-              ),
+                Container(
+                    child: Column(
+                  children: [
+                    Container(
+                      height: 100,
+                      width: 100,
+                      decoration: BoxDecoration(
+                          color: Colors.grey.withOpacity(.1),
+                          borderRadius: BorderRadius.circular(100)),
+                      child: Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: SvgPicture.asset(
+                          'assets/images/send-paper.svg',
+                          height: 45,
+                          width: 45,
+                          fit: BoxFit.scaleDown,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 250,
+                      child: Text(
+                        'Transfer Ticket Via Email or Text Message',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    const SizedBox(
+                      width: 300,
+                      child: Text(
+                        'Select an Email or mobile number to transfer tickets to your recipient',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.normal),
+                      ),
+                    ),
+                  ],
+                )),
+                Container(
+                  child: Container(
+                    height: 45,
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade100,
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+                      child: GestureDetector(
+                        onTap: () {
+                          setstate1(() {
+                            bottomsheetvisible = 1;
+                          });
+                        },
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.arrow_back_ios,
+                              color: Color(0xff0377e2),
+                            ),
+                            Text(
+                              "BACK",
+                              style: TextStyle(
+                                color: Color(0xff0377e2),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                )
+              ],
             ),
-          );
-        });
-      },
+          ),
+        ),
+      ),
     );
   }
 
@@ -1425,305 +1650,302 @@ class _EventDetailsState extends State<EventDetails> {
       builder: (BuildContext context) {
         return StatefulBuilder(builder: (context, StateSetter setstate1) {
           bool _isDoubleTap = false;
-          return FractionallySizedBox(
-            heightFactor: 0.63,
-            child: Scaffold(
-              body: Container(
-                decoration: const BoxDecoration(color: Colors.white),
-                // height: MediaQuery.of(context).size.height * 0.62,
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: ListView(
-                    shrinkWrap: true,
-                    // crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Align(
-                          alignment: Alignment.center,
-                          child: Text('TRANSFER TICKET')),
-                      const Divider(),
-                      GestureDetector(
-                        onTap: () {
-                          setstate1(() {
-                            _isEditingNumberOfTicketSelected = true;
-                            _numberOfTicketSelectedEditingController.text =
-                                _numberOfTicketSelected;
-                          });
-                          setState(() {
-                            _isEditingNumberOfTicketSelected = true;
-                            _numberOfTicketSelectedEditingController.text =
-                                _numberOfTicketSelected;
-                          });
-                        },
-                        child: _isEditingNumberOfTicketSelected
-                            ? TextField(
-                                controller:
-                                    _numberOfTicketSelectedEditingController,
-                                style: const TextStyle(color: Colors.grey),
-                                onSubmitted: (newText) {
-                                  if (newText.isNotEmpty) {
-                                    _saveText(
-                                        newText, 'numberof_ticketselected');
-                                    setstate1(() {
-                                      _numberOfTicketSelected = newText;
-                                      _isEditingNumberOfTicketSelected = false;
-                                    });
-                                    setState(() {
-                                      _numberOfTicketSelected = newText;
-                                      _isEditingNumberOfTicketSelected = false;
-                                    });
-                                  } else {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                        content: Text(
-                                            'Ticket Price cannot be empty'),
-                                        backgroundColor: Colors.red,
-                                      ),
-                                    );
-                                  }
-                                },
-                              )
-                            : Text(
-                                _numberOfTicketSelected,
-                                style: const TextStyle(
-                                  color: Colors.black,
-                                ),
-                              ),
-                      ),
-                      // const Text("1 Ticket Selected"),
-                      // widget.number_of_ticket == 1
-                      //     ? Text(
-                      //         "${widget.number_of_ticket.toString()} Ticket Selected")
-                      //     : Text(
-                      //         "${widget.number_of_ticket.toString()} Tickets Selected"),
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      Row(
-                        children: [
-                          Row(
-                            children: [
-                              Text(
-                                "Sec ",
-                                style: TextStyle(
-                                    color: Colors.black.withOpacity(.4)),
-                              ),
-                              Text(
-                                '${widget.section} ,',
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.w600),
-                              )
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Text(
-                                "Row ",
-                                style: TextStyle(
-                                    color: Colors.black.withOpacity(.4)),
-                              ),
-                              Text(
-                                '${widget.row} ,',
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.w600),
-                              )
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Text(
-                                "Seat ",
-                                style: TextStyle(
-                                    color: Colors.black.withOpacity(.4)),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  setstate1(() {
-                                    _isEditingSeat = true;
-                                    _seatEditingController.text = _seat;
-                                  });
-                                  setState(() {
-                                    _isEditingSeat = true;
-                                    _seatEditingController.text = _seat;
-                                  });
-                                },
-                                child: _isEditingSeat
-                                    ? Container(
-                                        color: Colors.transparent,
-                                        width: 180,
-                                        child: TextField(
-                                          controller: _seatEditingController,
-                                          style: const TextStyle(
-                                              color: Colors.grey),
-                                          onSubmitted: (newText) {
-                                            if (newText.isNotEmpty) {
-                                              _saveText(newText, 'seat');
-                                              setstate1(() {
-                                                _seat = newText;
-                                                _isEditingSeat = false;
-                                              });
-                                              setState(() {
-                                                _seat = newText;
-                                                _isEditingSeat = false;
-                                              });
-                                            } else {
-                                              ScaffoldMessenger.of(context)
-                                                  .showSnackBar(
-                                                const SnackBar(
-                                                  content: Text(
-                                                      'Seat cannot be empty'),
-                                                  backgroundColor: Colors.red,
-                                                ),
-                                              );
-                                            }
-                                          },
-                                        ),
-                                      )
-                                    : Text(
-                                        _seat,
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.w600),
-                                      ),
-                              ),
-
-                              //  Text(
-                              //   widget.seat,
-                              //   style: const TextStyle(fontWeight: FontWeight.bold),
-                              // )
-                            ],
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      const Text("First Name"),
-                      transferTicketContainer(context,
-                          text: "First Name", height: 40.0),
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      const Text("Last Name"),
-                      const SizedBox(
-                        height: 3,
-                      ),
-                      transferTicketContainer(context,
-                          text: "Last Name", height: 40.0),
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      const Text("Email or Mobile Number"),
-                      const SizedBox(
-                        height: 3,
-                      ),
-                      transferTicketContainer(context,
-                          text: "Email or Mobile Number", height: 40.0),
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      const Text("Note"),
-                      const SizedBox(
-                        height: 3,
-                      ),
-                      Container(
-                          height: 120,
-                          width: MediaQuery.of(context).size.width,
-                          decoration: BoxDecoration(
-                              border: Border.all(color: Colors.black)),
-                          child: const Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 8),
-                            child: TextField(
-                              cursorColor: Colors.black,
-                              decoration: InputDecoration(
-                                  border: InputBorder.none,
-                                  focusedBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: Colors.transparent))),
-                            ),
-                          )),
-                      const SizedBox(
-                        height: 25,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.of(context).pop();
-                            },
-                            child: const Row(
-                              children: [
-                                Icon(
-                                  Icons.keyboard_arrow_left,
-                                  color: Color(0xff006ce7),
-                                ),
-                                Text(
-                                  "BACK",
-                                  style: TextStyle(
-                                    color: Color(0xff006ce7),
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              Timer(Duration(milliseconds: 300), () {
-                                if (!_isDoubleTap) {
-                                  Navigator.of(context).pop();
-                                  AwesomeDialog(
-                                    context: context,
-                                    headerAnimationLoop: false,
-                                    animType: AnimType.bottomSlide,
-                                    dialogType: DialogType.noHeader,
-                                    body:
-                                        const TicketTransferSuccessfullModal(),
-                                  ).show();
-                                }
-                              });
-                            },
-                            onDoubleTap: () {
-                              _isDoubleTap = true;
-                              Navigator.of(context).pop();
-                              AwesomeDialog(
-                                context: context,
-                                headerAnimationLoop: false,
-                                animType: AnimType.bottomSlide,
-                                dialogType: DialogType.noHeader,
-                                body: const TicketTransferPendinglModal(),
-                              ).show();
-                              Future.delayed(Duration(milliseconds: 300), () {
-                                _isDoubleTap =
-                                    false; // Reset the flag after the delay
-                              });
-                            },
-                            child: Container(
-                              height: 40,
-                              width: 210,
-                              decoration: const BoxDecoration(
-                                color: Color(0xff006ce7),
-                              ),
-                              child: Center(
-                                  child: Text(
-                                widget.number_of_ticket == 1
-                                    ? "Transfer Ticket"
-                                    : "Transfer Tickets",
-                                style: const TextStyle(color: Colors.white),
-                              )),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 400,
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          );
+          return bottomsheet2(setstate1, context, _isDoubleTap);
         });
       },
+    );
+  }
+
+  FractionallySizedBox bottomsheet2(
+      StateSetter setstate1, BuildContext context, bool _isDoubleTap) {
+    return FractionallySizedBox(
+      heightFactor: 0.63,
+      child: Scaffold(
+        body: Container(
+          decoration: const BoxDecoration(color: Colors.white),
+          // height: MediaQuery.of(context).size.height * 0.62,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: ListView(
+              shrinkWrap: true,
+              // crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Align(
+                    alignment: Alignment.center,
+                    child: Text('TRANSFER TICKET')),
+                const Divider(),
+                GestureDetector(
+                  onTap: () {
+                    setstate1(() {
+                      _isEditingNumberOfTicketSelected = true;
+                      _numberOfTicketSelectedEditingController.text =
+                          _numberOfTicketSelected;
+                    });
+                    setState(() {
+                      _isEditingNumberOfTicketSelected = true;
+                      _numberOfTicketSelectedEditingController.text =
+                          _numberOfTicketSelected;
+                    });
+                  },
+                  child: _isEditingNumberOfTicketSelected
+                      ? TextField(
+                          controller: _numberOfTicketSelectedEditingController,
+                          style: const TextStyle(color: Colors.grey),
+                          onSubmitted: (newText) {
+                            if (newText.isNotEmpty) {
+                              _saveText(newText, 'numberof_ticketselected');
+                              setstate1(() {
+                                _numberOfTicketSelected = newText;
+                                _isEditingNumberOfTicketSelected = false;
+                              });
+                              setState(() {
+                                _numberOfTicketSelected = newText;
+                                _isEditingNumberOfTicketSelected = false;
+                              });
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('Ticket Price cannot be empty'),
+                                  backgroundColor: Colors.red,
+                                ),
+                              );
+                            }
+                          },
+                        )
+                      : Text(
+                          _numberOfTicketSelected,
+                          style: const TextStyle(
+                            color: Colors.black,
+                          ),
+                        ),
+                ),
+                // const Text("1 Ticket Selected"),
+                // widget.number_of_ticket == 1
+                //     ? Text(
+                //         "${widget.number_of_ticket.toString()} Ticket Selected")
+                //     : Text(
+                //         "${widget.number_of_ticket.toString()} Tickets Selected"),
+                const SizedBox(
+                  height: 15,
+                ),
+                Row(
+                  children: [
+                    Row(
+                      children: [
+                        Text(
+                          "Sec ",
+                          style: TextStyle(color: Colors.black.withOpacity(.4)),
+                        ),
+                        Text(
+                          '${widget.section} ,',
+                          style: const TextStyle(fontWeight: FontWeight.w600),
+                        )
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          "Row ",
+                          style: TextStyle(color: Colors.black.withOpacity(.4)),
+                        ),
+                        Text(
+                          '${widget.row} ,',
+                          style: const TextStyle(fontWeight: FontWeight.w600),
+                        )
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          "Seat ",
+                          style: TextStyle(color: Colors.black.withOpacity(.4)),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            setstate1(() {
+                              _isEditingSeat = true;
+                              _seatEditingController.text = _seat;
+                            });
+                            setState(() {
+                              _isEditingSeat = true;
+                              _seatEditingController.text = _seat;
+                            });
+                          },
+                          child: _isEditingSeat
+                              ? Container(
+                                  color: Colors.transparent,
+                                  width: 180,
+                                  child: TextField(
+                                    controller: _seatEditingController,
+                                    style: const TextStyle(color: Colors.grey),
+                                    onSubmitted: (newText) {
+                                      if (newText.isNotEmpty) {
+                                        _saveText(newText, 'seat');
+                                        setstate1(() {
+                                          _seat = newText;
+                                          _isEditingSeat = false;
+                                        });
+                                        setState(() {
+                                          _seat = newText;
+                                          _isEditingSeat = false;
+                                        });
+                                      } else {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          const SnackBar(
+                                            content:
+                                                Text('Seat cannot be empty'),
+                                            backgroundColor: Colors.red,
+                                          ),
+                                        );
+                                      }
+                                    },
+                                  ),
+                                )
+                              : Text(
+                                  _seat,
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.w600),
+                                ),
+                        ),
+
+                        //  Text(
+                        //   widget.seat,
+                        //   style: const TextStyle(fontWeight: FontWeight.bold),
+                        // )
+                      ],
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                const Text("First Name"),
+                transferTicketContainer(context,
+                    text: "First Name", height: 40.0),
+                const SizedBox(
+                  height: 15,
+                ),
+                const Text("Last Name"),
+                const SizedBox(
+                  height: 3,
+                ),
+                transferTicketContainer(context,
+                    text: "Last Name", height: 40.0),
+                const SizedBox(
+                  height: 15,
+                ),
+                const Text("Email or Mobile Number"),
+                const SizedBox(
+                  height: 3,
+                ),
+                transferTicketContainer(context,
+                    text: "Email or Mobile Number", height: 40.0),
+                const SizedBox(
+                  height: 15,
+                ),
+                const Text("Note"),
+                const SizedBox(
+                  height: 3,
+                ),
+                Container(
+                    height: 120,
+                    width: MediaQuery.of(context).size.width,
+                    decoration:
+                        BoxDecoration(border: Border.all(color: Colors.black)),
+                    child: const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 8),
+                      child: TextField(
+                        cursorColor: Colors.black,
+                        decoration: InputDecoration(
+                            border: InputBorder.none,
+                            focusedBorder: UnderlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Colors.transparent))),
+                      ),
+                    )),
+                const SizedBox(
+                  height: 25,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        setstate1(() {
+                          bottomsheetvisible = 1;
+                        });
+                      },
+                      child: const Row(
+                        children: [
+                          Icon(
+                            Icons.keyboard_arrow_left,
+                            color: Color(0xff006ce7),
+                          ),
+                          Text(
+                            "BACK",
+                            style: TextStyle(
+                              color: Color(0xff006ce7),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Timer(Duration(milliseconds: 300), () {
+                          if (!_isDoubleTap) {
+                            Navigator.of(context).pop();
+                            AwesomeDialog(
+                              context: context,
+                              headerAnimationLoop: false,
+                              animType: AnimType.bottomSlide,
+                              dialogType: DialogType.noHeader,
+                              body: const TicketTransferSuccessfullModal(),
+                            ).show();
+                          }
+                        });
+                      },
+                      onDoubleTap: () {
+                        _isDoubleTap = true;
+                        Navigator.of(context).pop();
+                        AwesomeDialog(
+                          context: context,
+                          headerAnimationLoop: false,
+                          animType: AnimType.bottomSlide,
+                          dialogType: DialogType.noHeader,
+                          body: const TicketTransferPendinglModal(),
+                        ).show();
+                        Future.delayed(Duration(milliseconds: 300), () {
+                          _isDoubleTap =
+                              false; // Reset the flag after the delay
+                        });
+                      },
+                      child: Container(
+                        height: 40,
+                        width: 210,
+                        decoration: const BoxDecoration(
+                          color: Color(0xff006ce7),
+                        ),
+                        child: Center(
+                            child: Text(
+                          widget.number_of_ticket == 1
+                              ? "Transfer Ticket"
+                              : "Transfer Tickets",
+                          style: const TextStyle(color: Colors.white),
+                        )),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 400,
+                )
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 
