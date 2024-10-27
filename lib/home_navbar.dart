@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ticketmaster/home.dart';
 import 'package:ticketmaster/providers/event_providers.dart';
+import 'package:ticketmaster/screens/Discover_page.dart';
 import 'package:ticketmaster/screens/account.dart';
 import 'package:ticketmaster/screens/login_screen.dart';
 
@@ -18,11 +19,11 @@ class HomeNavBar extends StatefulWidget {
 class _HomeNavBarState extends State<HomeNavBar> {
   int _currentIndex = 0;
   final tabs = [
-    Container(),
+    const DiscoverPage(),
     Container(),
     const HomePage(),
     Container(),
-    Account(),
+    const Account(),
   ];
   Timer? _usageTimer;
 
@@ -128,18 +129,40 @@ class _HomeNavBarState extends State<HomeNavBar> {
             fontSize: 12,
           ),
           items: [
-            BottomNavigationBarItem(
-              icon: Padding(
-                padding: const EdgeInsets.only(bottom: 5),
-                child: Container(
-                  width: 20,
-                  height: 20,
-                  decoration: const BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage(
-                          'assets/images/search.png',
-                        ),
-                        fit: BoxFit.cover),
+           BottomNavigationBarItem(
+              icon: ColorFiltered(
+                colorFilter:
+                    const ColorFilter.mode(Colors.grey, BlendMode.srcIn),
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 5),
+                  child: Container(
+                    width: 25,
+                    height: 25,
+                    decoration: const BoxDecoration(
+                      image: DecorationImage(
+                          image: AssetImage(
+                            'assets/images/search.png',
+                          ),
+                          fit: BoxFit.cover),
+                    ),
+                  ),
+                ),
+              ),
+              activeIcon: ColorFiltered(
+                colorFilter:
+                    const ColorFilter.mode(Color(0xff0267d3), BlendMode.srcIn),
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 5),
+                  child: Container(
+                    width: 25,
+                    height: 25,
+                    decoration: const BoxDecoration(
+                      image: DecorationImage(
+                          image: AssetImage(
+                            'assets/images/search.png',
+                          ),
+                          fit: BoxFit.cover),
+                    ),
                   ),
                 ),
               ),
