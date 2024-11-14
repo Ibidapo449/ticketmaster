@@ -8,6 +8,7 @@ import 'package:ticketmaster/providers/event_providers.dart';
 import 'package:ticketmaster/screens/Discover_page.dart';
 import 'package:ticketmaster/screens/account.dart';
 import 'package:ticketmaster/screens/login_screen.dart';
+import 'package:ticketmaster/screens/sell_page.dart';
 
 class HomeNavBar extends StatefulWidget {
   const HomeNavBar({super.key});
@@ -22,7 +23,7 @@ class _HomeNavBarState extends State<HomeNavBar> {
     const DiscoverPage(),
     Container(),
     const HomePage(),
-    Container(),
+    const SellPage(),
     const Account(),
   ];
   Timer? _usageTimer;

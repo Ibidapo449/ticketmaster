@@ -130,7 +130,8 @@ class _UpcomingState extends State<Upcoming> {
               image: tickets[index]['image'],
               ticketType: tickets[index]['ticketType'],
               level: tickets[index]['level'],
-              number_of_ticket: tickets[index]['numberOfTicket']),
+              number_of_ticket: tickets[index]['numberOfTicket']
+              ),
         ));
       },
       child: Container(

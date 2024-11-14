@@ -46,11 +46,67 @@ class EventDetails extends StatefulWidget {
 }
 
 class _EventDetailsState extends State<EventDetails> {
+  Duration remainingTime = Duration.zero;
+  Timer? timer;
+
+  Future<void> loadCountdown() async {
+    final prefs = await SharedPreferences.getInstance();
+    final endTimeMillis = prefs.getInt('countdownEndTime') ?? 0;
+
+    if (endTimeMillis != 0) {
+      final endTime = DateTime.fromMillisecondsSinceEpoch(endTimeMillis);
+      final currentTime = DateTime.now();
+      setState(() {
+        remainingTime = endTime.difference(currentTime);
+      });
+
+      if (remainingTime.inSeconds > 0) {
+        startTimer();
+      } else {
+        setState(() {
+          remainingTime = Duration.zero;
+        });
+      }
+    }
+  }
+
+  void startTimer() {
+    timer = Timer.periodic(Duration(seconds: 1), (_) {
+      if (remainingTime.inSeconds > 0) {
+        setState(() {
+          remainingTime -= Duration(seconds: 1);
+        });
+      } else {
+        timer?.cancel();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
+  }
+
+  Widget buildTimeCard(int time, String label) {
+    return Column(
+     
+      children: [
+        Text(
+          '$time',
+          style: TextStyle(fontSize: 32, fontWeight: FontWeight.w600),
+        ),
+       
+        Text(label, style: TextStyle(fontSize: 14)),
+      ],
+    );
+  }
+
   int visibleContainerIndex = 0;
 
   void switchContainer() {
     setState(() {
-      visibleContainerIndex = (visibleContainerIndex + 1) % 5;
+      visibleContainerIndex = (visibleContainerIndex + 1) % 6;
     });
   }
 
@@ -72,6 +128,7 @@ class _EventDetailsState extends State<EventDetails> {
   void initState() {
     super.initState();
     _loadSavedText();
+    loadCountdown();
   }
 
   _loadSavedText() async {
@@ -97,6 +154,10 @@ class _EventDetailsState extends State<EventDetails> {
   int bottomsheetvisible = 1;
   @override
   Widget build(BuildContext context) {
+    final days = remainingTime.inDays;
+    final hours = remainingTime.inHours % 24;
+    final minutes = remainingTime.inMinutes % 60;
+    final seconds = remainingTime.inSeconds % 60;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xff1f262e),
@@ -481,6 +542,61 @@ class _EventDetailsState extends State<EventDetails> {
                                         switchContainer();
                                       },
                                       child: Stack(children: [
+                                        AnimatedOpacity(
+                                          duration:
+                                              const Duration(milliseconds: 500),
+                                          opacity: visibleContainerIndex == 5
+                                              ? 1.0
+                                              : 0.0,
+                                          child: Container(
+                                            padding: EdgeInsets.all(20),
+                                            decoration: BoxDecoration(
+                                              color: Colors.transparent,
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                            ),
+                                            child: Column(
+                                              children: [
+                                                const Text('Ticket will be ready in', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),),
+                                                const SizedBox(height: 5,),
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    buildTimeCard(days, "DAY"),
+                                                    SizedBox(width: 27),
+                                                    buildTimeCard(hours, "HOUR"),
+                                                    SizedBox(width: 27),
+                                                    buildTimeCard(
+                                                        minutes, "MIN"),
+                                                    SizedBox(width: 27),
+                                                    buildTimeCard(
+                                                        seconds, "SEC"),
+                                                  ],
+                                                ),
+                                                SizedBox(height: 30,),
+                                                GestureDetector(
+                                                    onTap: () {
+                                                      Navigator.of(context)
+                                                          .push(
+                                                              MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            const TicketDetails(),
+                                                      ));
+                                                    },
+                                                    child: const Text(
+                                                      "Ticket Details",
+                                                      style: TextStyle(
+                                                          color: Color.fromARGB(
+                                                              255, 51, 90, 135),
+                                                          fontSize: 13,
+                                                          fontWeight:
+                                                              FontWeight.w600),
+                                                    ))
+                                              ],
+                                            ),
+                                          ),
+                                        ),
                                         AnimatedOpacity(
                                           duration:
                                               const Duration(milliseconds: 500),
@@ -1259,32 +1375,36 @@ class _EventDetailsState extends State<EventDetails> {
                   child: Padding(
                     padding: const EdgeInsets.all(12.0),
                     child: Row(
-                     
                       children: [
                         Column(
                           children: [
                             Container(
                               height: 30,
                               width: 30,
-                              child: const Icon(Icons.info_outline_rounded, color: Colors.grey,),
+                              child: const Icon(
+                                Icons.info_outline_rounded,
+                                color: Colors.grey,
+                              ),
                             ),
                           ],
                         ),
-                        const SizedBox(width: 7,),
-                         const Column(
+                        const SizedBox(
+                          width: 7,
+                        ),
+                        const Column(
                           children: [
                             Expanded(
                               child: SizedBox(
                                 // color: Colors.black,
                                 child: FittedBox(
-                                  child: Text("Only transfer tickets to people you know and\ntrust to ensure everyone stays safe and\nsocially distanced.",
-                                  style: TextStyle(
-                                    color: Colors.black87,
-                                    fontSize: 18,
-                                  ),
+                                  child: Text(
+                                    "Only transfer tickets to people you know and\ntrust to ensure everyone stays safe and\nsocially distanced.",
+                                    style: TextStyle(
+                                      color: Colors.black87,
+                                      fontSize: 18,
+                                    ),
                                   ),
                                 ),
-           
                               ),
                             )
                           ],
@@ -1294,7 +1414,9 @@ class _EventDetailsState extends State<EventDetails> {
                   ),
                 ),
               ),
-             const SizedBox(height: 10,),
+              const SizedBox(
+                height: 10,
+              ),
               Padding(
                 padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 5),
                 child: Row(
