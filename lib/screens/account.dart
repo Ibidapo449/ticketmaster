@@ -1,7 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:ticketmaster/screens/admin.dart';
+
+import '../providers/event_providers.dart';
 
 class Account extends StatefulWidget {
   const Account({super.key});
@@ -43,6 +47,7 @@ class _AccountState extends State<Account> {
   void initState() {
     super.initState();
     _loadSavedText();
+    getSwitch();
   }
 
   _loadSavedText() async {
@@ -183,7 +188,7 @@ class _AccountState extends State<Account> {
                         const SizedBox(
                           height: 10,
                         ),
-                        switchRow(
+                        switchRow2(
                             image: 'assets/images/notification.png',
                             text: "Receive Notifications?"),
                       ],
@@ -440,6 +445,75 @@ class _AccountState extends State<Account> {
     );
   }
 
+  Row switchRow2({required String image, required String text}) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Row(
+          children: [
+            Container(
+              width: 25,
+              height: 25,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage(
+                      image,
+                    ),
+                    fit: BoxFit.cover),
+              ),
+            ),
+            const SizedBox(
+              width: 10,
+            ),
+            Text(
+              text,
+              style: const TextStyle(
+                  fontWeight: FontWeight.w400,
+                  color: Color(0xff1e252d),
+                  fontSize: 18),
+            )
+          ],
+        ),
+        CupertinoSwitch(
+          value: context.watch<EventProvider>().isSwitched2,
+          onChanged: (value) {
+            // setState(() {
+            //   isSwitched2 = value;
+            // });
+            // bool isSwitched = !isSwitched2;
+
+            changeSwitch(value);
+          },
+          activeColor: Colors.blue,
+        ),
+      ],
+    );
+  }
+
+  void changeSwitch(value) async {
+    bool switchVal = true;
+
+    final pref = await SharedPreferences.getInstance();
+    pref.setBool('LazyLoad', value);
+    switchVal = pref.getBool('LazyLoad') ?? true;
+    context.read<EventProvider>().getSwitch();
+    setState(() {
+      isSwitched2 = switchVal;
+    });
+  }
+
+  void getSwitch() async {
+    bool switchVal = true;
+
+    final pref = await SharedPreferences.getInstance();
+
+    switchVal = pref.getBool('LazyLoad') ?? true;
+    print(switchVal);
+    setState(() {
+      isSwitched2 = switchVal;
+    });
+  }
+
   Row locationSettingsRow(
       {required String image, required String text, required String textt}) {
     return Row(
@@ -527,10 +601,23 @@ class _AccountState extends State<Account> {
             )
           ],
         ),
-        const Icon(
-          Icons.keyboard_arrow_right,
-          color: Colors.grey,
-          size: 35,
+        InkWell(
+          onTap: () async {
+            final pref = await SharedPreferences.getInstance();
+            final email = pref.getString('accessAccount');
+            if (email == 'caleboruta.co@gmail.com') {
+              if (mounted) {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => AdminPage(),
+                ));
+              }
+            }
+          },
+          child: const Icon(
+            Icons.keyboard_arrow_right,
+            color: Colors.grey,
+            size: 35,
+          ),
         )
       ],
     );

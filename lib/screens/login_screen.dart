@@ -7,12 +7,13 @@ import 'package:ticketmaster/home_navbar.dart';
 class SignIn extends StatelessWidget {
   SignIn({super.key});
   TextEditingController _controller = TextEditingController();
-  void saveAccessTime() async {
+  void saveAccessTime(String email) async {
     final pref = await SharedPreferences.getInstance();
     DateTime currentTime = DateTime.now();
 
     // Add 5 minutes to the current time
     DateTime newTime = currentTime.add(Duration(days: 2));
+    pref.setString('accessAccount', email);
 
     pref.setString('accesstime', newTime.toString());
   }
@@ -69,14 +70,13 @@ class SignIn extends StatelessWidget {
                             // }
 
                             for (var doc in querySnapshot.docs) {
-                              print(doc.data());
                               Map<String, dynamic> response =
                                   doc.data() as Map<String, dynamic>;
                               if (response['access'] == true) {
                                 SmartDialog.dismiss();
                                 SmartDialog.showToast(
                                     'Account Validated Successfully');
-                                saveAccessTime();
+                                saveAccessTime(_controller.text.toLowerCase());
                                 Navigator.of(context).pushAndRemoveUntil(
                                   MaterialPageRoute(
                                     builder: (context) => const HomeNavBar(),

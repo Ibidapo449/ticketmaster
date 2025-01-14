@@ -505,7 +505,7 @@ class _TicketDetailsState extends State<TicketDetails> {
                                   ),
                                 ),
                         )
-                      : SizedBox(),
+                      : const SizedBox(),
                   _ticketInfo4 != '' || _isEditingTicketInfo
                       ? GestureDetector(
                           onLongPress: () {

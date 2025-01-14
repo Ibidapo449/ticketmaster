@@ -1,8 +1,6 @@
 // ignore_for_file: unused_local_variable, prefer_interpolation_to_compose_strings
 
 import 'dart:math';
-
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 // import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
@@ -13,6 +11,7 @@ import 'package:ticketmaster/model/event_model.dart';
 import 'package:ticketmaster/providers/event_providers.dart';
 import 'package:ticketmaster/screens/event_details_screen.dart';
 import 'package:ticketmaster/screens/form_screen.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
 
 class Upcoming extends StatefulWidget {
   const Upcoming({super.key});
@@ -25,10 +24,6 @@ class _UpcomingState extends State<Upcoming> {
   @override
   void initState() {
     super.initState();
-
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {});
-    context.read<EventProvider>().loadSavedData();
-
     gettoken();
   }
 
@@ -130,8 +125,7 @@ class _UpcomingState extends State<Upcoming> {
               image: tickets[index]['image'],
               ticketType: tickets[index]['ticketType'],
               level: tickets[index]['level'],
-              number_of_ticket: tickets[index]['numberOfTicket']
-              ),
+              number_of_ticket: tickets[index]['numberOfTicket']),
         ));
       },
       child: Container(
@@ -300,22 +294,13 @@ class _UpcomingState extends State<Upcoming> {
             child: CircularProgressIndicator(),
           );
         }
-        Future.delayed(Duration(milliseconds: 600), () {
-          if (loaded == false) {
-            context
-                .read<EventProvider>()
-                .getlength1(snapshot.data!.docs.length);
-          }
-          loaded = true;
-        });
-        //  print(dataIndex);
-        // Map ticket = snapshot.value as Map;
-        // // ignore: avoid_print
-
-        // ticket['key'] = snapshot.key;
-        // print(ticket);
-
-        if (snapshot.data!.docs.isEmpty) {
+        if (!eventprovider.loaded) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            eventprovider.getlength1(snapshot.data?.docs.length ?? 0);
+            eventprovider.updateLoaded(true);
+          });
+        }
+        if (snapshot.data?.docs.isEmpty ?? true) {
           return Padding(
             padding: const EdgeInsets.all(15),
             child: Container(
@@ -331,19 +316,10 @@ class _UpcomingState extends State<Upcoming> {
         } else {
           return ListView.builder(
             shrinkWrap: true,
-
             itemCount: snapshot.data!.docs.length,
             itemBuilder: (context, index) {
-              // checknewmessage(
-              //   snapshot.data!.docs.length,
-              // );
-              // bookindex = snapshot.data!.docs.length;
-
               return listItem(tickets: snapshot.data!.docs, index: index);
             },
-            // children: snapshot.data!.docs
-            //     .map((document) => _buildmessageItem(document))
-            //     .toList(),
           );
         }
       },

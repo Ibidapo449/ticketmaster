@@ -36,6 +36,19 @@ class _HomeNavBarState extends State<HomeNavBar> {
     // TODO: implement initState
     super.initState();
     _startUsageTimer();
+    context.read<EventProvider>().getCountry();
+    context.read<EventProvider>().getSwitch();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<EventProvider>().getMajorEvents();
+      context.read<EventProvider>().getMajorEventsSport();
+      context.read<EventProvider>().getMajorEventsConcert();
+      context.read<EventProvider>().getMajorEventsFamily();
+      context.read<EventProvider>().getMajorEventsComedy();
+      
+    context.read<EventProvider>().loadSavedData();
+
+
+    });
   }
 
   void _startUsageTimer() {
@@ -130,7 +143,7 @@ class _HomeNavBarState extends State<HomeNavBar> {
             fontSize: 12,
           ),
           items: [
-           BottomNavigationBarItem(
+            BottomNavigationBarItem(
               icon: ColorFiltered(
                 colorFilter:
                     const ColorFilter.mode(Colors.grey, BlendMode.srcIn),

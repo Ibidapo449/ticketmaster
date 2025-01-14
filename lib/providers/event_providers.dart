@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:ticketmaster/State/EventState.dart';
 import 'package:ticketmaster/model/event_model.dart';
 import 'package:ticketmaster/services/event_services.dart';
 import 'package:image_picker/image_picker.dart';
@@ -12,6 +13,15 @@ class EventProvider extends ChangeNotifier {
   final _service = EventService();
   bool isLoading = false;
   List<Event> _events = [];
+  EventResult eventResult = EventResult(Eventstate.isLoading, []);
+  bool isSwitched2 = false;
+  String countryOn = '';
+
+  EventResult eventResultConcert = EventResult(Eventstate.isLoading, []);
+  EventResult eventResultSport = EventResult(Eventstate.isLoading, []);
+  EventResult eventResultComedy = EventResult(Eventstate.isLoading, []);
+  EventResult eventResultFamily = EventResult(Eventstate.isLoading, []);
+  // EventResult eventResult = EventResult(Eventstate.isLoading, []);
   List<Event> _eventss = [];
   List<Event> _eventsss = [];
   List<Event> get events => _events;
@@ -29,6 +39,19 @@ class EventProvider extends ChangeNotifier {
   int numberOfTicket = 1;
   int token = 1;
   int datalength = 0;
+
+  bool _loaded = false;
+
+  bool get loaded => _loaded;
+
+  void updateLoaded(bool value) {
+    _loaded = value;
+    notifyListeners();
+  }
+
+  void setLength(int length) {
+    // Update the length of events
+  }
 
   void getlength1(len) {
     // datalength = 0;
@@ -67,6 +90,80 @@ class EventProvider extends ChangeNotifier {
 
     isLoading = false;
     loadSavedData();
+    notifyListeners();
+  }
+
+  Future<void> getMajorEvents() async {
+    eventResult = EventResult(Eventstate.isLoading, []);
+    notifyListeners();
+    final response = await _service.getEvent();
+
+    eventResult = response;
+
+    notifyListeners();
+  }
+
+  Future<void> getMajorEventsFamily() async {
+    eventResultFamily = EventResult(Eventstate.isLoading, []);
+    notifyListeners();
+    final response = await _service.getEventFamily();
+
+    eventResultFamily = response;
+
+    notifyListeners();
+  }
+
+  Future<void> getMajorEventsConcert() async {
+    eventResultConcert = EventResult(Eventstate.isLoading, []);
+    notifyListeners();
+    final response = await _service.getEventConcert();
+
+    eventResultConcert = response;
+
+    notifyListeners();
+  }
+
+  Future<void> getMajorEventsSport() async {
+    eventResultSport = EventResult(Eventstate.isLoading, []);
+    notifyListeners();
+    final response = await _service.getEventSport();
+
+    eventResultSport = response;
+
+    notifyListeners();
+  }
+
+  Future<void> getMajorEventsComedy() async {
+    eventResultComedy = EventResult(Eventstate.isLoading, []);
+    notifyListeners();
+    final response = await _service.getEventTypeComedy();
+
+    eventResultComedy = response;
+
+    notifyListeners();
+  }
+
+  void getSwitch() async {
+    bool switchVal = true;
+
+    final pref = await SharedPreferences.getInstance();
+
+    switchVal = pref.getBool('LazyLoad') ?? true;
+    print(switchVal);
+
+    isSwitched2 = switchVal;
+    notifyListeners();
+  }
+
+  void getCountry() async {
+    String switchVal = '';
+
+    final pref = await SharedPreferences.getInstance();
+
+    switchVal = pref.getString('CountryState') ?? 'Atlanta, GA';
+    print(switchVal);
+
+    countryOn = switchVal;
     notifyListeners();
   }
 
