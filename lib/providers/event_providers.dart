@@ -1,13 +1,16 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:image_downloader/image_downloader.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ticketmaster/State/EventState.dart';
 import 'package:ticketmaster/model/event_model.dart';
 import 'package:ticketmaster/services/event_services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_cropper/image_cropper.dart';
+import 'package:path_provider/path_provider.dart';
 
 class EventProvider extends ChangeNotifier {
   final _service = EventService();
@@ -193,18 +196,18 @@ class FormDataProvider extends ChangeNotifier {
   String imageurl = '';
   bool uploadimageerror = false;
   FormData _formData = FormData(
-    artistName: '',
-    eventName: '',
-    section: '',
-    row: '',
-    seat: '1',
-    date: '',
-    location: '',
-    time: '',
-    ticketType: '',
-    level: '',
-    numberOfTicket: 1,
-  );
+      artistName: '',
+      eventName: '',
+      section: '',
+      row: '',
+      seat: '1',
+      date: '',
+      location: '',
+      time: '',
+      ticketType: '',
+      level: '',
+      numberOfTicket: 1,
+      imageUrl: '');
 
   FormData get formData => _formData;
 
@@ -243,6 +246,60 @@ class FormDataProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> downloadAndUploadImage(String imageUrl) async {
+    try {
+      // Get the temporary directory
+      final Directory tempDir = await getTemporaryDirectory();
+      final String fileName = imageUrl.split('/').last;
+      final String filePath = '${tempDir.path}/$fileName';
+
+      // Download the image
+      final http.Response response = await http.get(Uri.parse(imageUrl));
+
+      if (response.statusCode == 200) {
+        // Save the file locally
+        final File file = File(filePath);
+        await file.writeAsBytes(response.bodyBytes);
+
+        print('Image downloaded to: $filePath');
+
+        // Upload to Cloudinary (Assuming you have a function for this)
+        // final String cloudinaryUrl = await uploadToCloudinary(file);
+        // print('Uploaded Image URL: $cloudinaryUrl');
+        uploadbook();
+        image = file;
+      } else {
+        print('Failed to download image. Status Code: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error downloading or uploading image: $e');
+      rethrow;
+    }
+    notifyListeners();
+  }
+
+  void downloadImage() async {
+    print('object');
+    try {
+      // Saved with this method.
+      var imageId = await ImageDownloader.downloadImage(
+          "https://encrypted-tbn1.gstatic.com/licensed-image?q=tbn:ANd9GcQiuHN2I6aB5HAq6TSJMEeYpwRc54t9h2fc-JhJpF6OUTUK9VB9E2zHWG3tMJzelVZMLIpM6oW9yEIyHkE");
+      if (imageId == null) {
+        return;
+      }
+
+      // Below is a method of obtaining saved image information.
+      var fileName = await ImageDownloader.findName(imageId);
+      var path = await ImageDownloader.findPath(imageId);
+      var size = await ImageDownloader.findByteSize(imageId);
+      var mimeType = await ImageDownloader.findMimeType(imageId);
+    } on PlatformException catch (error) {
+      print(error);
+    }
+  }
+
+// Your existing Cloudinary upload function
+
   Future<void> uploadbook() async {
     uploadimageerror = false;
 
@@ -274,6 +331,12 @@ class FormDataProvider extends ChangeNotifier {
   void deleteimage() {
     image = null;
 
+    notifyListeners();
+  }
+
+  void addimage(url) {
+    imageurl = url;
+    print(imageurl);
     notifyListeners();
   }
 }

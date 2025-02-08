@@ -67,6 +67,7 @@ class _UpcomingState extends State<Upcoming> {
           title: 'Delete Ticket',
           desc: 'Are you sure you want to delete ticket',
           btnCancelOnPress: () {
+            print(tickets[index]['image']);
             FormData newdata = FormData(
                 artistName: tickets[index]['artistName'],
                 eventName: tickets[index]['eventName'],
@@ -78,7 +79,8 @@ class _UpcomingState extends State<Upcoming> {
                 time: tickets[index]['time'],
                 ticketType: tickets[index]['ticketType'],
                 level: tickets[index]['level'],
-                numberOfTicket: tickets[index]['numberOfTicket']);
+                numberOfTicket: tickets[index]['numberOfTicket'],
+                imageUrl: tickets[index]['image']);
             context.read<FormDataProvider>().updateFormData(newdata);
             Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => FormScreen(),

@@ -136,6 +136,7 @@ class FormData {
   String level;
   String? image;
   int numberOfTicket;
+  String? imageUrl;
   // String email;
 
   FormData({
@@ -151,6 +152,7 @@ class FormData {
     required this.ticketType,
     required this.level,
     required this.numberOfTicket,
+    this.imageUrl,
 
     // required this.email
   });
@@ -167,7 +169,8 @@ class FormData {
       'image': image,
       'ticketType': ticketType,
       'level': level,
-      'numberOfTicket': numberOfTicket
+      'numberOfTicket': numberOfTicket,
+      'imageUrl': imageUrl
     };
   }
 }

@@ -38,32 +38,54 @@ class _FormScreenState extends State<FormScreen> {
   TextEditingController ticketTypeController = TextEditingController();
   TextEditingController levelController = TextEditingController();
   TextEditingController numberOfTicketsController = TextEditingController();
+  TextEditingController imageUrlController = TextEditingController();
   void _submitForm(BuildContext context) async {
     await Firebase.initializeApp();
     if (_formKey.currentState!.validate()) {
       // Form is valid, update form data using the provider
       SmartDialog.showLoading();
+      print(imageUrlController.text);
       FormData newFormData = FormData(
-        artistName: artistNameController.text,
-        eventName: eventNameController.text,
-        section: sectionController.text,
-        row: rowController.text,
-        seat: seatController.text.isEmpty ? '1' : seatController.text,
-        date: dateController.text,
-        location: locationController.text,
-        time: timeController.text,
-        ticketType: ticketTypeController.text,
-        level: levelController.text,
-        numberOfTicket: int.parse(numberOfTicketsController.text.isEmpty
-            ? '1'
-            : numberOfTicketsController.text),
-        // email: _emailController.text,
-      );
-      Provider.of<FormDataProvider>(context, listen: false).image == null
-          ? await context
-              .read<EventProvider>()
-              .getAllEvents(eventNameController.text, artistNameController.text)
-          : await context.read<FormDataProvider>().uploadbook();
+          artistName: artistNameController.text,
+          eventName: eventNameController.text,
+          section: sectionController.text,
+          row: rowController.text,
+          seat: seatController.text.isEmpty ? '1' : seatController.text,
+          date: dateController.text,
+          location: locationController.text,
+          time: timeController.text,
+          ticketType: ticketTypeController.text,
+          level: levelController.text,
+          numberOfTicket: int.parse(
+            numberOfTicketsController.text.isEmpty
+                ? '1'
+                : numberOfTicketsController.text,
+          ),
+          imageUrl: imageUrlController.text
+          // email: _emailController.text,
+          );
+      // if (imageUrlController.text.isNotEmpty) {
+      //   context.read<FormDataProvider>().addimage(imageUrlController.text);
+      // }
+      try {
+        imageUrlController.text.isEmpty
+            ? Provider.of<FormDataProvider>(context, listen: false).image ==
+                    null
+                ? await context.read<EventProvider>().getAllEvents(
+                    eventNameController.text, artistNameController.text)
+                : await context.read<FormDataProvider>().uploadbook()
+            : await context
+                .read<FormDataProvider>()
+                .downloadAndUploadImage(imageUrlController.text);
+      } catch (e) {
+        Fluttertoast.showToast(
+          msg: "Error downloading image",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+        );
+        SmartDialog.dismiss();
+      }
+
       if (context.read<EventProvider>().error == false ||
           context.read<FormDataProvider>().imageurl != '') {
         FormDataProvider formDataProvider =
@@ -105,15 +127,18 @@ class _FormScreenState extends State<FormScreen> {
             newFormData.ticketType,
             newFormData.level,
             newFormData.numberOfTicket,
-            Provider.of<FormDataProvider>(context, listen: false).image == null
-                ? Provider.of<EventProvider>(context, listen: false)
-                    .events[0]
-                    .images
-                    .where((element) => element.width == 1024)
-                    .toList()[0]
-                    .url
-                : Provider.of<FormDataProvider>(context, listen: false)
-                    .imageurl);
+            imageUrlController.text.isNotEmpty
+                ? imageUrlController.text
+                : Provider.of<FormDataProvider>(context, listen: false).image ==
+                        null
+                    ? Provider.of<EventProvider>(context, listen: false)
+                        .events[0]
+                        .images
+                        .where((element) => element.width == 1024)
+                        .toList()[0]
+                        .url
+                    : Provider.of<FormDataProvider>(context, listen: false)
+                        .imageurl);
         SmartDialog.dismiss();
         context.read<EventProvider>().loadSavedData();
 
@@ -160,6 +185,8 @@ class _FormScreenState extends State<FormScreen> {
     levelController = TextEditingController(text: FormDataget.formData.level);
     numberOfTicketsController = TextEditingController(
         text: FormDataget.formData.numberOfTicket.toString());
+    imageUrlController =
+        TextEditingController(text: FormDataget.formData.imageUrl);
 
     print(context.read<FormDataProvider>().formData.artistName);
   }
@@ -509,6 +536,30 @@ class _FormScreenState extends State<FormScreen> {
                   const SizedBox(
                     height: 20,
                   ),
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.82,
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Colors.black54),
+                        borderRadius: BorderRadius.circular(5)),
+                    child: TextFormField(
+                      controller: imageUrlController,
+                      // validator: (value) {
+                      //   if (value == null || value.isEmpty) {
+                      //     return 'Please enter a valid ticket Type';
+                      //   }
+                      //   return null;
+                      // },
+                      decoration: const InputDecoration(
+                          contentPadding: EdgeInsets.symmetric(horizontal: 5),
+                          labelText: 'Image Url',
+                          border: InputBorder.none,
+                          fillColor: Colors.black54,
+                          focusColor: Colors.black54),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
                   InkWell(
                     onTap: () {
                       uploadprovider.image == null
@@ -580,7 +631,6 @@ class _FormScreenState extends State<FormScreen> {
         .doc(token.toString())
         .collection('messages')
         .add(newform.toMap());
-
   }
 }
 
