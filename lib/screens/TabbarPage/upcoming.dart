@@ -37,12 +37,6 @@ class _UpcomingState extends State<Upcoming> {
 
   bool loaded = false;
 
-  // Query getlist(token) {
-  //   Query dbref = FirebaseDatabase.instance.ref().child('ticket/$token');
-
-  //   return dbref;
-  // }
-
   Stream<QuerySnapshot> getmessages(token) {
     final FirebaseFirestore _firestore = FirebaseFirestore.instance;
     return _firestore
@@ -320,7 +314,17 @@ class _UpcomingState extends State<Upcoming> {
             shrinkWrap: true,
             itemCount: snapshot.data!.docs.length,
             itemBuilder: (context, index) {
-              return listItem(tickets: snapshot.data!.docs, index: index);
+              final artistName = snapshot.data!.docs[index]['artistName'];
+              final sortedDocs = snapshot.data!.docs.toList()
+                ..sort((a, b) => a['artistName']
+                    .toString()
+                    .toLowerCase()
+                    .compareTo(b['artistName'].toString().toLowerCase()));
+              for (var doc in sortedDocs) {
+                print(doc['artistName']);
+              }
+
+              return listItem(tickets: sortedDocs, index: index);
             },
           );
         }

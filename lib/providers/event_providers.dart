@@ -16,6 +16,7 @@ class EventProvider extends ChangeNotifier {
   final _service = EventService();
   bool isLoading = false;
   List<Event> _events = [];
+  bool fiveMinutesElapsed = false;
   EventResult eventResult = EventResult(Eventstate.isLoading, []);
   bool isSwitched2 = false;
   String countryOn = '';
@@ -54,6 +55,11 @@ class EventProvider extends ChangeNotifier {
 
   void setLength(int length) {
     // Update the length of events
+  }
+
+  void startTimer() {
+    fiveMinutesElapsed = true;
+    notifyListeners();
   }
 
   void getlength1(len) {

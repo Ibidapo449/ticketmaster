@@ -44,23 +44,20 @@ class _HomeNavBarState extends State<HomeNavBar> {
       context.read<EventProvider>().getMajorEventsConcert();
       context.read<EventProvider>().getMajorEventsFamily();
       context.read<EventProvider>().getMajorEventsComedy();
-      
-    context.read<EventProvider>().loadSavedData();
 
-
+      context.read<EventProvider>().loadSavedData();
     });
   }
 
   void _startUsageTimer() {
-    _usageTimer = Timer.periodic(const Duration(minutes: 2), (timer) {
-      setState(() {
-        _elapsedTime += const Duration(minutes: 2);
-        if (_elapsedTime >= const Duration(minutes: 5) &&
-            !_fiveMinutesElapsed) {
-          _fiveMinutesElapsed = true;
-          _onFiveMinutesElapsed();
-        }
-      });
+    _usageTimer = Timer.periodic(const Duration(seconds: 10), (timer) {
+      // setState(() {
+      _elapsedTime += const Duration(seconds: 10);
+      if (_elapsedTime >= const Duration(seconds: 11) && !_fiveMinutesElapsed) {
+        _fiveMinutesElapsed = true;
+        _onFiveMinutesElapsed();
+      }
+      // });
     });
   }
 
@@ -94,10 +91,10 @@ class _HomeNavBarState extends State<HomeNavBar> {
   void _onFiveMinutesElapsed() async {
     print("5 minutes of app usage has elapsed!");
 
-    setState(() {
-      _fiveMinutesElapsed = false;
-      _elapsedTime = Duration.zero;
-    });
+    // setState(() {
+    _fiveMinutesElapsed = false;
+    _elapsedTime = Duration.zero;
+    // });
     compareDates(DateTime.now());
   }
 

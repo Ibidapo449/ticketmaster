@@ -2,6 +2,7 @@
 
 import 'dart:async';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,8 @@ import 'package:ticketmaster/providers/event_providers.dart';
 import 'package:ticketmaster/screens/ticket_details_screen.dart';
 import 'package:ticketmaster/screens/widgets/ticket_pending_modal.dart';
 import 'package:ticketmaster/screens/widgets/ticket_successful_modal.dart';
+
+import 'widgets/sectionDisplayText.dart';
 
 class EventDetails extends StatefulWidget {
   final String artistName;
@@ -50,6 +53,7 @@ class EventDetails extends StatefulWidget {
 class _EventDetailsState extends State<EventDetails> {
   Duration remainingTime = Duration.zero;
   Timer? timer;
+  bool getcountEvent = false;
 
   Future<void> loadCountdown() async {
     final prefs = await SharedPreferences.getInstance();
@@ -127,6 +131,7 @@ class _EventDetailsState extends State<EventDetails> {
   bool transferSell = true;
   double _opacity = 0.0;
   double _opacity1 = 0.0;
+  bool changeticketcount = false;
 
   @override
   void initState() {
@@ -134,6 +139,7 @@ class _EventDetailsState extends State<EventDetails> {
     // getSwitch();
     _loadSavedText();
     loadCountdown();
+    getTicketCountTitle();
     getColor();
     getTransfer();
     Future.delayed(Duration(seconds: 1), () {
@@ -156,6 +162,19 @@ class _EventDetailsState extends State<EventDetails> {
     setState(() {
       colorSell = colorsell;
     });
+  }
+
+  void getTicketCountTitle() async {
+    final pref = await SharedPreferences.getInstance();
+    changeticketcount = pref.getBool("getcountEvent") ?? false;
+    setState(() {});
+  }
+
+  void saveTicketCountTitle(event) async {
+    final pref = await SharedPreferences.getInstance();
+
+    pref.setBool("getcountEvent", event);
+    getTicketCountTitle();
   }
 
   void getTransfer() async {
@@ -315,153 +334,134 @@ class _EventDetailsState extends State<EventDetails> {
                               ),
                             ),
                             Container(
-                              width: MediaQuery.of(context).size.width * .82,
+                              width: MediaQuery.of(context).size.width * 0.82,
                               height: MediaQuery.of(context).size.height * 0.1,
-                              color: Color(0xff004ee9),
+                              color: const Color(0xff004ee9),
                               child: Padding(
                                 padding: EdgeInsets.symmetric(
-                                    horizontal:
-                                        MediaQuery.of(context).size.width *
-                                            0.03),
+                                  horizontal:
+                                      MediaQuery.of(context).size.width * 0.03,
+                                ),
                                 child: Center(
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment
+                                        .start, // Align columns at the top
                                     children: [
+                                      // SEC column
                                       SizedBox(
-                                        height: 50,
                                         width:
                                             MediaQuery.of(context).size.width *
                                                 0.2,
-                                        child: Stack(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
                                           children: [
-                                            const Align(
-                                              alignment: Alignment.topCenter,
-                                              child: Text(
-                                                "SEC",
-                                                style: TextStyle(
-                                                  color: Colors.white,
-                                                ),
-                                              ),
+                                            const Text(
+                                              "SEC",
+                                              style: TextStyle(
+                                                  color: Colors.white),
                                             ),
-                                            Align(
-                                              alignment: Alignment.center,
-                                              child: Padding(
-                                                padding: const EdgeInsets.only(
-                                                    top: 10.0),
-                                                child: Text(
-                                                  widget.section,
-                                                  style: const TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 25,
-                                                      fontWeight:
-                                                          FontWeight.w700),
-                                                ),
-                                              ),
-                                            ),
+                                            const SizedBox(height: 4.0),
+                                            // Use AutoSizeText so the section text always fits on one line.
+                                            SectionDisplay(
+                                                section: widget.section)
                                           ],
                                         ),
                                       ),
+                                      // If general admission, display one big field.
                                       if (widget.row == 'GA' &&
                                           widget.seat == '1')
                                         const Expanded(
-                                          flex:
-                                              2, // Take the space of two containers
+                                          flex: 2,
                                           child: SizedBox(
                                             height: 50,
                                             child: Center(
-                                                child: Text(
-                                              'General Admission',
-                                              style: TextStyle(
+                                              child: Text(
+                                                'General Admission',
+                                                style: TextStyle(
                                                   fontSize: 20,
                                                   color: Colors.white,
-                                                  fontWeight: FontWeight.bold),
-                                            )),
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                            ),
                                           ),
                                         )
                                       else ...[
+                                        // ROW column
                                         SizedBox(
-                                          height: 50,
                                           width: MediaQuery.of(context)
                                                   .size
                                                   .width *
                                               0.2,
-                                          child: Stack(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
                                             children: [
-                                              const Align(
-                                                alignment: Alignment.topCenter,
-                                                child: Text(
-                                                  "ROW",
-                                                  style: TextStyle(
-                                                    color: Colors.white,
-                                                  ),
-                                                ),
+                                              const Text(
+                                                "ROW",
+                                                style: TextStyle(
+                                                    color: Colors.white),
                                               ),
-                                              Align(
-                                                alignment: Alignment.center,
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          top: 10.0),
-                                                  child: Text(
-                                                    widget.row,
-                                                    style: const TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 25,
-                                                        fontWeight:
-                                                            FontWeight.w700),
-                                                  ),
+                                              const SizedBox(height: 4.0),
+                                              Text(
+                                                widget.row,
+                                                style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 25,
+                                                  fontWeight: FontWeight.w700,
                                                 ),
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
                                               ),
                                             ],
                                           ),
                                         ),
+                                        // SEAT column
                                         SizedBox(
-                                          height: 50,
                                           width: MediaQuery.of(context)
                                                   .size
                                                   .width *
                                               0.2,
-                                          child: Stack(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
                                             children: [
-                                              const Align(
-                                                alignment: Alignment.topCenter,
-                                                child: Text(
-                                                  "SEAT",
-                                                  style: TextStyle(
-                                                    color: Colors.white,
-                                                  ),
-                                                ),
+                                              const Text(
+                                                "SEAT",
+                                                style: TextStyle(
+                                                    color: Colors.white),
                                               ),
-                                              Align(
-                                                alignment: Alignment.center,
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          top: 10.0),
-                                                  child: Text(
-                                                    widget.seat == '1'
-                                                        ? ''
-                                                        : widget.seat == '-'
-                                                            ? widget.seat
-                                                            : (int.parse(widget
-                                                                        .seat) +
-                                                                    index)
-                                                                .toString(),
-                                                    style: const TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 25,
-                                                        fontWeight:
-                                                            FontWeight.w700),
-                                                  ),
+                                              const SizedBox(height: 4.0),
+                                              Text(
+                                                widget.seat == '1'
+                                                    ? ''
+                                                    : widget.seat == '-'
+                                                        ? widget.seat
+                                                        : (int.parse(widget
+                                                                    .seat) +
+                                                                index)
+                                                            .toString(),
+                                                style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 25,
+                                                  fontWeight: FontWeight.w700,
                                                 ),
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
                                               ),
                                             ],
                                           ),
-                                        )
-                                      ]
+                                        ),
+                                      ],
                                     ],
                                   ),
                                 ),
@@ -625,13 +625,23 @@ class _EventDetailsState extends State<EventDetails> {
                                                     ),
                                                     child: Column(
                                                       children: [
-                                                        const Text(
-                                                          'Ticket will be ready in',
-                                                          style: TextStyle(
-                                                              fontSize: 14,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500),
+                                                        GestureDetector(
+                                                          onTap: () {
+                                                            changeticketcount =
+                                                                !changeticketcount;
+                                                            saveTicketCountTitle(
+                                                                changeticketcount);
+                                                          },
+                                                          child: Text(
+                                                            changeticketcount
+                                                                ? 'The event will start in'
+                                                                : 'Ticket will be ready in',
+                                                            style: const TextStyle(
+                                                                fontSize: 14,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500),
+                                                          ),
                                                         ),
                                                         const SizedBox(
                                                           height: 5,
