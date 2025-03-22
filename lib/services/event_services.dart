@@ -121,7 +121,6 @@ class EventService {
       event = EventResult(Eventstate.isError, []);
     }
     return event;
-    // return event;
   }
 
   Future<EventResult> getEventConcert() async {

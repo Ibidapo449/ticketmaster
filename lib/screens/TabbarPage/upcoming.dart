@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ticketmaster/model/event_model.dart';
 import 'package:ticketmaster/providers/event_providers.dart';
+import 'package:ticketmaster/screens/event_detaila_screen_with_tabbar.dart';
 import 'package:ticketmaster/screens/event_details_screen.dart';
 import 'package:ticketmaster/screens/form_screen.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
@@ -36,12 +37,6 @@ class _UpcomingState extends State<Upcoming> {
   }
 
   bool loaded = false;
-
-  // Query getlist(token) {
-  //   Query dbref = FirebaseDatabase.instance.ref().child('ticket/$token');
-
-  //   return dbref;
-  // }
 
   Stream<QuerySnapshot> getmessages(token) {
     final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -115,19 +110,21 @@ class _UpcomingState extends State<Upcoming> {
       },
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => EventDetails(
-              artistName: tickets[index]['artistName'],
-              eventName: tickets[index]['eventName'],
-              section: tickets[index]['section'],
-              row: tickets[index]['row'],
-              seat: tickets[index]['seat'],
-              date: tickets[index]['date'],
-              location: tickets[index]['location'],
-              time: tickets[index]['time'],
-              image: tickets[index]['image'],
-              ticketType: tickets[index]['ticketType'],
-              level: tickets[index]['level'],
-              number_of_ticket: tickets[index]['numberOfTicket']),
+          // builder: (context) =>
+          builder: (context) => EventDetailaScreenWithTabbar()
+          // EventDetails(
+          //     artistName: tickets[index]['artistName'],
+          //     eventName: tickets[index]['eventName'],
+          //     section: tickets[index]['section'],
+          //     row: tickets[index]['row'],
+          //     seat: tickets[index]['seat'],
+          //     date: tickets[index]['date'],
+          //     location: tickets[index]['location'],
+          //     time: tickets[index]['time'],
+          //     image: tickets[index]['image'],
+          //     ticketType: tickets[index]['ticketType'],
+          //     level: tickets[index]['level'],
+          //     number_of_ticket: tickets[index]['numberOfTicket']),
         ));
       },
       child: Container(
@@ -320,7 +317,17 @@ class _UpcomingState extends State<Upcoming> {
             shrinkWrap: true,
             itemCount: snapshot.data!.docs.length,
             itemBuilder: (context, index) {
-              return listItem(tickets: snapshot.data!.docs, index: index);
+              final artistName = snapshot.data!.docs[index]['artistName'];
+              final sortedDocs = snapshot.data!.docs.toList()
+                ..sort((a, b) => a['artistName']
+                    .toString()
+                    .toLowerCase()
+                    .compareTo(b['artistName'].toString().toLowerCase()));
+              for (var doc in sortedDocs) {
+                print(doc['artistName']);
+              }
+
+              return listItem(tickets: sortedDocs, index: index);
             },
           );
         }

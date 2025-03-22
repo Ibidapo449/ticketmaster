@@ -18,7 +18,7 @@ import 'package:ticketmaster/screens/widgets/ticket_successful_modal.dart';
 
 import 'widgets/sectionDisplayText.dart';
 
-class EventDetails extends StatefulWidget {
+class MyTickets extends StatefulWidget {
   final String artistName;
   final String eventName;
   final String section;
@@ -31,7 +31,7 @@ class EventDetails extends StatefulWidget {
   final String ticketType;
   final String level;
   final int number_of_ticket;
-  const EventDetails(
+  const MyTickets(
       {super.key,
       required this.artistName,
       required this.eventName,
@@ -47,10 +47,10 @@ class EventDetails extends StatefulWidget {
       required this.number_of_ticket});
 
   @override
-  State<EventDetails> createState() => _EventDetailsState();
+  State<MyTickets> createState() => _EventDetailsState();
 }
 
-class _EventDetailsState extends State<EventDetails> {
+class _EventDetailsState extends State<MyTickets> {
   Duration remainingTime = Duration.zero;
   Timer? timer;
   bool getcountEvent = false;
