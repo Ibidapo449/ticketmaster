@@ -110,22 +110,35 @@ class _UpcomingState extends State<Upcoming> {
       },
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(
-          // builder: (context) =>
-          builder: (context) => EventDetailaScreenWithTabbar()
-          // EventDetails(
-          //     artistName: tickets[index]['artistName'],
-          //     eventName: tickets[index]['eventName'],
-          //     section: tickets[index]['section'],
-          //     row: tickets[index]['row'],
-          //     seat: tickets[index]['seat'],
-          //     date: tickets[index]['date'],
-          //     location: tickets[index]['location'],
-          //     time: tickets[index]['time'],
-          //     image: tickets[index]['image'],
-          //     ticketType: tickets[index]['ticketType'],
-          //     level: tickets[index]['level'],
-          //     number_of_ticket: tickets[index]['numberOfTicket']),
-        ));
+            // builder: (context) =>
+
+            builder: (context) => EventDetailaScreenWithTabbar(
+                artistName: tickets[index]['artistName'],
+                eventName: tickets[index]['eventName'],
+                section: tickets[index]['section'],
+                row: tickets[index]['row'],
+                seat: tickets[index]['seat'],
+                date: tickets[index]['date'],
+                location: tickets[index]['location'],
+                time: tickets[index]['time'],
+                image: tickets[index]['image'],
+                ticketType: tickets[index]['ticketType'],
+                level: tickets[index]['level'],
+                number_of_ticket: tickets[index]['numberOfTicket'])
+            // EventDetails(
+            //     artistName: tickets[index]['artistName'],
+            //     eventName: tickets[index]['eventName'],
+            //     section: tickets[index]['section'],
+            //     row: tickets[index]['row'],
+            //     seat: tickets[index]['seat'],
+            //     date: tickets[index]['date'],
+            //     location: tickets[index]['location'],
+            //     time: tickets[index]['time'],
+            //     image: tickets[index]['image'],
+            //     ticketType: tickets[index]['ticketType'],
+            //     level: tickets[index]['level'],
+            //     number_of_ticket: tickets[index]['numberOfTicket']),
+            ));
       },
       child: Container(
           margin: const EdgeInsets.only(right: 3, left: 3, bottom: 3),

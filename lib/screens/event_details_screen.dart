@@ -143,14 +143,19 @@ class _EventDetailsState extends State<EventDetails> {
     getColor();
     getTransfer();
     Future.delayed(Duration(seconds: 1), () {
-      setState(() {
-        _opacity = 1.0;
-      });
+      if (mounted) {
+        setState(() {
+          _opacity = 1.0;
+        });
+      }
     });
+
     Future.delayed(Duration(milliseconds: 2000), () {
-      setState(() {
-        _opacity1 = 1.0;
-      });
+      if (mounted) {
+        setState(() {
+          _opacity1 = 1.0;
+        });
+      }
     });
   }
 
@@ -215,58 +220,14 @@ class _EventDetailsState extends State<EventDetails> {
     final minutes = remainingTime.inMinutes % 60;
     final seconds = remainingTime.inSeconds % 60;
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: const Color(0xff1f262e),
-        leading: Padding(
-          padding: const EdgeInsets.all(17.0),
-          child: GestureDetector(
-            onTap: Navigator.of(context).pop,
-            child: SizedBox(
-              height: 20,
-              width: 20,
-              child: Image.asset(
-                "assets/images/cancel.png",
-                color: Colors.white,
-              ),
-            ),
-          ),
-        ),
-        title: const Text(
-          "My Tickets",
-          style: TextStyle(
-              fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold),
-        ),
-        actions: [
-          GestureDetector(
-            child: Center(
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                margin: const EdgeInsets.only(right: 10),
-                height: 30,
-                width: 60,
-                child: const Align(
-                  alignment: Alignment.center,
-                  child: Text(
-                    'Help',
-                    style: TextStyle(color: Colors.white, fontSize: 17),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Column(
+        child: ListView(
           children: [
             AnimatedOpacity(
               opacity:
                   context.watch<EventProvider>().isSwitched2 ? _opacity : 1,
-              duration: Duration(seconds: 1),
+              duration: const Duration(seconds: 1),
               child: Container(
                 height: MediaQuery.of(context).size.height * 0.66,
                 width: MediaQuery.of(context).size.width,

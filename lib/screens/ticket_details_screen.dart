@@ -43,11 +43,6 @@ class _TicketDetailsState extends State<TicketDetails> {
   bool _isEditingTicketFee = false;
   bool _isEditingTicketTax = false;
   bool _isEditingTicketInfo = false;
-  bool _isEditingTicketInfo2 = false;
-  bool _isEditingTicketInfo3 = false;
-  bool _isEditingTicketInfo4 = false;
-  bool _isEditingTicketInfo5 = false;
-  bool _isEditingTicketInfo6 = false;
 
   bool _isEditingTicketGrandTotal = false;
   bool _isEditingTicketName = false;

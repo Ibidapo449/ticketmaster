@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ticketmaster/model/event_model.dart';
 import 'package:ticketmaster/providers/event_providers.dart';
 import 'package:ticketmaster/screens/TabbarPage/past.dart';
@@ -13,7 +14,32 @@ import 'package:ticketmaster/screens/form_screen.dart';
 import 'package:ticketmaster/screens/my_tickets.dart';
 
 class EventDetailaScreenWithTabbar extends StatefulWidget {
-  const EventDetailaScreenWithTabbar({super.key});
+  final String artistName;
+  final String eventName;
+  final String section;
+  final String row;
+  final String seat;
+  final String date;
+  final String location;
+  final String time;
+  final String image;
+  final String ticketType;
+  final String level;
+  final int number_of_ticket;
+  const EventDetailaScreenWithTabbar(
+      {super.key,
+      required this.artistName,
+      required this.eventName,
+      required this.section,
+      required this.row,
+      required this.seat,
+      required this.date,
+      required this.location,
+      required this.time,
+      required this.image,
+      required this.ticketType,
+      required this.level,
+      required this.number_of_ticket});
 
   @override
   State<EventDetailaScreenWithTabbar> createState() => _HomePageState();
@@ -22,17 +48,26 @@ class EventDetailaScreenWithTabbar extends StatefulWidget {
 class _HomePageState extends State<EventDetailaScreenWithTabbar>
     with SingleTickerProviderStateMixin {
   late TabController tabController;
+  bool showTabBar = false;
 
   @override
   void initState() {
-    tabController = TabController(length: 2, vsync: this);
     super.initState();
+    tabController = TabController(length: 2, vsync: this);
+    getTabbarShow();
   }
 
   @override
   void dispose() {
     tabController.dispose();
     super.dispose();
+  }
+
+  void getTabbarShow() async {
+    final pref = await SharedPreferences.getInstance();
+    setState(() {
+      showTabBar = pref.getBool('ShowTabBar') ?? true;
+    });
   }
 
   @override
@@ -70,12 +105,19 @@ class _HomePageState extends State<EventDetailaScreenWithTabbar>
                 margin: const EdgeInsets.only(right: 10),
                 height: 30,
                 width: 60,
-                child: const Align(
+                child: Align(
                   alignment: Alignment.center,
-                  child: Text(
-                    'Help',
-                    style: TextStyle(color: Colors.white, fontSize: 17),
-                    textAlign: TextAlign.center,
+                  child: GestureDetector(
+                    onTap: () async {
+                      final pref = await SharedPreferences.getInstance();
+                      pref.setBool('ShowTabBar', !showTabBar);
+                      getTabbarShow();
+                    },
+                    child: const Text(
+                      'Help',
+                      style: TextStyle(color: Colors.white, fontSize: 17),
+                      textAlign: TextAlign.center,
+                    ),
                   ),
                 ),
               ),
@@ -87,32 +129,53 @@ class _HomePageState extends State<EventDetailaScreenWithTabbar>
         height: MediaQuery.of(context).size.height,
         child: Column(
           children: [
-            Container(
-                width: MediaQuery.of(context).size.height,
-                decoration: const BoxDecoration(
-                  color: Color.fromARGB(255, 25, 114, 210),
-                ),
-                child: Column(
-                  children: [
-                    TabBar(
-                        unselectedLabelColor: Colors.white54,
-                        labelStyle: const TextStyle(color: Colors.white),
-                        indicatorSize: TabBarIndicatorSize.tab,
-                        indicatorColor: Colors.white,
-                        indicatorWeight: 3,
-                        controller: tabController,
-                        tabs: const [
-                          Tab(text: "MY TICKETS(1)"),
-                          Tab(
-                            text: "ADD-0NS(0)",
-                          )
-                        ])
-                  ],
-                )),
+            showTabBar
+                ? Container(
+                    width: MediaQuery.of(context).size.height,
+                    decoration: const BoxDecoration(
+                      color: Color.fromARGB(255, 25, 114, 210),
+                    ),
+                    child: Column(
+                      children: [
+                        TabBar(
+                            unselectedLabelColor: Colors.white54,
+                            labelStyle: const TextStyle(color: Colors.white),
+                            indicatorSize: TabBarIndicatorSize.tab,
+                            indicatorColor: Colors.white,
+                            indicatorWeight: 3,
+                            controller: tabController,
+                            tabs: [
+                              Tab(
+                                  text:
+                                      "MY TICKETS (${widget.number_of_ticket})"),
+                              const Tab(
+                                text: "ADD-0NS (0)",
+                              )
+                            ])
+                      ],
+                    ))
+                : const SizedBox(),
             Expanded(
                 child: TabBarView(
+              physics: const NeverScrollableScrollPhysics(),
               controller: tabController,
-              children: const [TabbarMyTickets(), AddOns()],
+              children: [
+                TabbarMyTickets(
+                  artistName: widget.artistName,
+                  eventName: widget.eventName,
+                  section: widget.section,
+                  row: widget.row,
+                  seat: widget.seat,
+                  date: widget.date,
+                  location: widget.location,
+                  time: widget.time,
+                  image: widget.image,
+                  ticketType: widget.ticketType,
+                  level: widget.level,
+                  number_of_ticket: widget.number_of_ticket,
+                ),
+                AddOns()
+              ],
             ))
           ],
         ),
