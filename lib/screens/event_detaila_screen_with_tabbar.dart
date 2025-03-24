@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_interpolation_to_compose_strings, unused_local_variable
-
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
@@ -83,10 +81,10 @@ class _HomePageState extends State<EventDetailaScreenWithTabbar>
             child: const SizedBox(
               height: 20,
               width: 20,
-              // child: Image.asset(
-              //   "assets/images/cancel.png",
-              //   color: Colors.white,
-              // ),
+              child: Icon(
+                Icons.close,
+                color: Colors.white,
+              ),
             ),
           ),
         ),
@@ -133,7 +131,8 @@ class _HomePageState extends State<EventDetailaScreenWithTabbar>
                 ? Container(
                     width: MediaQuery.of(context).size.height,
                     decoration: const BoxDecoration(
-                      color: Color.fromARGB(255, 25, 114, 210),
+                      color: Color(0xff004ee9),
+                      // color: Color.fromARGB(255, 25, 114, 210),
                     ),
                     child: Column(
                       children: [
