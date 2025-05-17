@@ -11,10 +11,13 @@ import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:ticketmaster/screens/login_screen.dart';
 
+import 'providers/colorProvider.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final pref = await SharedPreferences.getInstance();
   final string = pref.getString('accesstime');
+
   runApp(MyApp(
     islogged: string,
   ));
@@ -31,6 +34,7 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (context) => EventProvider()),
         ChangeNotifierProvider(create: (context) => FormDataProvider()),
+        ChangeNotifierProvider(create: (context) => ColorProvider()),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',

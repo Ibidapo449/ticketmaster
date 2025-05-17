@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ticketmaster/model/event_model.dart';
+import 'package:ticketmaster/providers/colorProvider.dart';
 import 'package:ticketmaster/providers/event_providers.dart';
 import 'package:ticketmaster/screens/TabbarPage/past.dart';
 import 'package:ticketmaster/screens/TabbarPage/upcoming.dart';
@@ -70,10 +71,13 @@ class _HomePageState extends State<EventDetailaScreenWithTabbar>
 
   @override
   Widget build(BuildContext context) {
+    final colorProv = context.watch<ColorProvider>();
     final eventprovider = context.watch<EventProvider>();
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xff1f262e),
+        backgroundColor: colorProv.isOrange
+            ? colorProv.currentColor
+            : const Color(0xff1f262e),
         leading: Padding(
           padding: const EdgeInsets.all(17.0),
           child: GestureDetector(
@@ -110,6 +114,7 @@ class _HomePageState extends State<EventDetailaScreenWithTabbar>
                       final pref = await SharedPreferences.getInstance();
                       pref.setBool('ShowTabBar', !showTabBar);
                       getTabbarShow();
+                      print(widget.image);
                     },
                     child: const Text(
                       'Help',
@@ -130,8 +135,8 @@ class _HomePageState extends State<EventDetailaScreenWithTabbar>
             showTabBar
                 ? Container(
                     width: MediaQuery.of(context).size.height,
-                    decoration: const BoxDecoration(
-                      color: Color(0xff004ee9),
+                    decoration: BoxDecoration(
+                      color: colorProv.currentColor,
                       // color: Color.fromARGB(255, 25, 114, 210),
                     ),
                     child: Column(

@@ -11,6 +11,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:ticketmaster/providers/colorProvider.dart';
 import 'package:ticketmaster/providers/event_providers.dart';
 import 'package:ticketmaster/screens/ticket_details_screen.dart';
 import 'package:ticketmaster/screens/widgets/ticket_pending_modal.dart';
@@ -214,6 +215,7 @@ class _EventDetailsState extends State<MyTickets> {
     final hours = remainingTime.inHours % 24;
     final minutes = remainingTime.inMinutes % 60;
     final seconds = remainingTime.inSeconds % 60;
+    final colorProv = context.watch<ColorProvider>();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xff1f262e),
@@ -304,8 +306,8 @@ class _EventDetailsState extends State<MyTickets> {
                                   width: double.infinity,
                                   height:
                                       MediaQuery.of(context).size.height * 0.04,
-                                  decoration: const BoxDecoration(
-                                      color: Color(0xff004ee9),
+                                  decoration: BoxDecoration(
+                                      color: colorProv.currentColor,
                                       borderRadius: BorderRadius.only(
                                           topLeft: Radius.circular(10),
                                           topRight: Radius.circular(10))),
@@ -336,7 +338,7 @@ class _EventDetailsState extends State<MyTickets> {
                             Container(
                               width: MediaQuery.of(context).size.width * 0.82,
                               height: MediaQuery.of(context).size.height * 0.1,
-                              color: const Color(0xff004ee9),
+                              color: colorProv.currentColor,
                               child: Padding(
                                 padding: EdgeInsets.symmetric(
                                   horizontal:
@@ -2022,6 +2024,7 @@ class _EventDetailsState extends State<MyTickets> {
 
   FractionallySizedBox bottomsheet2(
       StateSetter setstate1, BuildContext context, bool _isDoubleTap) {
+    final colorProv = context.watch<ColorProvider>();
     return FractionallySizedBox(
       heightFactor: 0.63,
       child: Scaffold(
@@ -2261,16 +2264,16 @@ class _EventDetailsState extends State<MyTickets> {
                           bottomsheetvisible = 1;
                         });
                       },
-                      child: const Row(
+                      child: Row(
                         children: [
                           Icon(
                             Icons.keyboard_arrow_left,
-                            color: Color(0xff004ee9),
+                            color: colorProv.currentColor,
                           ),
                           Text(
                             "BACK",
                             style: TextStyle(
-                              color: Color(0xff004ee9),
+                              color: colorProv.currentColor,
                             ),
                           )
                         ],
@@ -2309,8 +2312,8 @@ class _EventDetailsState extends State<MyTickets> {
                       child: Container(
                         height: 40,
                         width: 210,
-                        decoration: const BoxDecoration(
-                          color: Color(0xff004ee9),
+                        decoration: BoxDecoration(
+                          color: colorProv.currentColor,
                         ),
                         child: Center(
                             child: Text(

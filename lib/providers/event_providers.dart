@@ -25,9 +25,7 @@ class EventProvider extends ChangeNotifier {
   EventResult eventResultSport = EventResult(Eventstate.isLoading, []);
   EventResult eventResultComedy = EventResult(Eventstate.isLoading, []);
   EventResult eventResultFamily = EventResult(Eventstate.isLoading, []);
-  // EventResult eventResult = EventResult(Eventstate.isLoading, []);
-  List<Event> _eventss = [];
-  List<Event> _eventsss = [];
+
   List<Event> get events => _events;
   String date = '';
 
@@ -308,26 +306,29 @@ class FormDataProvider extends ChangeNotifier {
 
   Future<void> uploadbook() async {
     uploadimageerror = false;
+    try {
+      final url = Uri.parse('https://api.cloudinary.com/v1_1/drvnpclui/upload');
+      final request = http.MultipartRequest('POST', url)
+        ..fields['upload_preset'] = 'image_preset_ticket'
+        ..files.add(await http.MultipartFile.fromPath('file', image!.path));
+      final response = await request.send();
+      print(response.statusCode);
 
-    final url = Uri.parse('https://api.cloudinary.com/v1_1/dlsavisdq/upload');
-    final request = http.MultipartRequest('POST', url)
-      ..fields['upload_preset'] = 'image_preset_hSmart'
-      ..files.add(await http.MultipartFile.fromPath('file', image!.path));
-    final response = await request.send();
-    print(response.statusCode);
+      if (response.statusCode == 200) {
+        final responseData = await response.stream.toBytes();
+        final responseString = String.fromCharCodes(responseData);
+        final jsonMap = jsonDecode(responseString);
 
-    if (response.statusCode == 200) {
-      final responseData = await response.stream.toBytes();
-      final responseString = String.fromCharCodes(responseData);
-      final jsonMap = jsonDecode(responseString);
-
-      final url = jsonMap['url'];
-      imageurl = url;
-      print(imageurl);
-    } else {
-      uploadimageerror = true;
+        final url = jsonMap['url'];
+        imageurl = url;
+        print(imageurl);
+      } else {
+        uploadimageerror = true;
+      }
+      notifyListeners();
+    } catch (e) {
+      print(e.toString());
     }
-    notifyListeners();
   }
 
   void resetpair() {
@@ -339,6 +340,8 @@ class FormDataProvider extends ChangeNotifier {
 
     notifyListeners();
   }
+
+  void changeColor() {}
 
   void addimage(url) {
     imageurl = url;
