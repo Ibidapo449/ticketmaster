@@ -1785,13 +1785,26 @@ class _EventDetailsState extends State<EventDetails> {
                           ),
                           GestureDetector(
                             onTap: () {
-                              // Navigator.of(context).pop();
-                              // _showBottomSheet2(
-                              //   context,
-                              // );
                               setstate1(() {
                                 bottomsheetvisible = 3;
                               });
+                            },
+                            onLongPress: () {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: const Center(
+                                      child:  Text(
+                                          "Please, select all tickets")),
+                                  duration: const Duration(seconds: 2),
+                                  behavior: SnackBarBehavior.floating,
+                                  margin: const EdgeInsets.symmetric(
+                                      horizontal: 100, vertical: 10),
+                                  backgroundColor: Colors.black,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                ),
+                              );
                             },
                             child: Row(
                               children: [
