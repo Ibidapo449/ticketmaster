@@ -19,7 +19,6 @@ class SectionDisplay extends StatelessWidget {
         // mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          // AutoSizeText ensures firstPart ("SEKTOR") fits in one line
           AutoSizeText(
             firstPart,
             style: const TextStyle(

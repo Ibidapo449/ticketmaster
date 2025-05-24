@@ -14,6 +14,7 @@ import 'package:path_provider/path_provider.dart';
 
 class EventProvider extends ChangeNotifier {
   final _service = EventService();
+  int visibleContainerIndex = 1;
   bool isLoading = false;
   List<Event> _events = [];
   bool fiveMinutesElapsed = false;
@@ -69,6 +70,11 @@ class EventProvider extends ChangeNotifier {
 
   void addform() {
     datalength += 1;
+    notifyListeners();
+  }
+
+  changeTicketInfo() {
+    visibleContainerIndex = visibleContainerIndex % 5 + 1;
     notifyListeners();
   }
 
@@ -340,8 +346,6 @@ class FormDataProvider extends ChangeNotifier {
 
     notifyListeners();
   }
-
-  void changeColor() {}
 
   void addimage(url) {
     imageurl = url;

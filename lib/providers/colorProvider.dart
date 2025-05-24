@@ -4,6 +4,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 const List<Color> themeColors = [
   Color(0xFF004EE9), // blue
   Color(0xFFDE6035), // orange
+  Color.fromARGB(255, 131, 131, 131),
+  Colors.green,
+  Colors.red,
+  Colors.black
 ];
 
 class ColorProvider extends ChangeNotifier {
@@ -12,16 +16,18 @@ class ColorProvider extends ChangeNotifier {
   /// Start with a default; we’ll overwrite if we find a saved one.
   Color _currentColor = themeColors[0];
   Color get currentColor => _currentColor;
- bool get isOrange => _currentColor == themeColors[1];
+  bool get isPrimary => _currentColor == themeColors[0];
   ColorProvider() {
     _loadFromPrefs();
   }
 
   /// Toggle between your two themeColors
- void toggle() {
-    _currentColor = isOrange ? themeColors[0] : themeColors[1];
-    notifyListeners();
-    _saveToPrefs();
+  void toggle() {
+    final currentIndex = themeColors.indexOf(_currentColor);
+    // If somehow _currentColor isn’t in the list, start at 0
+    final nextIndex =
+        (currentIndex < 0 ? 0 : (currentIndex + 1) % themeColors.length);
+    setColor(themeColors[nextIndex]);
   }
 
   /// Explicitly set to any color in your list

@@ -1,16 +1,9 @@
 import 'package:flutter/material.dart';
-
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:ticketmaster/model/event_model.dart';
 import 'package:ticketmaster/providers/colorProvider.dart';
-import 'package:ticketmaster/providers/event_providers.dart';
-import 'package:ticketmaster/screens/TabbarPage/past.dart';
-import 'package:ticketmaster/screens/TabbarPage/upcoming.dart';
 import 'package:ticketmaster/screens/TabbarPageforEventsDetails/add_ons.dart';
 import 'package:ticketmaster/screens/TabbarPageforEventsDetails/tabbar_my_tickets.dart';
-import 'package:ticketmaster/screens/form_screen.dart';
-import 'package:ticketmaster/screens/my_tickets.dart';
 
 class EventDetailaScreenWithTabbar extends StatefulWidget {
   final String artistName;
@@ -48,12 +41,20 @@ class _HomePageState extends State<EventDetailaScreenWithTabbar>
     with SingleTickerProviderStateMixin {
   late TabController tabController;
   bool showTabBar = false;
-
+  double _opacity1 = 0;
+  double _opacity2 = 0;
   @override
   void initState() {
     super.initState();
     tabController = TabController(length: 2, vsync: this);
     getTabbarShow();
+    // Fade in animations
+    Future.delayed(const Duration(seconds: 1), () {
+      if (mounted) setState(() => _opacity1 = 1);
+    });
+    Future.delayed(const Duration(seconds: 2), () {
+      if (mounted) setState(() => _opacity2 = 1);
+    });
   }
 
   @override
@@ -72,10 +73,9 @@ class _HomePageState extends State<EventDetailaScreenWithTabbar>
   @override
   Widget build(BuildContext context) {
     final colorProv = context.watch<ColorProvider>();
-    final eventprovider = context.watch<EventProvider>();
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: colorProv.isOrange
+        backgroundColor: !colorProv.isPrimary
             ? colorProv.currentColor
             : const Color(0xff1f262e),
         leading: Padding(
@@ -165,6 +165,8 @@ class _HomePageState extends State<EventDetailaScreenWithTabbar>
               controller: tabController,
               children: [
                 TabbarMyTickets(
+                  opacity1: _opacity1,
+                  opacity2: _opacity2,
                   artistName: widget.artistName,
                   eventName: widget.eventName,
                   section: widget.section,
@@ -178,7 +180,7 @@ class _HomePageState extends State<EventDetailaScreenWithTabbar>
                   level: widget.level,
                   number_of_ticket: widget.number_of_ticket,
                 ),
-                AddOns()
+                const AddOns()
               ],
             ))
           ],

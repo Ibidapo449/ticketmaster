@@ -6,6 +6,8 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ticketmaster/firebase_options.dart';
 import 'package:ticketmaster/home_navbar.dart';
+import 'package:ticketmaster/providers/TimerProvider.dart';
+import 'package:ticketmaster/providers/croppedImageProvider.dart';
 import 'package:ticketmaster/providers/event_providers.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -35,6 +37,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => EventProvider()),
         ChangeNotifierProvider(create: (context) => FormDataProvider()),
         ChangeNotifierProvider(create: (context) => ColorProvider()),
+        ChangeNotifierProvider(create: (context) => TimerProvider()),
+        ChangeNotifierProvider(create: (context) => CroppedImageProvider()),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
