@@ -153,7 +153,7 @@ class _HomePageState extends State<EventDetailaScreenWithTabbar>
                                   text:
                                       "MY TICKETS (${widget.number_of_ticket})"),
                               const Tab(
-                                text: "ADD-0NS (0)",
+                                text: "ADD-ONS (0)",
                               )
                             ])
                       ],

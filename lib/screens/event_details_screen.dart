@@ -50,7 +50,8 @@ class _EventDetailsState extends State<EventDetails> {
     _pageController = PageController(viewportFraction: 0.9);
     _ticketTextController = TextEditingController();
     _seatTextController = TextEditingController();
-    context.read<TimerProvider>().loadCountdown();
+    Future.microtask(() =>
+        Provider.of<TimerProvider>(context, listen: false).loadCountdown());
   }
 
   @override
@@ -76,8 +77,8 @@ class _EventDetailsState extends State<EventDetails> {
     final imageProv = context.watch<CroppedImageProvider>();
     final colorProv = context.watch<ColorProvider>();
     return Scaffold(
-      body: ListView(
-        padding: const EdgeInsets.all(8.0),
+      body: Column(
+        // padding: const EdgeInsets.all(8.0),
         children: [
           AnimatedOpacity(
             opacity: context.watch<EventProvider>().isSwitched2
@@ -92,27 +93,30 @@ class _EventDetailsState extends State<EventDetails> {
                 controller: _pageController,
                 onPageChanged: _onPageChanged,
                 itemCount: widget.event.ticketCount,
-                itemBuilder: (_, idx) => TicketCard(
-                  event: widget.event,
-                  index: idx,
-                  colorSell: _colorSell,
-                  transferSell: _transferSell,
-                  countdown: _countdown,
-                  ticketSelectionText: _ticketSelectionText,
-                  seatText: _seatText,
-                  switchTicketCountTitle: _switchTicketCountTitle,
-                  onToggleCountTitle: (val) {
-                    setState(() => _switchTicketCountTitle = val);
-                    _saveBoolPref('getcountEvent', val);
-                  },
-                  onColorSellToggle: (val) {
-                    setState(() => _colorSell = val);
-                    _saveBoolPref('selldeactivate', val);
-                  },
-                  onTransferToggle: (val) {
-                    setState(() => _transferSell = val);
-                    _saveBoolPref('transferdeactivate', val);
-                  },
+                itemBuilder: (_, idx) => Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                  child: TicketCard(
+                    event: widget.event,
+                    index: idx,
+                    colorSell: _colorSell,
+                    transferSell: _transferSell,
+                    countdown: _countdown,
+                    ticketSelectionText: _ticketSelectionText,
+                    seatText: _seatText,
+                    switchTicketCountTitle: _switchTicketCountTitle,
+                    onToggleCountTitle: (val) {
+                      setState(() => _switchTicketCountTitle = val);
+                      _saveBoolPref('getcountEvent', val);
+                    },
+                    onColorSellToggle: (val) {
+                      setState(() => _colorSell = val);
+                      _saveBoolPref('selldeactivate', val);
+                    },
+                    onTransferToggle: (val) {
+                      setState(() => _transferSell = val);
+                      _saveBoolPref('transferdeactivate', val);
+                    },
+                  ),
                 ),
               ),
             ),
@@ -131,22 +135,6 @@ class _EventDetailsState extends State<EventDetails> {
           ),
           const SizedBox(
             height: 15,
-          ),
-          AnimatedOpacity(
-            duration: const Duration(seconds: 1),
-            opacity: context.watch<EventProvider>().isSwitched2
-                ? widget.opacity2
-                : 1,
-            child: Center(
-                child: Text(
-              'Why can\'t I sell my ticket',
-              style: TextStyle(
-                  color: colorProv.isPrimary
-                      ? Color.fromARGB(255, 8, 113, 152)
-                      : colorProv.currentColor,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 16),
-            )),
           ),
           const SizedBox(height: 15),
           AnimatedOpacity(
@@ -190,7 +178,9 @@ class _EventDetailsState extends State<EventDetails> {
                       ? widget.opacity2
                       : 1,
                   child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 10),
                     height: 80,
+                    width: double.infinity,
                     decoration:
                         BoxDecoration(borderRadius: BorderRadius.circular(15)),
                     child: ClipRRect(

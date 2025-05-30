@@ -13,6 +13,10 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:path_provider/path_provider.dart';
 
 class EventProvider extends ChangeNotifier {
+  EventProvider() {
+    _loadVisibleContainerIndex(); // Load when the provider is created
+  }
+
   final _service = EventService();
   int visibleContainerIndex = 1;
   bool isLoading = false;
@@ -73,8 +77,20 @@ class EventProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  changeTicketInfo() {
+  Future<void> _loadVisibleContainerIndex() async {
+    final prefs = await SharedPreferences.getInstance();
+    visibleContainerIndex = prefs.getInt('visibleContainerIndex') ?? 1;
+    notifyListeners();
+  }
+
+  Future<void> _saveVisibleContainerIndex() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('visibleContainerIndex', visibleContainerIndex);
+  }
+
+  void changeTicketInfo() {
     visibleContainerIndex = visibleContainerIndex % 5 + 1;
+    _saveVisibleContainerIndex();
     notifyListeners();
   }
 

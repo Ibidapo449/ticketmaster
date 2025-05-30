@@ -16,7 +16,6 @@ class TimerProvider extends ChangeNotifier {
       final currentTime = DateTime.now();
 
       remainingTime = endTime.difference(currentTime);
-      notifyListeners();
       if (remainingTime.inSeconds > 0) {
         startTimer();
       } else {
@@ -26,12 +25,15 @@ class TimerProvider extends ChangeNotifier {
   }
 
   void startTimer() {
+    timer?.cancel(); // Cancel any previous timer
+
     timer = Timer.periodic(Duration(seconds: 1), (_) {
       if (remainingTime.inSeconds > 0) {
         remainingTime -= Duration(seconds: 1);
         notifyListeners();
       } else {
         timer?.cancel();
+        notifyListeners();
       }
     });
   }

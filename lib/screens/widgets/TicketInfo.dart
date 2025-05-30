@@ -13,12 +13,10 @@ import 'package:ticketmaster/screens/ticket_details_screen.dart';
 /// Widget displaying ticket details below banner
 class TicketInfoSection extends StatefulWidget {
   final EventInfo event;
-  final CountdownController countdown;
 
   TicketInfoSection({
     Key? key,
     required this.event,
-    required this.countdown,
   }) : super(key: key);
 
   @override

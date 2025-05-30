@@ -62,7 +62,6 @@ class TicketCard extends StatelessWidget {
                 _buildImageBanner(context),
                 TicketInfoSection(
                   event: event,
-                  countdown: countdown,
                 ),
               ],
             ),
@@ -177,12 +176,15 @@ class TicketCard extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [Colors.transparent, Colors.black.withOpacity(0.8)],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-              ),
-            ),
+                gradient: LinearGradient(
+              colors: [
+                Colors.transparent,
+                Colors.black.withOpacity(.98),
+              ],
+              stops: const [0.0, 5],
+              begin: FractionalOffset.topCenter,
+              end: FractionalOffset.bottomCenter,
+            )),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -191,8 +193,7 @@ class TicketCard extends StatelessWidget {
                     style: const TextStyle(color: Colors.white, fontSize: 18)),
                 const SizedBox(height: 4),
                 Text('${event.date} • ${event.time} • ${event.location}',
-                    style:
-                        const TextStyle(color: Colors.white70, fontSize: 14)),
+                    style: const TextStyle(color: Colors.white, fontSize: 14)),
               ],
             ),
           ),
