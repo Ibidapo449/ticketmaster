@@ -83,49 +83,6 @@ class _SellPageState extends State<SellPage> {
               child: Column(
                 children: [
                   // Image picker with delete icon
-                  Stack(
-                    children: [
-                      GestureDetector(
-                        onTap: () => _pickAndCropImage(context),
-                        child: AspectRatio(
-                          aspectRatio: 16 / 9,
-                          child: Container(
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Colors.black),
-                            ),
-                            child: imageProv.image != null
-                                ? Image.file(imageProv.image!,
-                                    fit: BoxFit.cover)
-                                : const Center(
-                                    child: Text('Tap to add image'),
-                                  ),
-                          ),
-                        ),
-                      ),
-                      // Delete button
-                      if (imageProv.image != null)
-                        Positioned(
-                          top: 8,
-                          right: 8,
-                          child: CircleAvatar(
-                            radius: 16,
-                            backgroundColor: Colors.black45,
-                            child: IconButton(
-                              icon: const Icon(Icons.delete,
-                                  size: 18, color: Colors.white),
-                              onPressed: () async {
-                                final prefs =
-                                    await SharedPreferences.getInstance();
-                                await prefs.remove('selectedImagePath');
-                                imageProv.setImage(null);
-                              },
-                            ),
-                          ),
-                        ),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
                   // Countdown fields
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,

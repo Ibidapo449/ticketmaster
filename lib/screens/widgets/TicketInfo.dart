@@ -163,13 +163,10 @@ class _TicketInfoSectionState extends State<TicketInfoSection> {
               style:
                   const TextStyle(fontSize: 32, fontWeight: FontWeight.bold)),
           const SizedBox(height: 4),
-          Container(
-              decoration: BoxDecoration(border: Border.all(color: Colors.grey)),
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 1.5, vertical: 1),
-                child: Text(label, style: const TextStyle(fontSize: 14)),
-              )),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 1.5, vertical: 1),
+            child: Text(label, style: const TextStyle(fontSize: 14)),
+          ),
         ],
       );
 
@@ -178,6 +175,9 @@ class _TicketInfoSectionState extends State<TicketInfoSection> {
         opacity: 1.0,
         child: Column(
           children: [
+            const SizedBox(
+              height: 10,
+            ),
             Text(
               widget.event.level,
               style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
@@ -187,39 +187,29 @@ class _TicketInfoSectionState extends State<TicketInfoSection> {
             ),
             Container(
               height: 40,
-              width: MediaQuery.of(context).size.width * 0.75,
+              width: MediaQuery.of(context).size.width * 0.8,
               decoration: BoxDecoration(
-                  color: colorProv.currentColor,
-                  borderRadius: BorderRadius.circular(2)),
+                  color: Colors.black, borderRadius: BorderRadius.circular(2)),
               child: Center(
                   child: Padding(
                 padding: const EdgeInsets.all(4.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Center(
-                        child: Container(
-                            height: 26,
-                            width: 26,
-                            decoration: BoxDecoration(
-                                border: Border.all(color: Colors.white),
-                                borderRadius: BorderRadius.circular(13)),
-                            child: const Icon(
-                              Icons.check,
-                              size: 13,
-                              color: Colors.white,
-                            ))),
+                    Image.asset(
+                      "assets/images/applewallet.png",
+                      height: 30,
+                      width: 30,
+                    ),
                     const SizedBox(
                       width: 15,
                     ),
-                    const FittedBox(
-                      child: Text(
-                        "View in wallet",
-                        style: TextStyle(
-                            fontSize: 13,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white),
-                      ),
+                    const Text(
+                      "Add to Apple Wallet",
+                      style: TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
                     ),
                   ],
                 ),
@@ -266,6 +256,9 @@ class _TicketInfoSectionState extends State<TicketInfoSection> {
         opacity: 1.0,
         child: Column(
           children: [
+            const SizedBox(
+              height: 10,
+            ),
             Text(
               widget.event.level,
               style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
@@ -302,7 +295,7 @@ class _TicketInfoSectionState extends State<TicketInfoSection> {
                     ),
                     const FittedBox(
                       child: Text(
-                        "View in wallet",
+                        "View in wallets",
                         style: TextStyle(
                             fontSize: 13,
                             fontWeight: FontWeight.bold,
@@ -354,6 +347,9 @@ class _TicketInfoSectionState extends State<TicketInfoSection> {
         opacity: 1.0,
         child: Column(
           children: [
+            const SizedBox(
+              height: 10,
+            ),
             SizedBox(
               // color: Colors.red,
               child: Column(
@@ -424,6 +420,9 @@ class _TicketInfoSectionState extends State<TicketInfoSection> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
+            const SizedBox(
+              height: 10,
+            ),
             Text(
               widget.event.level,
               style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
