@@ -23,7 +23,7 @@ class SectionDisplay extends StatelessWidget {
             firstPart,
             style: const TextStyle(
               color: Colors.white,
-              fontSize: 25,
+              fontSize: 21,
               fontWeight: FontWeight.w700,
             ),
             maxLines: 1,

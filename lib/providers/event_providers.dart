@@ -305,7 +305,6 @@ class FormDataProvider extends ChangeNotifier {
   }
 
   void downloadImage() async {
-    print('object');
     try {
       // Saved with this method.
       var imageId = await ImageDownloader.downloadImage(
