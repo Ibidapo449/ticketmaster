@@ -199,7 +199,7 @@ class TicketCard extends StatelessWidget {
                 colors: [
                   Colors.transparent,
                   Colors.black.withOpacity(0.5),
-                  Colors.black.withOpacity(0.85),
+                  Colors.black.withOpacity(0.95),
                 ],
                 stops: const [
                   0.4,
