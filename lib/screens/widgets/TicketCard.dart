@@ -192,19 +192,27 @@ class TicketCard extends StatelessWidget {
           left: 0,
           right: 0,
           child: Container(
+            height: 200,
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-                gradient: LinearGradient(
-              colors: [
-                Colors.transparent,
-                Colors.black.withOpacity(.98),
-              ],
-              stops: const [0.0, 5],
-              begin: FractionalOffset.topCenter,
-              end: FractionalOffset.bottomCenter,
-            )),
+              gradient: LinearGradient(
+                colors: [
+                  Colors.transparent,
+                  Colors.black.withOpacity(0.5),
+                  Colors.black.withOpacity(0.85),
+                ],
+                stops: const [
+                  0.4,
+                  0.65,
+                  1.0
+                ], // Starts fading from 50%, fully black by 100%
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+              ),
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 event.eventName == ''
                     ? Text(event.artistName,
