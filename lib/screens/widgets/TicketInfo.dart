@@ -119,8 +119,8 @@ class _TicketInfoSectionState extends State<TicketInfoSection> {
                 },
                 child: Text(
                   changeticketcount
-                      ? 'The event will start in'
-                      : 'Ticket will be ready in',
+                      ? 'The event will start in:'
+                      : 'Ticket will be ready in:',
                   style: const TextStyle(
                       fontSize: 14, fontWeight: FontWeight.w500),
                 ),

@@ -77,7 +77,7 @@ class _EventDetailsState extends State<EventDetails> {
     final imageProv = context.watch<CroppedImageProvider>();
     final colorProv = context.watch<ColorProvider>();
     return Scaffold(
-      body: Column(
+      body: ListView(
         // padding: const EdgeInsets.all(8.0),
         children: [
           AnimatedOpacity(
@@ -87,8 +87,8 @@ class _EventDetailsState extends State<EventDetails> {
             duration: const Duration(seconds: 1),
             child: SizedBox(
               height: imageProv.image == null
-                  ? MediaQuery.of(context).size.height * 0.6
-                  : MediaQuery.of(context).size.height * 0.56,
+                  ? MediaQuery.of(context).size.height * 0.64
+                  : MediaQuery.of(context).size.height * 0.6,
               child: PageView.builder(
                 controller: _pageController,
                 onPageChanged: _onPageChanged,
@@ -194,8 +194,7 @@ class _EventDetailsState extends State<EventDetails> {
   }
 
   Widget _buildIndicator(bool isSelected, BuildContext context) {
-    final colorProv = context.watch<ColorProvider>();
-    final color = isSelected ? colorProv.currentColor : Colors.grey;
+    final color = isSelected ? Colors.black : Colors.grey;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 4),
       child: Container(

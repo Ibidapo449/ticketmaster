@@ -636,8 +636,8 @@ class _EventDetailsState extends State<MyTickets> {
                                                           },
                                                           child: Text(
                                                             changeticketcount
-                                                                ? 'The event will start in'
-                                                                : 'Ticket will be ready in',
+                                                                ? 'The event will start in:'
+                                                                : 'Ticket will be ready in:',
                                                             style: const TextStyle(
                                                                 fontSize: 14,
                                                                 fontWeight:
@@ -2228,7 +2228,9 @@ class _EventDetailsState extends State<MyTickets> {
                   height: 3,
                 ),
                 transferTicketContainer(context,
-                    text: "Email or Mobile Number", height: 40.0),
+                    showCountryCode: true,
+                    text: "Email or Mobile Number",
+                    height: 40.0),
                 const SizedBox(
                   height: 15,
                 ),
@@ -2351,33 +2353,104 @@ class _EventDetailsState extends State<MyTickets> {
   }
 }
 
-Container transferTicketContainer(BuildContext context, {height, text}) {
+Container transferTicketContainer(
+  BuildContext context, {
+  double? height,
+  String? text,
+  bool showCountryCode = false,
+}) {
+  final List<Map<String, String>> countryCodes = [
+    {'code': '+1', 'flag': 'assets/images/usa-icon.png'},
+    {'code': '+44', 'flag': 'assets/images/Ellipse 2.png'},
+    {'code': '+1', 'flag': 'assets/images/Ellipse 3.png'},
+  ];
+  Map<String, String> selected = countryCodes[0];
+
   return Container(
-      height: height,
-      width: MediaQuery.of(context).size.width,
-      decoration: BoxDecoration(border: Border.all(color: Colors.black)),
-      child: Center(
-        child: Padding(
-          padding: const EdgeInsets.only(
-            left: 8,
-            bottom: 8,
-          ),
-          child: TextField(
-            cursorColor: Colors.black,
-            decoration: InputDecoration(
-                contentPadding: const EdgeInsets.only(top: -5),
-                hintText: text,
+    height: height,
+    width: MediaQuery.of(context).size.width,
+    decoration: BoxDecoration(border: Border.all(color: Colors.grey)),
+    child: Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      child: Row(
+        children: [
+          if (showCountryCode)
+            StatefulBuilder(
+              builder: (context, setState) {
+                return Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton<Map<String, String>>(
+                      value: selected,
+                      icon: const Icon(
+                        Icons.keyboard_arrow_down,
+                        color: Colors.grey,
+                      ),
+                      onChanged: (Map<String, String>? newValue) {
+                        if (newValue != null) {
+                          setState(() {
+                            selected = newValue;
+                          });
+                        }
+                      },
+                      items: countryCodes.map((item) {
+                        return DropdownMenuItem<Map<String, String>>(
+                          value: item,
+                          child: Row(
+                            children: [
+                              Image.asset(
+                                item['flag']!,
+                                width: 24,
+                                height: 24,
+                              ),
+                              const SizedBox(width: 5),
+                              Text(item['code']!),
+                            ],
+                          ),
+                        );
+                      }).toList(),
+                      selectedItemBuilder: (context) {
+                        return countryCodes.map((item) {
+                          return Row(
+                            children: [
+                              Image.asset(
+                                selected['flag']!,
+                                width: 24,
+                                height: 24,
+                              ),
+                              const SizedBox(width: 5),
+                              Text(selected['code']!),
+                            ],
+                          );
+                        }).toList();
+                      },
+                    ),
+                  ),
+                );
+              },
+            ),
+          if (showCountryCode) const SizedBox(width: 8),
+          Expanded(
+            child: TextField(
+              cursorColor: Colors.black,
+              keyboardType: TextInputType.phone,
+              decoration: InputDecoration(
+                hintText: text ?? 'Enter mobile number',
                 hintStyle: TextStyle(color: Colors.black.withOpacity(.3)),
-                // suffixIcon: const Icon(
-                //   Icons.cancel,
-                //   size: 20,
-                // ),
                 border: InputBorder.none,
+                contentPadding: const EdgeInsets.only(bottom: 5),
                 focusedBorder: const UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.transparent))),
+                  borderSide: BorderSide(color: Colors.transparent),
+                ),
+              ),
+            ),
           ),
-        ),
-      ));
+        ],
+      ),
+    ),
+  );
 }
 
 class CustomCircleCheckbox extends StatefulWidget {
