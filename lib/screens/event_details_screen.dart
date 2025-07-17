@@ -88,7 +88,7 @@ class _EventDetailsState extends State<EventDetails> {
             child: SizedBox(
               height: imageProv.image == null
                   ? MediaQuery.of(context).size.height * 0.64
-                  : MediaQuery.of(context).size.height * 0.6,
+                  : MediaQuery.of(context).size.height * 0.63,
               child: PageView.builder(
                 controller: _pageController,
                 onPageChanged: _onPageChanged,

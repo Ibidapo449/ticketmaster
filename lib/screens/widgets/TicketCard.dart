@@ -185,7 +185,7 @@ class TicketCard extends StatelessWidget {
       children: [
         Image.network(event.imageUrl,
             fit: BoxFit.cover,
-            height: imageProv.image == null ? 260 : 250,
+            height: imageProv.image == null ? 250 : 235,
             width: double.infinity),
         Positioned(
           bottom: 0,
