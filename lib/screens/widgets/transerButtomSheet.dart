@@ -252,14 +252,17 @@ class _TransferBottomSheetState extends State<TransferBottomSheet> {
                                                 TextStyle(color: Colors.white),
                                           ),
                                           Text(
-                                            widget.event.seat == '1'
+                                            widget.event.seat == '0'
                                                 ? ''
-                                                : widget.event.seat == '-'
-                                                    ? widget.event.seat
-                                                    : (int.parse(widget
-                                                                .event.seat) +
-                                                            index)
-                                                        .toString(),
+                                                : widget.event.seat == '1'
+                                                    ? ''
+                                                    : widget.event.seat == '-'
+                                                        ? widget.event.seat
+                                                        : (int.parse(widget
+                                                                    .event
+                                                                    .seat) +
+                                                                index)
+                                                            .toString(),
                                             style: const TextStyle(
                                                 color: Colors.white),
                                           ),
@@ -653,11 +656,13 @@ class _TransferBottomSheetState extends State<TransferBottomSheet> {
                                     style: TextStyle(
                                         color: Colors.black.withOpacity(.4)),
                                   ),
-                                  Text(
-                                    _seat,
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.w600),
-                                  ),
+                                  _seat != '0'
+                                      ? Text(
+                                          _seat,
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.w600),
+                                        )
+                                      : SizedBox(),
                                 ],
                               ),
                             )
