@@ -50,6 +50,8 @@ class _EventDetailsState extends State<EventDetails> {
     _pageController = PageController(viewportFraction: 0.9);
     _ticketTextController = TextEditingController();
     _seatTextController = TextEditingController();
+    getColorState();
+    getTranferState();
     Future.microtask(() =>
         Provider.of<TimerProvider>(context, listen: false).loadCountdown());
   }
@@ -71,6 +73,18 @@ class _EventDetailsState extends State<EventDetails> {
   void _onPageChanged(int index) => setState(() => _currentIndex = index);
 
   int visibleContainerIndex = 0;
+
+  void getTranferState() async {
+    final prefs = await SharedPreferences.getInstance();
+    final value = prefs.getBool('transferdeactivate');
+    setState(() => _transferSell = value ?? true);
+  }
+
+  void getColorState() async {
+    final prefs = await SharedPreferences.getInstance();
+    final value = prefs.getBool('selldeactivate');
+    setState(() => _colorSell = value ?? true);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -178,8 +192,8 @@ class _EventDetailsState extends State<EventDetails> {
                       ? widget.opacity2
                       : 1,
                   child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 10),
-                    height: 80,
+                    // padding: EdgeInsets.symmetric(horizontal: 10),
+                    height: 250,
                     width: double.infinity,
                     decoration:
                         BoxDecoration(borderRadius: BorderRadius.circular(15)),
@@ -187,7 +201,26 @@ class _EventDetailsState extends State<EventDetails> {
                         borderRadius: BorderRadius.circular(15),
                         child: Image.file(imageProv.image!, fit: BoxFit.cover)),
                   ),
-                )
+                ),
+          const SizedBox(
+            height: 15,
+          ),
+          imageProv.image == null
+              ? const SizedBox()
+              : Container(
+                  decoration: BoxDecoration(
+                    color: colorProv.currentColor,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  margin: const EdgeInsets.symmetric(horizontal: 20),
+                  height: 45,
+                  child: Center(
+                      child: Text(
+                    'Get Directions',
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.w600),
+                  )),
+                ),
         ],
       ),
     );

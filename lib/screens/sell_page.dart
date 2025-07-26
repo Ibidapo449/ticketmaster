@@ -31,7 +31,7 @@ class _SellPageState extends State<SellPage> {
 
     final CroppedFile? croppedFile = await ImageCropper().cropImage(
       sourcePath: pickedFile.path,
-      aspectRatio: const CropAspectRatio(ratioX: 16, ratioY: 9),
+      aspectRatio: const CropAspectRatio(ratioX: 16, ratioY: 12),
       aspectRatioPresets: [CropAspectRatioPreset.ratio16x9],
       uiSettings: [
         AndroidUiSettings(

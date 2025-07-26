@@ -21,8 +21,9 @@ class _HomeNavBarState extends State<HomeNavBar> {
   int _currentIndex = 0;
   final tabs = [
     const DiscoverPage(),
-    const SellPage(),
+    Container(),
     const HomePage(),
+    const SellPage(),
     const Account(),
   ];
   Timer? _usageTimer;
@@ -233,6 +234,23 @@ class _HomeNavBarState extends State<HomeNavBar> {
                 ),
               ),
               label: 'My Events',
+            ),
+            BottomNavigationBarItem(
+              icon: Padding(
+                padding: const EdgeInsets.only(bottom: 5),
+                child: Container(
+                  width: 25,
+                  height: 25,
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage(
+                          'assets/images/sell.png',
+                        ),
+                        fit: BoxFit.cover),
+                  ),
+                ),
+              ),
+              label: 'Sell',
             ),
             BottomNavigationBarItem(
               activeIcon: ColorFiltered(

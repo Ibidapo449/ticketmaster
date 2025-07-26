@@ -51,6 +51,8 @@ dependencies:
   image_downloader: ^0.31.0
   auto_size_text: ^3.0.0
   marquee: ^2.3.0
+  barcode_widget: ^2.0.4
+  syncfusion_flutter_barcodes: ^24.2.8
 
 
 dev_dependencies:

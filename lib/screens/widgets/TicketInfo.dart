@@ -9,6 +9,7 @@ import 'package:ticketmaster/providers/colorProvider.dart';
 import 'package:ticketmaster/providers/event_providers.dart';
 import 'package:ticketmaster/screens/event_details_screen.dart';
 import 'package:ticketmaster/screens/ticket_details_screen.dart';
+import 'package:ticketmaster/screens/barcode_screen.dart';
 
 /// Widget displaying ticket details below banner
 class TicketInfoSection extends StatefulWidget {
@@ -178,6 +179,9 @@ class _TicketInfoSectionState extends State<TicketInfoSection> {
         opacity: 1.0,
         child: Column(
           children: [
+            const SizedBox(
+              height: 10,
+            ),
             Text(
               widget.event.level,
               style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
@@ -187,39 +191,29 @@ class _TicketInfoSectionState extends State<TicketInfoSection> {
             ),
             Container(
               height: 40,
-              width: MediaQuery.of(context).size.width * 0.75,
+              width: MediaQuery.of(context).size.width * 0.8,
               decoration: BoxDecoration(
-                  color: colorProv.currentColor,
-                  borderRadius: BorderRadius.circular(2)),
+                  color: Colors.black, borderRadius: BorderRadius.circular(2)),
               child: Center(
                   child: Padding(
                 padding: const EdgeInsets.all(4.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Center(
-                        child: Container(
-                            height: 26,
-                            width: 26,
-                            decoration: BoxDecoration(
-                                border: Border.all(color: Colors.white),
-                                borderRadius: BorderRadius.circular(13)),
-                            child: const Icon(
-                              Icons.check,
-                              size: 13,
-                              color: Colors.white,
-                            ))),
+                    Image.asset(
+                      "assets/images/applewallet.png",
+                      height: 30,
+                      width: 30,
+                    ),
                     const SizedBox(
                       width: 15,
                     ),
-                    const FittedBox(
-                      child: Text(
-                        "View in wallet",
-                        style: TextStyle(
-                            fontSize: 13,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white),
-                      ),
+                    const Text(
+                      "Add to Apple Wallet",
+                      style: TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
                     ),
                   ],
                 ),
@@ -321,12 +315,20 @@ class _TicketInfoSectionState extends State<TicketInfoSection> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text(
-                    "View Barcode",
-                    style: TextStyle(
-                        color: Color.fromARGB(255, 51, 90, 135),
-                        fontSize: 13,
-                        fontWeight: FontWeight.w600),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) =>
+                            BarcodeScreen(event: widget.event),
+                      ));
+                    },
+                    child: const Text(
+                      "View Barcode",
+                      style: TextStyle(
+                          color: Color.fromARGB(255, 51, 90, 135),
+                          fontSize: 13,
+                          fontWeight: FontWeight.w600),
+                    ),
                   ),
                   const Spacer(),
                   GestureDetector(
@@ -390,12 +392,20 @@ class _TicketInfoSectionState extends State<TicketInfoSection> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text(
-                    "View Barcode",
-                    style: TextStyle(
-                        color: Color.fromARGB(255, 51, 90, 135),
-                        fontSize: 13,
-                        fontWeight: FontWeight.w600),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) =>
+                            BarcodeScreen(event: widget.event),
+                      ));
+                    },
+                    child: const Text(
+                      "View Barcode",
+                      style: TextStyle(
+                          color: Color.fromARGB(255, 51, 90, 135),
+                          fontSize: 13,
+                          fontWeight: FontWeight.w600),
+                    ),
                   ),
                   const Spacer(),
                   GestureDetector(
@@ -431,49 +441,56 @@ class _TicketInfoSectionState extends State<TicketInfoSection> {
             const SizedBox(
               height: 40,
             ),
-            Container(
-              height: 40,
-              width: MediaQuery.of(context).size.width * 0.75,
-              decoration: BoxDecoration(
-                  color: !colorProv.isPrimary
-                      ? colorProv.currentColor
-                      : const Color(0xff004ee9),
-                  borderRadius: BorderRadius.circular(1)),
-              child: Center(
-                  child: Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Stack(
-                      children: [
-                        Container(
-                          height: 17,
-                          width: 30,
-                          decoration: const BoxDecoration(
-                            image: DecorationImage(
-                                image: AssetImage(
-                              'assets/images/smarticon.png',
-                            )),
-                          ),
-                        )
-                      ],
-                    ),
-                    const SizedBox(
-                      width: 8,
-                    ),
-                    const FittedBox(
-                      child: Text(
-                        "View Ticket",
-                        style: TextStyle(
-                            fontSize: 13,
-                            fontWeight: FontWeight.bold,
-                            color: Color.fromARGB(255, 236, 236, 236)),
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => BarcodeScreen(event: widget.event),
+                ));
+              },
+              child: Container(
+                height: 40,
+                width: MediaQuery.of(context).size.width * 0.75,
+                decoration: BoxDecoration(
+                    color: !colorProv.isPrimary
+                        ? colorProv.currentColor
+                        : const Color(0xff004ee9),
+                    borderRadius: BorderRadius.circular(1)),
+                child: Center(
+                    child: Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Stack(
+                        children: [
+                          Container(
+                            height: 17,
+                            width: 30,
+                            decoration: const BoxDecoration(
+                              image: DecorationImage(
+                                  image: AssetImage(
+                                'assets/images/smarticon.png',
+                              )),
+                            ),
+                          )
+                        ],
                       ),
-                    ),
-                  ],
-                ),
-              )),
+                      const SizedBox(
+                        width: 8,
+                      ),
+                      const FittedBox(
+                        child: Text(
+                          "View Ticket",
+                          style: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.bold,
+                              color: Color.fromARGB(255, 236, 236, 236)),
+                        ),
+                      ),
+                    ],
+                  ),
+                )),
+              ),
             ),
             const SizedBox(
               height: 30,
