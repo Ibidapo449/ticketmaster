@@ -223,6 +223,7 @@ class _BarcodeScreenState extends State<BarcodeScreen>
             ),
             Expanded(
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   FittedBox(
                     fit: BoxFit.scaleDown,

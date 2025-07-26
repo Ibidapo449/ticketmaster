@@ -177,336 +177,407 @@ class _TicketInfoSectionState extends State<TicketInfoSection> {
   Widget buildAppleWalletContainer(ColorProvider colorProv) => AnimatedOpacity(
         duration: const Duration(milliseconds: 500),
         opacity: 1.0,
-        child: Column(
-          children: [
-            Text(
-              widget.event.level,
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-            ),
-            const SizedBox(
-              height: 40,
-            ),
-            Container(
-              height: 40,
-              width: MediaQuery.of(context).size.width * 0.75,
-              decoration: BoxDecoration(
-                  color: colorProv.currentColor,
-                  borderRadius: BorderRadius.circular(2)),
-              child: Center(
-                  child: Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Center(
-                        child: Container(
-                            height: 26,
-                            width: 26,
-                            decoration: BoxDecoration(
-                                border: Border.all(color: Colors.white),
-                                borderRadius: BorderRadius.circular(13)),
-                            child: const Icon(
-                              Icons.check,
-                              size: 13,
-                              color: Colors.white,
-                            ))),
-                    const SizedBox(
-                      width: 15,
-                    ),
-                    const FittedBox(
-                      child: Text(
-                        "View in wallet",
-                        style: TextStyle(
-                            fontSize: 13,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white),
-                      ),
-                    ),
-                  ],
-                ),
-              )),
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 35),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text(
-                    "View Barcode",
-                    style: TextStyle(
-                        color: Color.fromARGB(255, 51, 90, 135),
-                        fontSize: 13,
-                        fontWeight: FontWeight.w600),
-                  ),
-                  const Spacer(),
-                  GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => const TicketDetails(),
-                        ));
-                      },
-                      child: const Text(
-                        "Ticket Details",
-                        style: TextStyle(
-                            color: Color.fromARGB(255, 51, 90, 135),
-                            fontSize: 13,
-                            fontWeight: FontWeight.w600),
-                      ))
-                ],
+        child: Container(
+          color: Colors.transparent,
+          child: Column(
+            children: [
+              Text(
+                widget.event.level,
+                style:
+                    const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
               ),
-            )
-          ],
-        ),
-      );
-
-  Widget buildViewInWalletContainer(ColorProvider colorProv) => AnimatedOpacity(
-        duration: const Duration(milliseconds: 500),
-        opacity: 1.0,
-        child: Column(
-          children: [
-            Text(
-              widget.event.level,
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-            ),
-            const SizedBox(
-              height: 40,
-            ),
-            Container(
-              height: 40,
-              width: MediaQuery.of(context).size.width * 0.75,
-              decoration: BoxDecoration(
-                  color: colorProv.currentColor,
-                  borderRadius: BorderRadius.circular(2)),
-              child: Center(
-                  child: Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Center(
-                        child: Container(
-                            height: 26,
-                            width: 26,
-                            decoration: BoxDecoration(
-                                border: Border.all(color: Colors.white),
-                                borderRadius: BorderRadius.circular(13)),
-                            child: const Icon(
-                              Icons.check,
-                              size: 13,
-                              color: Colors.white,
-                            ))),
-                    const SizedBox(
-                      width: 15,
-                    ),
-                    const FittedBox(
-                      child: Text(
-                        "View in wallet",
-                        style: TextStyle(
-                            fontSize: 13,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white),
-                      ),
-                    ),
-                  ],
-                ),
-              )),
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 35),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text(
-                    "View Barcode",
-                    style: TextStyle(
-                        color: Color.fromARGB(255, 51, 90, 135),
-                        fontSize: 13,
-                        fontWeight: FontWeight.w600),
-                  ),
-                  const Spacer(),
-                  GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => const TicketDetails(),
-                        ));
-                      },
-                      child: const Text(
-                        "Ticket Details",
-                        style: TextStyle(
-                            color: Color.fromARGB(255, 51, 90, 135),
-                            fontSize: 13,
-                            fontWeight: FontWeight.w600),
-                      ))
-                ],
+              const SizedBox(
+                height: 40,
               ),
-            )
-          ],
-        ),
-      );
-
-  Widget buildSmartIconContainer(ColorProvider colorProv) => AnimatedOpacity(
-        duration: const Duration(milliseconds: 500),
-        opacity: 1.0,
-        child: Column(
-          children: [
-            SizedBox(
-              // color: Colors.red,
-              child: Column(
-                children: [
-                  SizedBox(
-                      height: 25,
-                      width: 25,
-                      child: Image.asset(
-                        "assets/images/verified.png",
-                        color: Colors.black,
-                      )),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  const Text(
-                    "Your tickets aren't quite ready yet.",
-                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-                  ),
-                  const Text(
-                    "Please check back later",
-                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
-                  ),
-                  const SizedBox(
-                    height: 50,
-                  )
-                ],
-              ),
-            ),
-            // const SizedBox(
-            //   height: 30,
-            // ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 35),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text(
-                    "View Barcode",
-                    style: TextStyle(
-                        color: Color.fromARGB(255, 51, 90, 135),
-                        fontSize: 13,
-                        fontWeight: FontWeight.w600),
-                  ),
-                  const Spacer(),
-                  GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => const TicketDetails(),
-                        ));
-                      },
-                      child: const Text(
-                        "Ticket Details",
-                        style: TextStyle(
-                            color: Color.fromARGB(255, 51, 90, 135),
-                            fontSize: 13,
-                            fontWeight: FontWeight.w600),
-                      ))
-                ],
-              ),
-            ),
-          ],
-        ),
-      );
-
-  Widget buildNotReadyContainer(ColorProvider colorProv) => AnimatedOpacity(
-        duration: const Duration(milliseconds: 500),
-        opacity: 1.0,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Text(
-              widget.event.level,
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-            ),
-            const SizedBox(
-              height: 40,
-            ),
-            GestureDetector(
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => BarcodeScreen(
-                    event: widget.event,
-                  ),
-                ));
-              },
-              child: Container(
+              Container(
                 height: 40,
                 width: MediaQuery.of(context).size.width * 0.75,
                 decoration: BoxDecoration(
-                    color: !colorProv.isPrimary
-                        ? colorProv.currentColor
-                        : const Color(0xff004ee9),
-                    borderRadius: BorderRadius.circular(1)),
+                    color: colorProv.currentColor,
+                    borderRadius: BorderRadius.circular(2)),
                 child: Center(
                     child: Padding(
                   padding: const EdgeInsets.all(4.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Stack(
-                        children: [
-                          Container(
-                            height: 17,
-                            width: 30,
-                            decoration: const BoxDecoration(
-                              image: DecorationImage(
-                                  image: AssetImage(
-                                'assets/images/smarticon.png',
-                              )),
-                            ),
-                          )
-                        ],
-                      ),
+                      Center(
+                          child: Container(
+                              height: 26,
+                              width: 26,
+                              decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.white),
+                                  borderRadius: BorderRadius.circular(13)),
+                              child: const Icon(
+                                Icons.check,
+                                size: 13,
+                                color: Colors.white,
+                              ))),
                       const SizedBox(
-                        width: 8,
+                        width: 15,
                       ),
                       const FittedBox(
                         child: Text(
-                          "View Ticket",
+                          "View in wallet",
                           style: TextStyle(
                               fontSize: 13,
                               fontWeight: FontWeight.bold,
-                              color: Color.fromARGB(255, 236, 236, 236)),
+                              color: Colors.white),
                         ),
                       ),
                     ],
                   ),
                 )),
               ),
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const TicketDetails(),
-                      ));
-                    },
-                    child: const Text(
-                      "Ticket Details",
-                      style: TextStyle(
-                          color: Color.fromARGB(255, 51, 90, 135),
-                          fontSize: 13,
-                          fontWeight: FontWeight.w600),
-                    ))
-              ],
-            )
-          ],
+              const SizedBox(
+                height: 30,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 35),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => BarcodeScreen(
+                            event: widget.event,
+                          ),
+                        ));
+                      },
+                      child: Container(
+                        color: Colors.transparent,
+                        child: const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Text(
+                            "View Barcode",
+                            style: TextStyle(
+                                color: Color.fromARGB(255, 51, 90, 135),
+                                fontSize: 13,
+                                fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const Spacer(),
+                    GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => const TicketDetails(),
+                          ));
+                        },
+                        child: const Text(
+                          "Ticket Details",
+                          style: TextStyle(
+                              color: Color.fromARGB(255, 51, 90, 135),
+                              fontSize: 13,
+                              fontWeight: FontWeight.w600),
+                        ))
+                  ],
+                ),
+              )
+            ],
+          ),
+        ),
+      );
+
+  Widget buildViewInWalletContainer(ColorProvider colorProv) => AnimatedOpacity(
+        duration: const Duration(milliseconds: 500),
+        opacity: 1.0,
+        child: Container(
+          color: Colors.transparent,
+          child: Column(
+            children: [
+              Text(
+                widget.event.level,
+                style:
+                    const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+              ),
+              const SizedBox(
+                height: 40,
+              ),
+              Container(
+                height: 40,
+                width: MediaQuery.of(context).size.width * 0.75,
+                decoration: BoxDecoration(
+                    color: colorProv.currentColor,
+                    borderRadius: BorderRadius.circular(2)),
+                child: Center(
+                    child: Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Center(
+                          child: Container(
+                              height: 26,
+                              width: 26,
+                              decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.white),
+                                  borderRadius: BorderRadius.circular(13)),
+                              child: const Icon(
+                                Icons.check,
+                                size: 13,
+                                color: Colors.white,
+                              ))),
+                      const SizedBox(
+                        width: 15,
+                      ),
+                      const FittedBox(
+                        child: Text(
+                          "View in wallet",
+                          style: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
+                        ),
+                      ),
+                    ],
+                  ),
+                )),
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 35),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => BarcodeScreen(
+                            event: widget.event,
+                          ),
+                        ));
+                      },
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => BarcodeScreen(
+                              event: widget.event,
+                            ),
+                          ));
+                        },
+                        child: Container(
+                          color: Colors.transparent,
+                          child: const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Text(
+                              "View Barcode",
+                              style: TextStyle(
+                                  color: Color.fromARGB(255, 51, 90, 135),
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const Spacer(),
+                    GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => const TicketDetails(),
+                          ));
+                        },
+                        child: const Text(
+                          "Ticket Details",
+                          style: TextStyle(
+                              color: Color.fromARGB(255, 51, 90, 135),
+                              fontSize: 13,
+                              fontWeight: FontWeight.w600),
+                        ))
+                  ],
+                ),
+              )
+            ],
+          ),
+        ),
+      );
+
+  Widget buildSmartIconContainer(ColorProvider colorProv) => AnimatedOpacity(
+        duration: const Duration(milliseconds: 500),
+        opacity: 1.0,
+        child: Container(
+          color: Colors.transparent,
+          child: Column(
+            children: [
+              SizedBox(
+                // color: Colors.red,
+                child: Column(
+                  children: [
+                    SizedBox(
+                        height: 25,
+                        width: 25,
+                        child: Image.asset(
+                          "assets/images/verified.png",
+                          color: Colors.black,
+                        )),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    const Text(
+                      "Your tickets aren't quite ready yet.",
+                      style:
+                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                    ),
+                    const Text(
+                      "Please check back later",
+                      style:
+                          TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+                    ),
+                    const SizedBox(
+                      height: 50,
+                    )
+                  ],
+                ),
+              ),
+              // const SizedBox(
+              //   height: 30,
+              // ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 35),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => BarcodeScreen(
+                            event: widget.event,
+                          ),
+                        ));
+                      },
+                      child: Container(
+                        color: Colors.transparent,
+                        child: const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Text(
+                            "View Barcode",
+                            style: TextStyle(
+                                color: Color.fromARGB(255, 51, 90, 135),
+                                fontSize: 13,
+                                fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const Spacer(),
+                    GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => const TicketDetails(),
+                          ));
+                        },
+                        child: const Text(
+                          "Ticket Details",
+                          style: TextStyle(
+                              color: Color.fromARGB(255, 51, 90, 135),
+                              fontSize: 13,
+                              fontWeight: FontWeight.w600),
+                        ))
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+
+  Widget buildNotReadyContainer(ColorProvider colorProv) => AnimatedOpacity(
+        duration: const Duration(milliseconds: 500),
+        opacity: 1.0,
+        child: Container(
+          color: Colors.transparent,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Text(
+                widget.event.level,
+                style:
+                    const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+              ),
+              const SizedBox(
+                height: 40,
+              ),
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => BarcodeScreen(
+                      event: widget.event,
+                    ),
+                  ));
+                },
+                child: Container(
+                  height: 40,
+                  width: MediaQuery.of(context).size.width * 0.75,
+                  decoration: BoxDecoration(
+                      color: !colorProv.isPrimary
+                          ? colorProv.currentColor
+                          : const Color(0xff004ee9),
+                      borderRadius: BorderRadius.circular(1)),
+                  child: Center(
+                      child: Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Stack(
+                          children: [
+                            Container(
+                              height: 17,
+                              width: 30,
+                              decoration: const BoxDecoration(
+                                image: DecorationImage(
+                                    image: AssetImage(
+                                  'assets/images/smarticon.png',
+                                )),
+                              ),
+                            )
+                          ],
+                        ),
+                        const SizedBox(
+                          width: 8,
+                        ),
+                        const FittedBox(
+                          child: Text(
+                            "View Ticket",
+                            style: TextStyle(
+                                fontSize: 13,
+                                fontWeight: FontWeight.bold,
+                                color: Color.fromARGB(255, 236, 236, 236)),
+                          ),
+                        ),
+                      ],
+                    ),
+                  )),
+                ),
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => const TicketDetails(),
+                        ));
+                      },
+                      child: const Text(
+                        "Ticket Details",
+                        style: TextStyle(
+                            color: Color.fromARGB(255, 51, 90, 135),
+                            fontSize: 13,
+                            fontWeight: FontWeight.w600),
+                      ))
+                ],
+              )
+            ],
+          ),
         ),
       );
 }
