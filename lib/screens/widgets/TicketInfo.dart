@@ -7,6 +7,7 @@ import 'package:ticketmaster/model/EventInfo.dart';
 import 'package:ticketmaster/providers/TimerProvider.dart';
 import 'package:ticketmaster/providers/colorProvider.dart';
 import 'package:ticketmaster/providers/event_providers.dart';
+import 'package:ticketmaster/screens/barcode_screen.dart';
 import 'package:ticketmaster/screens/event_details_screen.dart';
 import 'package:ticketmaster/screens/ticket_details_screen.dart';
 
@@ -233,7 +234,7 @@ class _TicketInfoSectionState extends State<TicketInfoSection> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                    const Text(
+                  const Text(
                     "View Barcode",
                     style: TextStyle(
                         color: Color.fromARGB(255, 51, 90, 135),
@@ -447,14 +448,23 @@ class _TicketInfoSectionState extends State<TicketInfoSection> {
                   children: [
                     Stack(
                       children: [
-                        Container(
-                          height: 17,
-                          width: 30,
-                          decoration: const BoxDecoration(
-                            image: DecorationImage(
-                                image: AssetImage(
-                              'assets/images/smarticon.png',
-                            )),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => BarcodeScreen(
+                                event: widget.event,
+                              ),
+                            ));
+                          },
+                          child: Container(
+                            height: 17,
+                            width: 30,
+                            decoration: const BoxDecoration(
+                              image: DecorationImage(
+                                  image: AssetImage(
+                                'assets/images/smarticon.png',
+                              )),
+                            ),
                           ),
                         )
                       ],
