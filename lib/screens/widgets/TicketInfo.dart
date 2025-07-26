@@ -233,7 +233,7 @@ class _TicketInfoSectionState extends State<TicketInfoSection> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text(
+                    const Text(
                     "View Barcode",
                     style: TextStyle(
                         color: Color.fromARGB(255, 51, 90, 135),

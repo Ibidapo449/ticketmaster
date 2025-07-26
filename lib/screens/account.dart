@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ticketmaster/screens/admin.dart';
+import 'package:ticketmaster/screens/ticket_transfer_page.dart';
 
 import '../providers/event_providers.dart';
 
@@ -298,34 +299,41 @@ class _AccountState extends State<Account> {
                         const SizedBox(
                           height: 10,
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                SvgPicture.asset(
-                                  'assets/images/Vector 1.svg',
-                                  height: 22,
-                                  width: 22,
-                                ),
-                                const SizedBox(
-                                  width: 10,
-                                ),
-                                const Text(
-                                  "Saved Paymment Methods",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w400,
-                                      color: Color(0xff1e252d),
-                                      fontSize: 18),
-                                )
-                              ],
-                            ),
-                            const Icon(
-                              Icons.keyboard_arrow_right,
-                              color: Colors.grey,
-                              size: 35,
-                            )
-                          ],
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => const TransferTicketPage(),
+                            ));
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  SvgPicture.asset(
+                                    'assets/images/Vector 1.svg',
+                                    height: 22,
+                                    width: 22,
+                                  ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  const Text(
+                                    "Saved Paymment Methods",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w400,
+                                        color: Color(0xff1e252d),
+                                        fontSize: 18),
+                                  )
+                                ],
+                              ),
+                              const Icon(
+                                Icons.keyboard_arrow_right,
+                                color: Colors.grey,
+                                size: 35,
+                              )
+                            ],
+                          ),
                         ),
                         const SizedBox(
                           height: 10,
