@@ -40,6 +40,7 @@ class _EventDetailsState extends State<EventDetails> {
   // Editable fields
   String _ticketSelectionText = '2 Ticket Selected';
   String _seatText = '15, 16, 17, 18';
+  String? _editText;
   late final TextEditingController _ticketTextController;
   late final TextEditingController _seatTextController;
 
@@ -52,8 +53,22 @@ class _EventDetailsState extends State<EventDetails> {
     _seatTextController = TextEditingController();
     getColorState();
     getTranferState();
+    _loadEditText();
     Future.microtask(() =>
         Provider.of<TimerProvider>(context, listen: false).loadCountdown());
+  }
+
+  Future<void> _loadEditText() async {
+    final prefs = await SharedPreferences.getInstance();
+    final text = prefs.getString('holdToEditText');
+    setState(() {
+      _editText = text;
+    });
+  }
+
+  Future<String?> _getHoldToEditText() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('holdToEditText');
   }
 
   @override
@@ -102,7 +117,7 @@ class _EventDetailsState extends State<EventDetails> {
             child: SizedBox(
               height: imageProv.image == null
                   ? MediaQuery.of(context).size.height * 0.64
-                  : MediaQuery.of(context).size.height * 0.6,
+                  : MediaQuery.of(context).size.height * 0.62,
               child: PageView.builder(
                 controller: _pageController,
                 onPageChanged: _onPageChanged,
@@ -182,7 +197,7 @@ class _EventDetailsState extends State<EventDetails> {
             ),
           ),
           const SizedBox(
-            height: 15,
+            height: 35,
           ),
           imageProv.image == null
               ? const SizedBox()
@@ -191,15 +206,87 @@ class _EventDetailsState extends State<EventDetails> {
                   opacity: context.watch<EventProvider>().isSwitched2
                       ? widget.opacity2
                       : 1,
-                  child: Container(
-                    // padding: EdgeInsets.symmetric(horizontal: 10),
-                    height: 250,
-                    width: double.infinity,
-                    decoration:
-                        BoxDecoration(borderRadius: BorderRadius.circular(15)),
-                    child: ClipRRect(
-                        borderRadius: BorderRadius.circular(15),
-                        child: Image.file(imageProv.image!, fit: BoxFit.cover)),
+                  child: Stack(
+                    children: [
+                      Container(
+                        // padding: EdgeInsets.symmetric(horizontal: 10),
+                        height: 250,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15)),
+                        child: ClipRRect(
+                            borderRadius: BorderRadius.circular(15),
+                            child: Image.file(imageProv.image!,
+                                fit: BoxFit.cover)),
+                      ),
+                      GestureDetector(
+                        onLongPress: () async {
+                          final controller = TextEditingController(
+                            text: _editText ?? '',
+                          );
+                          final result = await showDialog<String>(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: const Text('Edit Text'),
+                                content: TextField(
+                                  controller: controller,
+                                  autofocus: true,
+                                  decoration: const InputDecoration(
+                                    hintText: 'Enter text',
+                                  ),
+                                ),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: const Text('Cancel'),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context)
+                                          .pop(controller.text.trim());
+                                    },
+                                    child: const Text('Save'),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                          if (result != null) {
+                            setState(() {
+                              _editText = result.isEmpty ? null : result;
+                            });
+                            final prefs = await SharedPreferences.getInstance();
+                            if (result.isEmpty) {
+                              await prefs.remove('holdToEditText');
+                            } else {
+                              await prefs.setString('holdToEditText', result);
+                            }
+                          }
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: FutureBuilder<String?>(
+                            future: _getHoldToEditText(),
+                            builder: (context, snapshot) {
+                              final text =
+                                  _editText ?? snapshot.data ?? 'Hold to Edit';
+                              return Text(
+                                text.isEmpty ? 'Hold to Edit' : text,
+                                style: const TextStyle(
+                                  fontSize: 25,
+                                  color: Color.fromARGB(255, 113, 113, 113),
+                                  // fontFamily: 'Poppins',
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
           const SizedBox(
