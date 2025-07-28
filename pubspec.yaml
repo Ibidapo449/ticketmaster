@@ -51,6 +51,8 @@ dependencies:
   image_downloader: ^0.31.0
   auto_size_text: ^3.0.0
   marquee: ^2.3.0
+  barcode: ^2.2.9
+  barcode_widget: ^2.0.4
 
 
 dev_dependencies:

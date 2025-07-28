@@ -10,6 +10,8 @@ import 'package:ticketmaster/providers/event_providers.dart';
 import 'package:ticketmaster/screens/event_details_screen.dart';
 import 'package:ticketmaster/screens/ticket_details_screen.dart';
 
+import '../barcode_screen.dart';
+
 /// Widget displaying ticket details below banner
 class TicketInfoSection extends StatefulWidget {
   final EventInfo event;
@@ -431,49 +433,56 @@ class _TicketInfoSectionState extends State<TicketInfoSection> {
             const SizedBox(
               height: 40,
             ),
-            Container(
-              height: 40,
-              width: MediaQuery.of(context).size.width * 0.75,
-              decoration: BoxDecoration(
-                  color: !colorProv.isPrimary
-                      ? colorProv.currentColor
-                      : const Color(0xff004ee9),
-                  borderRadius: BorderRadius.circular(1)),
-              child: Center(
-                  child: Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Stack(
-                      children: [
-                        Container(
-                          height: 17,
-                          width: 30,
-                          decoration: const BoxDecoration(
-                            image: DecorationImage(
-                                image: AssetImage(
-                              'assets/images/smarticon.png',
-                            )),
-                          ),
-                        )
-                      ],
-                    ),
-                    const SizedBox(
-                      width: 8,
-                    ),
-                    const FittedBox(
-                      child: Text(
-                        "View Ticket",
-                        style: TextStyle(
-                            fontSize: 13,
-                            fontWeight: FontWeight.bold,
-                            color: Color.fromARGB(255, 236, 236, 236)),
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => BarcodeScreen(event: widget.event),
+                ));
+              },
+              child: Container(
+                height: 40,
+                width: MediaQuery.of(context).size.width * 0.75,
+                decoration: BoxDecoration(
+                    color: !colorProv.isPrimary
+                        ? colorProv.currentColor
+                        : const Color(0xff004ee9),
+                    borderRadius: BorderRadius.circular(1)),
+                child: Center(
+                    child: Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Stack(
+                        children: [
+                          Container(
+                            height: 17,
+                            width: 30,
+                            decoration: const BoxDecoration(
+                              image: DecorationImage(
+                                  image: AssetImage(
+                                'assets/images/smarticon.png',
+                              )),
+                            ),
+                          )
+                        ],
                       ),
-                    ),
-                  ],
-                ),
-              )),
+                      const SizedBox(
+                        width: 8,
+                      ),
+                      const FittedBox(
+                        child: Text(
+                          "View Ticket",
+                          style: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.bold,
+                              color: Color.fromARGB(255, 236, 236, 236)),
+                        ),
+                      ),
+                    ],
+                  ),
+                )),
+              ),
             ),
             const SizedBox(
               height: 30,
