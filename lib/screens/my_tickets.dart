@@ -2435,7 +2435,6 @@ Container transferTicketContainer(
           Expanded(
             child: TextField(
               cursorColor: Colors.black,
-              keyboardType: TextInputType.phone,
               decoration: InputDecoration(
                 hintText: text ?? 'Enter mobile number',
                 hintStyle: TextStyle(color: Colors.black.withOpacity(.3)),

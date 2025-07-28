@@ -582,7 +582,6 @@ class _ManualEntryFormState extends State<ManualEntryForm> {
           transferTicketContainer(context, text: "Last Name", height: 40.0),
           const SizedBox(height: 15),
 
-          // Toggle Email or Phone Input
           if (showEmail) ...[
             const Text("Email", style: TextStyle(fontWeight: FontWeight.w700)),
             const SizedBox(height: 3),
