@@ -31,6 +31,10 @@ class _BarcodeScreenState extends State<BarcodeScreen>
   CrossAxisAlignment _gaCrossAxisAlignment = CrossAxisAlignment.end;
   static const String _gaAlignmentKey = 'ga_cross_axis_alignment';
 
+  // --- BEGIN: Add index state for seat navigation ---
+  int _index = 0;
+  // --- END: index state ---
+
   @override
   void initState() {
     super.initState();
@@ -223,7 +227,6 @@ class _BarcodeScreenState extends State<BarcodeScreen>
             ),
             Expanded(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   FittedBox(
                     fit: BoxFit.scaleDown,
@@ -300,7 +303,7 @@ class _BarcodeScreenState extends State<BarcodeScreen>
         ? ''
         : widget.event.row == 'GA'
             ? 'GA'
-            : (int.parse(widget.event.seat)).toString();
+            : (int.parse(widget.event.seat) + _index).toString();
     final isGeneralAdmission =
         widget.event.row == 'GA' && int.parse(widget.event.seat) == 1;
     return Padding(
@@ -358,33 +361,52 @@ class _BarcodeScreenState extends State<BarcodeScreen>
       );
 
   Widget _buildBarcodeCard() {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 20),
-      padding: const EdgeInsets.all(10),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.3),
-            blurRadius: 10,
-            offset: const Offset(0, 5),
-          ),
-        ],
-      ),
-      child: Column(
-        children: [
-          _buildBarcode(),
-          const SizedBox(height: 10),
-          const Text(
-            "Screenshots won't get you in",
-            style: TextStyle(
-              color: Colors.black87,
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
+    return GestureDetector(
+      onHorizontalDragEnd: (details) {
+        // Swiping left (negative velocity) increases seat, right (positive) decreases
+        setState(() {
+          if (details.primaryVelocity != null && details.primaryVelocity! < 0) {
+            // Swipe left
+            if (_index < (widget.event.ticketCount) - 1) {
+              _index++;
+            }
+          } else if (details.primaryVelocity != null &&
+              details.primaryVelocity! > 0) {
+            // Swipe right
+            if (_index > 0) {
+              _index--;
+            }
+          }
+        });
+      },
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.3),
+              blurRadius: 10,
+              offset: const Offset(0, 5),
             ),
-          ),
-        ],
+          ],
+        ),
+        child: Column(
+          children: [
+            _buildBarcode(),
+            const SizedBox(height: 10),
+            const Text(
+              "Screenshots won't get you in",
+              style: TextStyle(
+                color: Colors.black87,
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
