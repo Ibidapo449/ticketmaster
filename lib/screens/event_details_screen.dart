@@ -9,6 +9,7 @@ import 'package:ticketmaster/providers/croppedImageProvider.dart';
 import 'package:ticketmaster/providers/event_providers.dart';
 import 'package:ticketmaster/screens/widgets/TicketCard.dart';
 import 'package:ticketmaster/screens/widgets/transerButtomSheet.dart';
+import 'package:ticketmaster/screens/widgets/authenticationBottomSheet.dart';
 
 /// Main Event Details screen
 class EventDetails extends StatefulWidget {
@@ -36,6 +37,7 @@ class _EventDetailsState extends State<EventDetails> {
   bool _colorSell = true;
   bool _transferSell = true;
   bool _switchTicketCountTitle = false;
+  bool _isAuthenticating = false;
 
   // Editable fields
   String _ticketSelectionText = '2 Ticket Selected';
@@ -106,7 +108,9 @@ class _EventDetailsState extends State<EventDetails> {
     final imageProv = context.watch<CroppedImageProvider>();
     final colorProv = context.watch<ColorProvider>();
     return Scaffold(
-      body: ListView(
+      body: Stack(
+        children: [
+          ListView(
         // padding: const EdgeInsets.all(8.0),
         children: [
           AnimatedOpacity(
@@ -178,7 +182,7 @@ class _EventDetailsState extends State<EventDetails> {
                   label: 'Transfer',
                   colorProv: colorProv,
                   active: _transferSell,
-                  onTap: () => _showTransferSheet(context),
+                  onTap: () => _startAuthenticationFlow(context),
                   onDoubleTap: () {
                     setState(() => _transferSell = !_transferSell);
                     _saveBoolPref('transferdeactivate', _transferSell);
@@ -310,7 +314,46 @@ class _EventDetailsState extends State<EventDetails> {
                 ),
         ],
       ),
+          
+          // Loading overlay during authentication
+          if (_isAuthenticating)
+            Container(
+              color: Colors.white.withOpacity(0.8),
+              child: const Center(
+                child: CircularProgressIndicator.adaptive(),
+              ),
+            ),
+        ],
+      ),
     );
+  }
+
+  void _startAuthenticationFlow(BuildContext context) async {
+    // Show loading overlay for 3 seconds
+    setState(() {
+      _isAuthenticating = true;
+    });
+
+    await Future.delayed(const Duration(seconds: 3));
+
+    if (mounted) {
+      setState(() {
+        _isAuthenticating = false;
+      });
+
+      // Show authentication bottom sheet
+      showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        isDismissible: false,
+        enableDrag: false,
+        builder: (context) => AuthenticationBottomSheet(
+          onAuthenticationComplete: () {
+            _showTransferSheet(context);
+          },
+        ),
+      );
+    }
   }
 
   Widget _buildIndicator(bool isSelected, BuildContext context) {
