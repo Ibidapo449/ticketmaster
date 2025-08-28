@@ -11,6 +11,8 @@ import 'package:ticketmaster/screens/widgets/TicketInfo.dart';
 import 'package:ticketmaster/screens/widgets/autoscrollText.dart';
 import 'package:ticketmaster/screens/widgets/sectionDisplayText.dart';
 
+import '../ticket_details_screen.dart';
+
 /// Individual ticket card
 class TicketCard extends StatefulWidget {
   final EventInfo event;
@@ -143,7 +145,11 @@ class _TicketCardState extends State<TicketCard> {
                 style: const TextStyle(color: Colors.white, fontSize: 16)),
           ),
           GestureDetector(
-            onTap: () {},
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => const TicketDetails(),
+              ));
+            },
             child: SvgPicture.asset(
               'assets/images/info.svg',
               color: Colors.white,

@@ -69,7 +69,7 @@ class Event {
   bool test;
   String url;
 
-  List<Image> images;
+  List<Images> images;
 
   String? info;
   String? pleaseNote;
@@ -89,26 +89,27 @@ class Event {
         id: json["id"],
         test: json["test"],
         url: json["url"],
-        images: List<Image>.from(json["images"].map((x) => Image.fromJson(x))),
+        images:
+            List<Images>.from(json["images"].map((x) => Images.fromJson(x))),
         info: json["info"],
         pleaseNote: json["pleaseNote"],
       );
 }
 
-class Image {
+class Images {
   String url;
   int width;
   int height;
   bool fallback;
 
-  Image({
+  Images({
     required this.url,
     required this.width,
     required this.height,
     required this.fallback,
   });
 
-  factory Image.fromJson(Map<String, dynamic> json) => Image(
+  factory Images.fromJson(Map<String, dynamic> json) => Images(
         url: json["url"],
         width: json["width"],
         height: json["height"],

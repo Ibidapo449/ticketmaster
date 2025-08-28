@@ -6,6 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 // import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ticketmaster/model/event_model.dart';
@@ -29,14 +30,97 @@ class _UpcomingState extends State<Upcoming> {
   void initState() {
     super.initState();
     gettoken();
+    loadDaysValue();
+    loadEventTextState();
   }
 
   int token = 0;
+  int daysUntilEvent = 2; // Default value
+  bool showNextEvent =
+      true; // true for "Next Event:", false for "Enjoy your event"
+
   void gettoken() async {
     final pref = await SharedPreferences.getInstance();
     setState(() {
       token = pref.getInt('token') ?? 0;
     });
+  }
+
+  void loadDaysValue() async {
+    final pref = await SharedPreferences.getInstance();
+    setState(() {
+      daysUntilEvent = pref.getInt('daysUntilEvent') ?? 2;
+    });
+  }
+
+  void loadEventTextState() async {
+    final pref = await SharedPreferences.getInstance();
+    setState(() {
+      showNextEvent = pref.getBool('showNextEvent') ?? true;
+    });
+  }
+
+  void saveEventTextState(bool state) async {
+    final pref = await SharedPreferences.getInstance();
+    await pref.setBool('showNextEvent', state);
+    setState(() {
+      showNextEvent = state;
+    });
+  }
+
+  void toggleEventText() {
+    saveEventTextState(!showNextEvent);
+  }
+
+  void saveDaysValue(int days) async {
+    final pref = await SharedPreferences.getInstance();
+    await pref.setInt('daysUntilEvent', days);
+    setState(() {
+      daysUntilEvent = days;
+    });
+  }
+
+  void showEditDaysDialog() {
+    TextEditingController controller =
+        TextEditingController(text: daysUntilEvent.toString());
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Edit Days Until Event'),
+          content: TextField(
+            controller: controller,
+            keyboardType: TextInputType.number,
+            decoration: const InputDecoration(
+              labelText: 'Number of days',
+              border: OutlineInputBorder(),
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                int? newDays = int.tryParse(controller.text);
+                if (newDays != null && newDays >= 0) {
+                  saveDaysValue(newDays);
+                  Navigator.of(context).pop();
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                        content: Text('Please enter a valid number')),
+                  );
+                }
+              },
+              child: const Text('Save'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   bool loaded = false;
@@ -140,7 +224,7 @@ class _UpcomingState extends State<Upcoming> {
       List<QueryDocumentSnapshot> tickets, int index) {
     final colorprov = context.watch<ColorProvider>();
     return Container(
-      height: MediaQuery.of(context).size.height * 0.7,
+      height: MediaQuery.of(context).size.height * 0.73,
       decoration: BoxDecoration(
         boxShadow: [
           BoxShadow(
@@ -212,18 +296,41 @@ class _UpcomingState extends State<Upcoming> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            'Next Event:2 days',
-                            style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.white,
-                            ),
+                          Row(
+                            children: [
+                              GestureDetector(
+                                onTap: toggleEventText,
+                                child: Text(
+                                  showNextEvent
+                                      ? 'Next Event:'
+                                      : 'Enjoy your event',
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                              showNextEvent
+                                  ? GestureDetector(
+                                      onTap: showEditDaysDialog,
+                                      child: Text(
+                                        ' $daysUntilEvent ${daysUntilEvent == 1 ? 'day' : 'days'}',
+                                        style: const TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    )
+                                  : SizedBox(),
+                            ],
                           ),
-                          const Icon(
-                            Icons.calendar_today,
+                          SvgPicture.asset(
+                            'assets/images/add-calendar.svg',
+                            width: 20,
+                            height: 20,
                             color: Colors.white,
-                            size: 20,
                           ),
                         ],
                       ),
@@ -276,16 +383,56 @@ class _UpcomingState extends State<Upcoming> {
                                   ),
                                 ),
                                 const SizedBox(height: 8),
-
+                                // Divider line
+                                Container(
+                                  height: 4,
+                                  width: 180,
+                                  color: Colors.grey.withOpacity(0.8),
+                                ),
+                                const SizedBox(height: 8),
                                 // Location
-                                Text(
-                                  tickets[index]['location'],
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.white,
-                                    letterSpacing: 0.3,
-                                  ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    SizedBox(
+                                      width: MediaQuery.of(context).size.width *
+                                          .6,
+                                      child: Text(
+                                        tickets[index]['location'],
+                                        style: const TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500,
+                                          color: Colors.white,
+                                          letterSpacing: 0.3,
+                                        ),
+                                      ),
+                                    ),
+                                    Row(
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Image.asset(
+                                              'assets/images/myevent.png',
+                                              height: 20,
+                                              width: 20,
+                                              color: Colors.white,
+                                            ),
+                                            SizedBox(
+                                              width: 5,
+                                            ),
+                                            Text(
+                                              'X${tickets[index]['numberOfTicket'].toString()}',
+                                              style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w700),
+                                            )
+                                          ],
+                                        ),
+                                      ],
+                                    )
+                                  ],
                                 ),
                               ],
                             ),

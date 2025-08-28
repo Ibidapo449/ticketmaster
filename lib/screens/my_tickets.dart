@@ -2351,7 +2351,12 @@ class _EventDetailsState extends State<MyTickets> {
   }
 }
 
-Container transferTicketContainer(BuildContext context, {height, text}) {
+Container transferTicketContainer(
+  BuildContext context, {
+  double? height,
+  String? text,
+  bool showCountryCode = false,
+}) {
   return Container(
       height: height,
       width: MediaQuery.of(context).size.width,

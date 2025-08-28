@@ -143,17 +143,17 @@ class _HomePageState extends State<EventDetailaScreenWithTabbar>
                       children: [
                         TabBar(
                             unselectedLabelColor: Colors.white54,
-                            labelStyle: const TextStyle(color: Colors.white),
+                            labelStyle: const TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
                             indicatorSize: TabBarIndicatorSize.tab,
                             indicatorColor: Colors.white,
                             indicatorWeight: 3,
                             controller: tabController,
-                            tabs: [
+                            tabs: const [
+                              Tab(text: "MY TICKETS"),
                               Tab(
-                                  text:
-                                      "MY TICKETS (${widget.number_of_ticket})"),
-                              const Tab(
-                                text: "ADD-ONS (0)",
+                                text: "ADD-ONS",
                               )
                             ])
                       ],

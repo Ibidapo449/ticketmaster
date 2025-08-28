@@ -122,9 +122,9 @@ class _HomeNavBarState extends State<HomeNavBar> {
         child: Container(
           height: 45,
           decoration: BoxDecoration(
-            color: isSelected
-                ? const Color.fromARGB(255, 1, 114, 234).withOpacity(.3)
-                : Colors.transparent,
+            // color: isSelected
+            //     ? const Color.fromARGB(255, 1, 114, 234).withOpacity(.3)
+            //     : Colors.transparent,
             borderRadius: BorderRadius.circular(6),
           ),
           child: Column(

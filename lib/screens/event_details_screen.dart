@@ -111,216 +111,220 @@ class _EventDetailsState extends State<EventDetails> {
       body: Stack(
         children: [
           ListView(
-        // padding: const EdgeInsets.all(8.0),
-        children: [
-          AnimatedOpacity(
-            opacity: context.watch<EventProvider>().isSwitched2
-                ? widget.opacity1
-                : 1,
-            duration: const Duration(seconds: 1),
-            child: SizedBox(
-              height: imageProv.image == null
-                  ? MediaQuery.of(context).size.height * 0.64
-                  : MediaQuery.of(context).size.height * 0.62,
-              child: PageView.builder(
-                controller: _pageController,
-                onPageChanged: _onPageChanged,
-                itemCount: widget.event.ticketCount,
-                itemBuilder: (_, idx) => Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                  child: TicketCard(
-                    event: widget.event,
-                    index: idx,
-                    colorSell: _colorSell,
-                    transferSell: _transferSell,
-                    countdown: _countdown,
-                    ticketSelectionText: _ticketSelectionText,
-                    seatText: _seatText,
-                    switchTicketCountTitle: _switchTicketCountTitle,
-                    onToggleCountTitle: (val) {
-                      setState(() => _switchTicketCountTitle = val);
-                      _saveBoolPref('getcountEvent', val);
-                    },
-                    onColorSellToggle: (val) {
-                      setState(() => _colorSell = val);
-                      _saveBoolPref('selldeactivate', val);
-                    },
-                    onTransferToggle: (val) {
-                      setState(() => _transferSell = val);
-                      _saveBoolPref('transferdeactivate', val);
-                    },
-                  ),
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(height: 20),
-          AnimatedOpacity(
-            opacity: widget.opacity2,
-            duration: const Duration(seconds: 1),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: List.generate(
-                widget.event.ticketCount,
-                (i) => _buildIndicator(i == _currentIndex, context),
-              ),
-            ),
-          ),
-          const SizedBox(
-            height: 15,
-          ),
-          const SizedBox(height: 15),
-          AnimatedOpacity(
-            opacity: context.watch<EventProvider>().isSwitched2
-                ? widget.opacity2
-                : 1,
-            duration: const Duration(seconds: 1),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                _buildActionButton(
-                  label: 'Transfer',
-                  colorProv: colorProv,
-                  active: _transferSell,
-                  onTap: () => _startAuthenticationFlow(context),
-                  onDoubleTap: () {
-                    setState(() => _transferSell = !_transferSell);
-                    _saveBoolPref('transferdeactivate', _transferSell);
-                  },
-                ),
-                _buildActionButton(
-                  label: 'Sell',
-                  active: _colorSell,
-                  colorProv: colorProv,
-                  onTap: () {
-                    setState(() => _colorSell = !_colorSell);
-                    _saveBoolPref('selldeactivate', _colorSell);
-                  },
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(
-            height: 35,
-          ),
-          imageProv.image == null
-              ? const SizedBox()
-              : AnimatedOpacity(
-                  duration: const Duration(seconds: 1),
-                  opacity: context.watch<EventProvider>().isSwitched2
-                      ? widget.opacity2
-                      : 1,
-                  child: Stack(
-                    children: [
-                      Container(
-                        // padding: EdgeInsets.symmetric(horizontal: 10),
-                        height: 250,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15)),
-                        child: ClipRRect(
-                            borderRadius: BorderRadius.circular(15),
-                            child: Image.file(imageProv.image!,
-                                fit: BoxFit.cover)),
-                      ),
-                      GestureDetector(
-                        onLongPress: () async {
-                          final controller = TextEditingController(
-                            text: _editText ?? '',
-                          );
-                          final result = await showDialog<String>(
-                            context: context,
-                            builder: (context) {
-                              return AlertDialog(
-                                title: const Text('Edit Text'),
-                                content: TextField(
-                                  controller: controller,
-                                  autofocus: true,
-                                  decoration: const InputDecoration(
-                                    hintText: 'Enter text',
-                                  ),
-                                ),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: const Text('Cancel'),
-                                  ),
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.of(context)
-                                          .pop(controller.text.trim());
-                                    },
-                                    child: const Text('Save'),
-                                  ),
-                                ],
-                              );
-                            },
-                          );
-                          if (result != null) {
-                            setState(() {
-                              _editText = result.isEmpty ? null : result;
-                            });
-                            final prefs = await SharedPreferences.getInstance();
-                            if (result.isEmpty) {
-                              await prefs.remove('holdToEditText');
-                            } else {
-                              await prefs.setString('holdToEditText', result);
-                            }
-                          }
+            // padding: const EdgeInsets.all(8.0),
+            children: [
+              AnimatedOpacity(
+                opacity: context.watch<EventProvider>().isSwitched2
+                    ? widget.opacity1
+                    : 1,
+                duration: const Duration(seconds: 1),
+                child: SizedBox(
+                  height: imageProv.image == null
+                      ? MediaQuery.of(context).size.height * 0.64
+                      : MediaQuery.of(context).size.height * 0.62,
+                  child: PageView.builder(
+                    controller: _pageController,
+                    onPageChanged: _onPageChanged,
+                    itemCount: widget.event.ticketCount,
+                    itemBuilder: (_, idx) => Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                      child: TicketCard(
+                        event: widget.event,
+                        index: idx,
+                        colorSell: _colorSell,
+                        transferSell: _transferSell,
+                        countdown: _countdown,
+                        ticketSelectionText: _ticketSelectionText,
+                        seatText: _seatText,
+                        switchTicketCountTitle: _switchTicketCountTitle,
+                        onToggleCountTitle: (val) {
+                          setState(() => _switchTicketCountTitle = val);
+                          _saveBoolPref('getcountEvent', val);
                         },
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: FutureBuilder<String?>(
-                            future: _getHoldToEditText(),
-                            builder: (context, snapshot) {
-                              final text =
-                                  _editText ?? snapshot.data ?? 'Hold to Edit';
-                              return Text(
-                                text.isEmpty ? 'Hold to Edit' : text,
-                                style: const TextStyle(
-                                  fontSize: 25,
-                                  color: Color.fromARGB(255, 113, 113, 113),
-                                  // fontFamily: 'Poppins',
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              );
-                            },
-                          ),
-                        ),
+                        onColorSellToggle: (val) {
+                          setState(() => _colorSell = val);
+                          _saveBoolPref('selldeactivate', val);
+                        },
+                        onTransferToggle: (val) {
+                          setState(() => _transferSell = val);
+                          _saveBoolPref('transferdeactivate', val);
+                        },
                       ),
-                    ],
+                    ),
                   ),
                 ),
-          const SizedBox(
-            height: 15,
+              ),
+              const SizedBox(height: 20),
+              AnimatedOpacity(
+                opacity: widget.opacity2,
+                duration: const Duration(seconds: 1),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: List.generate(
+                    widget.event.ticketCount,
+                    (i) => _buildIndicator(i == _currentIndex, context),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              const SizedBox(height: 15),
+              AnimatedOpacity(
+                opacity: context.watch<EventProvider>().isSwitched2
+                    ? widget.opacity2
+                    : 1,
+                duration: const Duration(seconds: 1),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    _buildActionButton(
+                      label: 'Transfer',
+                      colorProv: colorProv,
+                      active: _transferSell,
+                      onTap: () => _startAuthenticationFlow(context),
+                      onDoubleTap: () {
+                        setState(() => _transferSell = !_transferSell);
+                        _saveBoolPref('transferdeactivate', _transferSell);
+                      },
+                    ),
+                    _buildActionButton(
+                      label: 'Sell',
+                      active: _colorSell,
+                      colorProv: colorProv,
+                      onTap: () {
+                        setState(() => _colorSell = !_colorSell);
+                        _saveBoolPref('selldeactivate', _colorSell);
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(
+                height: 35,
+              ),
+              imageProv.image == null
+                  ? const SizedBox()
+                  : AnimatedOpacity(
+                      duration: const Duration(seconds: 1),
+                      opacity: context.watch<EventProvider>().isSwitched2
+                          ? widget.opacity2
+                          : 1,
+                      child: Stack(
+                        children: [
+                          Container(
+                            // padding: EdgeInsets.symmetric(horizontal: 10),
+                            height: 250,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15)),
+                            child: ClipRRect(
+                                borderRadius: BorderRadius.circular(15),
+                                child: Image.file(imageProv.image!,
+                                    fit: BoxFit.cover)),
+                          ),
+                          GestureDetector(
+                            onLongPress: () async {
+                              final controller = TextEditingController(
+                                text: _editText ?? '',
+                              );
+                              final result = await showDialog<String>(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    title: const Text('Edit Text'),
+                                    content: TextField(
+                                      controller: controller,
+                                      autofocus: true,
+                                      decoration: const InputDecoration(
+                                        hintText: 'Enter text',
+                                      ),
+                                    ),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: const Text('Cancel'),
+                                      ),
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context)
+                                              .pop(controller.text.trim());
+                                        },
+                                        child: const Text('Save'),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                              if (result != null) {
+                                setState(() {
+                                  _editText = result.isEmpty ? null : result;
+                                });
+                                final prefs =
+                                    await SharedPreferences.getInstance();
+                                if (result.isEmpty) {
+                                  await prefs.remove('holdToEditText');
+                                } else {
+                                  await prefs.setString(
+                                      'holdToEditText', result);
+                                }
+                              }
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: FutureBuilder<String?>(
+                                future: _getHoldToEditText(),
+                                builder: (context, snapshot) {
+                                  final text = _editText ??
+                                      snapshot.data ??
+                                      'Hold to Edit';
+                                  return Text(
+                                    text.isEmpty ? 'Hold to Edit' : text,
+                                    style: const TextStyle(
+                                      fontSize: 25,
+                                      color: Color.fromARGB(255, 113, 113, 113),
+                                      // fontFamily: 'Poppins',
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+              const SizedBox(
+                height: 15,
+              ),
+              imageProv.image == null
+                  ? const SizedBox()
+                  : Container(
+                      decoration: BoxDecoration(
+                        color: colorProv.currentColor,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      margin: const EdgeInsets.symmetric(horizontal: 20),
+                      height: 45,
+                      child: Center(
+                          child: Text(
+                        'Get Directions',
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.w600),
+                      )),
+                    ),
+            ],
           ),
-          imageProv.image == null
-              ? const SizedBox()
-              : Container(
-                  decoration: BoxDecoration(
-                    color: colorProv.currentColor,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  margin: const EdgeInsets.symmetric(horizontal: 20),
-                  height: 45,
-                  child: Center(
-                      child: Text(
-                    'Get Directions',
-                    style: TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.w600),
-                  )),
-                ),
-        ],
-      ),
-          
+
           // Loading overlay during authentication
           if (_isAuthenticating)
             Container(
               color: Colors.white.withOpacity(0.8),
-              child: const Center(
-                child: CircularProgressIndicator.adaptive(),
+              child: Center(
+                child: CircularProgressIndicator.adaptive(
+                    backgroundColor: colorProv.currentColor),
               ),
             ),
         ],
