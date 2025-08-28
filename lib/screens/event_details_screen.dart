@@ -36,7 +36,7 @@ class _EventDetailsState extends State<EventDetails> {
   bool _colorSell = true;
   bool _transferSell = true;
   bool _switchTicketCountTitle = false;
-
+  String? _editText;
   // Editable fields
   String _ticketSelectionText = '2 Ticket Selected';
   String _seatText = '15, 16, 17, 18';
@@ -66,6 +66,14 @@ class _EventDetailsState extends State<EventDetails> {
   Future<void> _saveBoolPref(String key, bool value) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool(key, value);
+  }
+
+  Future<void> _loadEditText() async {
+    final prefs = await SharedPreferences.getInstance();
+    final text = prefs.getString('holdToEditText');
+    setState(() {
+      _editText = text;
+    });
   }
 
   void _onPageChanged(int index) => setState(() => _currentIndex = index);
@@ -240,7 +248,7 @@ class _EventDetailsState extends State<EventDetails> {
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: FutureBuilder<String?>(
-                            future: _getHoldToEditText(),
+                            future: c(),
                             builder: (context, snapshot) {
                               final text =
                                   _editText ?? snapshot.data ?? 'Hold to Edit';
