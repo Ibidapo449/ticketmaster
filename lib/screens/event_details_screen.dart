@@ -50,6 +50,7 @@ class _EventDetailsState extends State<EventDetails> {
     _pageController = PageController(viewportFraction: 0.9);
     _ticketTextController = TextEditingController();
     _seatTextController = TextEditingController();
+    _loadEditText();
     Future.microtask(() =>
         Provider.of<TimerProvider>(context, listen: false).loadCountdown());
   }
@@ -74,6 +75,11 @@ class _EventDetailsState extends State<EventDetails> {
     setState(() {
       _editText = text;
     });
+  }
+
+  Future<String?> _getHoldToEditText() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('holdToEditText');
   }
 
   void _onPageChanged(int index) => setState(() => _currentIndex = index);
@@ -248,7 +254,7 @@ class _EventDetailsState extends State<EventDetails> {
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: FutureBuilder<String?>(
-                            future: c(),
+                            future: _getHoldToEditText(),
                             builder: (context, snapshot) {
                               final text =
                                   _editText ?? snapshot.data ?? 'Hold to Edit';
