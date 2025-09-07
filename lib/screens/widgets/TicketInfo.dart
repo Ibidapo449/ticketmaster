@@ -80,10 +80,10 @@ class _TicketInfoSectionState extends State<TicketInfoSection> {
             },
             child: Stack(
               children: [
-                if (visibleContainerIndex == 5)
+                if (visibleContainerIndex == 6)
                   buildCountdownContainer(
                       context.watch<TimerProvider>().remainingTime),
-                if (visibleContainerIndex == 4)
+                if (visibleContainerIndex == 5)
                   buildAppleWalletContainer(colorProv),
                 if (visibleContainerIndex == 1)
                   buildViewInWalletContainer(colorProv),
@@ -91,6 +91,8 @@ class _TicketInfoSectionState extends State<TicketInfoSection> {
                   buildSmartIconContainer(colorProv),
                 if (visibleContainerIndex == 3)
                   buildNotReadyContainer(colorProv),
+                if (visibleContainerIndex == 4)
+                  ticketClaimedContainer(colorProv),
                 // Add more containers if needed
               ],
             ),
@@ -578,6 +580,15 @@ class _TicketInfoSectionState extends State<TicketInfoSection> {
               )
             ],
           ),
+        ),
+      );
+
+  Widget ticketClaimedContainer(ColorProvider colorProv) => AnimatedOpacity(
+        duration: const Duration(milliseconds: 500),
+        opacity: 1.0,
+        child: Container(
+          color: Colors.red,
+          child: Text('data'),
         ),
       );
 }
