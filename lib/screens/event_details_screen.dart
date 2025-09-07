@@ -191,108 +191,17 @@ class _EventDetailsState extends State<EventDetails> {
                   opacity: context.watch<EventProvider>().isSwitched2
                       ? widget.opacity2
                       : 1,
-                  child: Stack(
-                    children: [
-                      Container(
-                        // padding: EdgeInsets.symmetric(horizontal: 10),
-                        height: 250,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15)),
-                        child: ClipRRect(
-                            borderRadius: BorderRadius.circular(15),
-                            child: Image.file(imageProv.image!,
-                                fit: BoxFit.cover)),
-                      ),
-                      GestureDetector(
-                        onLongPress: () async {
-                          final controller = TextEditingController(
-                            text: _editText ?? '',
-                          );
-                          final result = await showDialog<String>(
-                            context: context,
-                            builder: (context) {
-                              return AlertDialog(
-                                title: const Text('Edit Text'),
-                                content: TextField(
-                                  controller: controller,
-                                  autofocus: true,
-                                  decoration: const InputDecoration(
-                                    hintText: 'Enter text',
-                                  ),
-                                ),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: const Text('Cancel'),
-                                  ),
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.of(context)
-                                          .pop(controller.text.trim());
-                                    },
-                                    child: const Text('Save'),
-                                  ),
-                                ],
-                              );
-                            },
-                          );
-                          if (result != null) {
-                            setState(() {
-                              _editText = result.isEmpty ? null : result;
-                            });
-                            final prefs = await SharedPreferences.getInstance();
-                            if (result.isEmpty) {
-                              await prefs.remove('holdToEditText');
-                            } else {
-                              await prefs.setString('holdToEditText', result);
-                            }
-                          }
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: FutureBuilder<String?>(
-                            future: _getHoldToEditText(),
-                            builder: (context, snapshot) {
-                              final text =
-                                  _editText ?? snapshot.data ?? 'Hold to Edit';
-                              return Text(
-                                text.isEmpty ? 'Hold to Edit' : text,
-                                style: const TextStyle(
-                                  fontSize: 25,
-                                  color: Color.fromARGB(255, 113, 113, 113),
-                                  // fontFamily: 'Poppins',
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                      ),
-                    ],
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    height: 80,
+                    width: double.infinity,
+                    decoration:
+                        BoxDecoration(borderRadius: BorderRadius.circular(15)),
+                    child: ClipRRect(
+                        borderRadius: BorderRadius.circular(15),
+                        child: Image.file(imageProv.image!, fit: BoxFit.cover)),
                   ),
-                ),
-          const SizedBox(
-            height: 15,
-          ),
-          imageProv.image == null
-              ? const SizedBox()
-              : Container(
-                  decoration: BoxDecoration(
-                    color: colorProv.currentColor,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  margin: const EdgeInsets.symmetric(horizontal: 20),
-                  height: 45,
-                  child: Center(
-                      child: Text(
-                    'Get Directions',
-                    style: TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.w600),
-                  )),
-                ),
+                )
         ],
       ),
     );

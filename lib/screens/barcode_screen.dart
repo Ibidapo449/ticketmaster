@@ -247,7 +247,7 @@ class _BarcodeScreenState extends State<BarcodeScreen>
                   ),
                   const SizedBox(height: 2),
                   Text(
-                    '${widget.event.date}, ${widget.event.time} - ${widget.event.location}',
+                    '${widget.event.date} ${widget.event.time} - ${widget.event.location}',
                     style: const TextStyle(
                       color: Colors.white70,
                       fontSize: 16,
@@ -279,7 +279,7 @@ class _BarcodeScreenState extends State<BarcodeScreen>
   Widget _buildTicketType() {
     return Text(
       widget.event.ticketType,
-      style: TextStyle(
+      style:const TextStyle(
         color: Colors.white,
         fontSize: 20,
         fontWeight: FontWeight.w600,

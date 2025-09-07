@@ -75,9 +75,8 @@ class _HomePageState extends State<EventDetailaScreenWithTabbar>
     final colorProv = context.watch<ColorProvider>();
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: !colorProv.isPrimary
-            ? colorProv.currentColor
-            : const Color(0xff1f262e),
+        backgroundColor:
+            !colorProv.isPrimary ? colorProv.currentColor : Colors.black,
         leading: Padding(
           padding: const EdgeInsets.all(17.0),
           child: GestureDetector(
@@ -135,10 +134,9 @@ class _HomePageState extends State<EventDetailaScreenWithTabbar>
             showTabBar
                 ? Container(
                     width: MediaQuery.of(context).size.height,
-                    decoration: BoxDecoration(
-                      color: colorProv.currentColor,
-                      // color: Color.fromARGB(255, 25, 114, 210),
-                    ),
+                    decoration: BoxDecoration(color: Colors.black
+                        // color: Color.fromARGB(255, 25, 114, 210),
+                        ),
                     child: Column(
                       children: [
                         TabBar(

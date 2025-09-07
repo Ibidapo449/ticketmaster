@@ -503,7 +503,7 @@ class _TicketInfoSectionState extends State<TicketInfoSection> {
                   decoration: BoxDecoration(
                       color: !colorProv.isPrimary
                           ? colorProv.currentColor
-                          : const Color(0xff004ee9),
+                          : Colors.black,
                       borderRadius: BorderRadius.circular(1)),
                   child: Center(
                       child: Padding(
