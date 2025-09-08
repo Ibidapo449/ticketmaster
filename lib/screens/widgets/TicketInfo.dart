@@ -26,6 +26,12 @@ class TicketInfoSection extends StatefulWidget {
 
 class _TicketInfoSectionState extends State<TicketInfoSection> {
   bool changeticketcount = true;
+  String claimedByName = 'JORDAN BIRON';
+  int ticketCount = 2;
+  bool isEditingName = false;
+  bool isEditingCount = false;
+  TextEditingController nameController = TextEditingController();
+  TextEditingController countController = TextEditingController();
 
   // These are placeholders, you can set actual values/timers.
 
@@ -33,8 +39,21 @@ class _TicketInfoSectionState extends State<TicketInfoSection> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       getTicketCountTitle();
+      loadTicketInfo();
+      
+      // Initialize TimerProvider countdown
+      final timerProvider = Provider.of<TimerProvider>(context, listen: false);
+      await timerProvider.loadCountdown();
+      
+      // If no countdown is set, set a default 5-minute countdown
+       if (timerProvider.remainingTime <= Duration.zero) {
+         final pref = await SharedPreferences.getInstance();
+         final endTime = DateTime.now().add(Duration(minutes: 5)).millisecondsSinceEpoch;
+         await pref.setInt('countdownEndTime', endTime);
+         await timerProvider.loadCountdown();
+       }
     });
   }
 
@@ -42,6 +61,28 @@ class _TicketInfoSectionState extends State<TicketInfoSection> {
     final pref = await SharedPreferences.getInstance();
     changeticketcount = pref.getBool("getcountEvent") ?? false;
     setState(() {});
+  }
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    countController.dispose();
+    super.dispose();
+  }
+
+  void loadTicketInfo() async {
+    final pref = await SharedPreferences.getInstance();
+    claimedByName = pref.getString('claimedByName') ?? 'JORDAN BIRON';
+    ticketCount = pref.getInt('ticketCount') ?? 2;
+    nameController.text = claimedByName;
+    countController.text = ticketCount.toString();
+    setState(() {});
+  }
+
+  void saveTicketInfo() async {
+    final pref = await SharedPreferences.getInstance();
+    await pref.setString('claimedByName', claimedByName);
+    await pref.setInt('ticketCount', ticketCount);
   }
 
   void saveTicketCountTitle(event) async {
@@ -79,11 +120,12 @@ class _TicketInfoSectionState extends State<TicketInfoSection> {
               context.read<EventProvider>().changeTicketInfo();
             },
             child: Stack(
+              alignment: Alignment.center,
               children: [
-                if (visibleContainerIndex == 6)
+                if (visibleContainerIndex == 7)
                   buildCountdownContainer(
                       context.watch<TimerProvider>().remainingTime),
-                if (visibleContainerIndex == 5)
+                if (visibleContainerIndex == 6)
                   buildAppleWalletContainer(colorProv),
                 if (visibleContainerIndex == 1)
                   buildViewInWalletContainer(colorProv),
@@ -93,6 +135,7 @@ class _TicketInfoSectionState extends State<TicketInfoSection> {
                   buildNotReadyContainer(colorProv),
                 if (visibleContainerIndex == 4)
                   ticketClaimedContainer(colorProv),
+                if (visibleContainerIndex == 5) ticketSentContainer(colorProv),
                 // Add more containers if needed
               ],
             ),
@@ -587,8 +630,135 @@ class _TicketInfoSectionState extends State<TicketInfoSection> {
         duration: const Duration(milliseconds: 500),
         opacity: 1.0,
         child: Container(
-          color: Colors.red,
-          child: Text('data'),
+          height: MediaQuery.of(context).size.height * 0.17,
+          color: Colors.transparent,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              GestureDetector(
+                onLongPress: () {
+                  setState(() {
+                    isEditingCount = true;
+                    countController.text = ticketCount.toString();
+                  });
+                },
+                child: isEditingCount
+                    ? Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            width: 50,
+                            child: TextField(
+                              controller: countController,
+                              keyboardType: TextInputType.number,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(fontWeight: FontWeight.w700),
+                              decoration: InputDecoration(
+                                border: UnderlineInputBorder(),
+                                contentPadding: EdgeInsets.symmetric(vertical: 0),
+                              ),
+                              onSubmitted: (value) {
+                                int? newCount = int.tryParse(value);
+                                if (newCount != null && newCount > 0) {
+                                  ticketCount = newCount;
+                                  saveTicketInfo();
+                                }
+                                setState(() {
+                                  isEditingCount = false;
+                                });
+                              },
+                            ),
+                          ),
+                          Text(
+                            ' tickets claimed by',
+                            style: TextStyle(fontWeight: FontWeight.w700),
+                          ),
+                        ],
+                      )
+                    : Text(
+                        '$ticketCount tickets claimed by',
+                        style: TextStyle(fontWeight: FontWeight.w700),
+                      ),
+              ),
+              SizedBox(height: 5),
+              GestureDetector(
+                onLongPress: () {
+                  setState(() {
+                    isEditingName = true;
+                    nameController.text = claimedByName;
+                  });
+                },
+                child: isEditingName
+                    ? SizedBox(
+                        width: 200,
+                        child: TextField(
+                          controller: nameController,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15),
+                          decoration: InputDecoration(
+                            border: UnderlineInputBorder(),
+                            contentPadding: EdgeInsets.symmetric(vertical: 0),
+                          ),
+                          onSubmitted: (value) {
+                            if (value.trim().isNotEmpty) {
+                              claimedByName = value.trim().toUpperCase();
+                              saveTicketInfo();
+                            }
+                            setState(() {
+                              isEditingName = false;
+                            });
+                          },
+                        ),
+                      )
+                    : Text(
+                        claimedByName,
+                        style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15),
+                      ),
+              ),
+            ],
+          ),
+        ),
+      );
+  Widget ticketSentContainer(ColorProvider colorProv) => AnimatedOpacity(
+        duration: const Duration(milliseconds: 500),
+        opacity: 1.0,
+        child: Container(
+          height: MediaQuery.of(context).size.height * 0.17,
+          color: Colors.transparent,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                height: 30,
+              ),
+              Text(
+                '$ticketCount tickets sent to',
+                style: TextStyle(fontWeight: FontWeight.w700),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Text(
+                claimedByName,
+                style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15),
+              ),
+              Text(
+                'Waiting for recipient to claim',
+                style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15),
+              ),
+              Spacer(),
+              Text(
+                'Cancel Tranfer',
+                style: TextStyle(
+                  fontWeight: FontWeight.w700,
+                  fontSize: 15,
+                  color: Color(0xff0361cb),
+                ),
+              ),
+            ],
+          ),
         ),
       );
 }

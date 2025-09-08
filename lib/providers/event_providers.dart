@@ -89,7 +89,7 @@ class EventProvider extends ChangeNotifier {
   }
 
   void changeTicketInfo() {
-    visibleContainerIndex = visibleContainerIndex % 5 + 1;
+    visibleContainerIndex = visibleContainerIndex % 7 + 1;
     _saveVisibleContainerIndex();
     notifyListeners();
   }
