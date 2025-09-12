@@ -230,7 +230,7 @@ class _HomePageState extends State<HomePage>
             Container(
                 width: MediaQuery.of(context).size.height,
                 decoration: const BoxDecoration(
-                  color: Color(0xff004ee9),
+                  color: Color.fromARGB(255, 11, 11, 11),
                 ),
                 child: Column(
                   children: [
