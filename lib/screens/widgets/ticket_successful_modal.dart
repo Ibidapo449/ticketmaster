@@ -29,24 +29,20 @@ class TicketTransferSuccessfullModal extends StatelessWidget {
                 )),
             child: const Center(
               child: Icon(
-                Icons.done,
+                Icons.warning,
                 size: 35,
                 color: Color(0xff006ce7),
               ),
             ),
           ),
           const SizedBox(height: 10),
-          const Text(
-            "Successful !",
-            style: TextStyle(fontSize: 24),
-          ),
           const SizedBox(height: 10),
           const Text(
-            "Ticket Transfer was",
+            "Do you really want to transfer the",
             style: TextStyle(fontSize: 16, color: Colors.black54),
           ),
           const Text(
-            "successful.",
+            "ticket(s) to this recipient?",
             style: TextStyle(fontSize: 16, color: Colors.black54),
           ),
           const SizedBox(height: 25),
@@ -64,7 +60,7 @@ class TicketTransferSuccessfullModal extends StatelessWidget {
                 color: const Color(0xff006ce7),
                 child: const Center(
                     child: Text(
-                  "OK",
+                  "Continue",
                   style: TextStyle(
                     color: Colors.white,
                   ),

@@ -744,7 +744,6 @@ class _TransferBottomSheetState extends State<TransferBottomSheet> {
                 onTap: () {
                   Timer(const Duration(milliseconds: 300), () {
                     if (!_isDoubleTap) {
-                      Navigator.of(context).pop();
                       AwesomeDialog(
                         context: context,
                         headerAnimationLoop: false,
