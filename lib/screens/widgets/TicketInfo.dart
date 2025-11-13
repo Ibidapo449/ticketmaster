@@ -227,7 +227,7 @@ class _TicketInfoSectionState extends State<TicketInfoSection> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                    const Text(
+                  const Text(
                     "View Barcode",
                     style: TextStyle(
                         color: Color.fromARGB(255, 51, 90, 135),
@@ -434,12 +434,15 @@ class _TicketInfoSectionState extends State<TicketInfoSection> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
+            const SizedBox(
+              height: 50,
+            ),
             Text(
               widget.event.level,
               style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
             ),
             const SizedBox(
-              height: 40,
+              height: 20,
             ),
             GestureDetector(
               onTap: () {
@@ -451,9 +454,7 @@ class _TicketInfoSectionState extends State<TicketInfoSection> {
                 height: 40,
                 width: MediaQuery.of(context).size.width * 0.75,
                 decoration: BoxDecoration(
-                    color: !colorProv.isPrimary
-                        ? colorProv.currentColor
-                        : const Color(0xff004ee9),
+                    color: Colors.black,
                     borderRadius: BorderRadius.circular(1)),
                 child: Center(
                     child: Padding(
@@ -493,7 +494,7 @@ class _TicketInfoSectionState extends State<TicketInfoSection> {
               ),
             ),
             const SizedBox(
-              height: 30,
+              height: 20,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -507,8 +508,8 @@ class _TicketInfoSectionState extends State<TicketInfoSection> {
                     child: const Text(
                       "Ticket Details",
                       style: TextStyle(
-                          color: Color.fromARGB(255, 51, 90, 135),
-                          fontSize: 13,
+                          color: Colors.black,
+                          fontSize: 14,
                           fontWeight: FontWeight.w600),
                     ))
               ],

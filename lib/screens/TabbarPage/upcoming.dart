@@ -1,10 +1,8 @@
 // ignore_for_file: unused_local_variable, prefer_interpolation_to_compose_strings
 
-import 'dart:math';
 import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
 // import 'package:firebase_database/firebase_database.dart';
-import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
@@ -12,7 +10,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ticketmaster/model/event_model.dart';
 import 'package:ticketmaster/providers/event_providers.dart';
 import 'package:ticketmaster/screens/event_detaila_screen_with_tabbar.dart';
-import 'package:ticketmaster/screens/event_details_screen.dart';
 import 'package:ticketmaster/screens/form_screen.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 
@@ -214,8 +211,8 @@ class _UpcomingState extends State<Upcoming> {
                 number_of_ticket: tickets[index]['numberOfTicket'])));
       },
       child: isSingleTicket
-          ? _buildSingleTicketDesign(tickets, index)
-          : _buildMultipleTicketsDesign(tickets, index),
+          ? _buildMultipleTicketsDesign(tickets, index, isSingleTicket)
+          : _buildMultipleTicketsDesign(tickets, index, isSingleTicket),
     );
   }
 
@@ -496,7 +493,7 @@ class _UpcomingState extends State<Upcoming> {
 
   // Original design for multiple tickets
   Widget _buildMultipleTicketsDesign(
-      List<QueryDocumentSnapshot> tickets, int index) {
+      List<QueryDocumentSnapshot> tickets, int index, bool isSingleTicket) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
@@ -575,21 +572,50 @@ class _UpcomingState extends State<Upcoming> {
                       ),
                       const SizedBox(height: 8),
                       // Divider line
-                      Container(
-                        height: 4,
-                        width: 180,
-                        color: Colors.grey.withOpacity(0.8),
-                      ),
+                      isSingleTicket
+                          ? const SizedBox()
+                          : Container(
+                              height: 4,
+                              width: 180,
+                              color: Colors.grey.withOpacity(0.8),
+                            ),
                       const SizedBox(height: 12),
                       // Location
-                      Text(
-                        tickets[index]['location'],
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.white,
-                          letterSpacing: 0.3,
-                        ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            tickets[index]['location'],
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.white,
+                              letterSpacing: 0.3,
+                            ),
+                          ),
+                          isSingleTicket
+                              ? Row(
+                                  children: [
+                                    Image.asset(
+                                      'assets/images/myevent.png',
+                                      height: 20,
+                                      width: 20,
+                                      color: Colors.white,
+                                    ),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    Text(
+                                      'X${tickets[index]['numberOfTicket'].toString()}',
+                                      style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w700),
+                                    )
+                                  ],
+                                )
+                              : SizedBox(),
+                        ],
                       ),
                     ],
                   ),
