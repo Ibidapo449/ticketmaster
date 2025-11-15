@@ -232,7 +232,7 @@ class _HomeNavBarState extends State<HomeNavBar> {
                   ),
                 ),
               ),
-              label: 'My Events',
+              label: 'My Tickets',
             ),
             BottomNavigationBarItem(
               activeIcon: ColorFiltered(

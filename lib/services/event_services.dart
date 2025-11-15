@@ -66,8 +66,9 @@ class EventService {
             .where((event) {
           // Check if the image URL with ratio "16_9" has been seen
           var imageUrl = event.images
-              ?.firstWhere((element) => element.ratio == "16_9",
-                  orElse: () => ImageView())
+              ?.firstWhere(
+                (element) => element.ratio == "16_9",
+              )
               .url;
 
           // Only include this event if the URL is unique or first occurrence

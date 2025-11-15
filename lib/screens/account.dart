@@ -43,6 +43,12 @@ class _AccountState extends State<Account> {
 
   final TextEditingController _textEditingController = TextEditingController();
   final TextEditingController _textEditingController1 = TextEditingController();
+  // Replace specific Canada-only fields with generic lists for all options
+  List<String> _myLocationTexts = ['All of USA', 'All of Uk', 'All of Canada'];
+  List<String> _myCountryTexts = ['United States', 'United Kingdom', 'Canada'];
+  String _myLocationCanadaText = 'All of Canada';
+  String _myCountryCanadaText = 'Canada';
+  final TextEditingController _editController = TextEditingController();
 
   @override
   void initState() {
@@ -56,6 +62,17 @@ class _AccountState extends State<Account> {
     setState(() {
       _displayText = prefs.getString('saved_text') ?? _displayText;
       _displayText1 = prefs.getString('saved_text1') ?? _displayText1;
+      for (int i = 0; i < 3; i++) {
+        final loc = prefs.getString('my_location_text_$i');
+        if (loc != null) _myLocationTexts[i] = loc;
+        final ctr = prefs.getString('my_country_text_$i');
+        if (ctr != null) _myCountryTexts[i] = ctr;
+      }
+      // Backward compatibility for previous single-field implementation
+      final legacyLocCanada = prefs.getString('my_location_canada_text');
+      if (legacyLocCanada != null) _myLocationTexts[2] = legacyLocCanada;
+      final legacyCountryCanada = prefs.getString('my_country_canada_text');
+      if (legacyCountryCanada != null) _myCountryTexts[2] = legacyCountryCanada;
     });
   }
 
@@ -198,11 +215,35 @@ class _AccountState extends State<Account> {
                   const SizedBox(
                     height: 35,
                   ),
-                  const Text('Location Settings',
-                      style: TextStyle(
-                          color: Color(0xff1e252d),
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20)),
+                  Row(
+                    children: [
+                      const Text('Location Settings',
+                          style: TextStyle(
+                              color: Color(0xff1e252d),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20)),
+                      const SizedBox(
+                        width: 8,
+                      ),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 2),
+                        margin: const EdgeInsets.only(right: 8),
+                        decoration: BoxDecoration(
+                          color: Colors.blue,
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        child: const Text(
+                          'NEW!',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                   Padding(
                     padding: const EdgeInsets.only(left: 10, top: 20),
                     child: Column(
@@ -211,6 +252,19 @@ class _AccountState extends State<Account> {
                           onTap: () {
                             switchContainer1();
                           },
+                          onLongPress: () {
+                            final idx = visibleContainerIndex1;
+                            _showEditDialog(
+                              title: 'Edit Location',
+                              initialText: _myLocationTexts[idx],
+                              onSaved: (newText) {
+                                _saveText(newText, 'my_location_text_$idx');
+                                setState(() {
+                                  _myLocationTexts[idx] = newText;
+                                });
+                              },
+                            );
+                          },
                           child: Stack(children: [
                             AnimatedOpacity(
                               duration: const Duration(milliseconds: 500),
@@ -218,7 +272,7 @@ class _AccountState extends State<Account> {
                               child: locationSettingsRow(
                                   image: 'assets/images/location-2.png',
                                   text: "My Location",
-                                  textt: "All of USA"),
+                                  textt: _myLocationTexts[0]),
                             ),
                             AnimatedOpacity(
                               duration: const Duration(milliseconds: 500),
@@ -226,7 +280,7 @@ class _AccountState extends State<Account> {
                               child: locationSettingsRow(
                                   image: 'assets/images/location-2.png',
                                   text: "My Location",
-                                  textt: "All of Uk"),
+                                  textt: _myLocationTexts[1]),
                             ),
                             AnimatedOpacity(
                               duration: const Duration(milliseconds: 500),
@@ -234,7 +288,7 @@ class _AccountState extends State<Account> {
                               child: locationSettingsRow(
                                   image: 'assets/images/location-2.png',
                                   text: "My Location",
-                                  textt: "All of Canada"),
+                                  textt: _myLocationTexts[2]),
                             ),
                           ]),
                         ),
@@ -245,6 +299,19 @@ class _AccountState extends State<Account> {
                           onTap: () {
                             switchContainer();
                           },
+                          onLongPress: () {
+                            final idx = visibleContainerIndex;
+                            _showEditDialog(
+                              title: 'Edit Country',
+                              initialText: _myCountryTexts[idx],
+                              onSaved: (newText) {
+                                _saveText(newText, 'my_country_text_$idx');
+                                setState(() {
+                                  _myCountryTexts[idx] = newText;
+                                });
+                              },
+                            );
+                          },
                           child: Stack(children: [
                             AnimatedOpacity(
                               duration: const Duration(milliseconds: 500),
@@ -252,7 +319,7 @@ class _AccountState extends State<Account> {
                               child: locationSettingsRow(
                                   image: 'assets/images/usa-icon.png',
                                   text: "My Country",
-                                  textt: "United States"),
+                                  textt: _myCountryTexts[0]),
                             ),
                             AnimatedOpacity(
                               duration: const Duration(milliseconds: 500),
@@ -260,7 +327,7 @@ class _AccountState extends State<Account> {
                               child: locationSettingsRow(
                                   image: 'assets/images/Ellipse 2.png',
                                   text: "My Country",
-                                  textt: "United Kingdom"),
+                                  textt: _myCountryTexts[1]),
                             ),
                             AnimatedOpacity(
                               duration: const Duration(milliseconds: 500),
@@ -268,7 +335,7 @@ class _AccountState extends State<Account> {
                               child: locationSettingsRow(
                                   image: 'assets/images/Ellipse 3.png',
                                   text: "My Country",
-                                  textt: "Canada"),
+                                  textt: _myCountryTexts[2]),
                             ),
                           ]),
                         ),
@@ -628,6 +695,54 @@ class _AccountState extends State<Account> {
           ),
         )
       ],
+    );
+  }
+
+  Future<void> _showEditDialog({
+    required String title,
+    required String initialText,
+    required void Function(String) onSaved,
+  }) async {
+    _editController.text = initialText;
+    await showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(title),
+          content: TextField(
+            controller: _editController,
+            autofocus: true,
+            decoration: const InputDecoration(
+              hintText: 'Enter new value',
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                final newText = _editController.text.trim();
+                if (newText.isNotEmpty) {
+                  onSaved(newText);
+                  Navigator.of(context).pop();
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Value cannot be empty'),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
+                }
+              },
+              child: const Text('Save'),
+            ),
+          ],
+        );
+      },
     );
   }
 }
