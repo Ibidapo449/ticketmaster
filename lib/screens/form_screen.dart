@@ -34,6 +34,7 @@ class _FormScreenState extends State<FormScreen> {
   TextEditingController seatController = TextEditingController();
   TextEditingController dateController = TextEditingController();
   TextEditingController locationController = TextEditingController();
+  TextEditingController addressController = TextEditingController();
   TextEditingController timeController = TextEditingController();
   TextEditingController ticketTypeController = TextEditingController();
   TextEditingController levelController = TextEditingController();
@@ -54,6 +55,7 @@ class _FormScreenState extends State<FormScreen> {
           date: dateController.text,
           location: locationController.text,
           time: timeController.text,
+          address: addressController.text,
           ticketType: ticketTypeController.text,
           level: levelController.text,
           numberOfTicket: int.parse(
@@ -100,6 +102,7 @@ class _FormScreenState extends State<FormScreen> {
         prefs.setString('seat', newFormData.seat);
         prefs.setString('date', newFormData.date);
         prefs.setString('location', newFormData.location);
+        prefs.setString('address', newFormData.address);
         prefs.setString('time', newFormData.time);
         prefs.setString('ticketType', newFormData.ticketType);
         prefs.setString('level', newFormData.level);
@@ -123,6 +126,7 @@ class _FormScreenState extends State<FormScreen> {
             newFormData.seat,
             newFormData.date,
             newFormData.location,
+            newFormData.address,
             newFormData.time,
             newFormData.ticketType,
             newFormData.level,
@@ -179,6 +183,8 @@ class _FormScreenState extends State<FormScreen> {
     dateController = TextEditingController(text: FormDataget.formData.date);
     locationController =
         TextEditingController(text: FormDataget.formData.location);
+    addressController =
+        TextEditingController(text: FormDataget.formData.address);
     timeController = TextEditingController(text: FormDataget.formData.time);
     ticketTypeController =
         TextEditingController(text: FormDataget.formData.ticketType);
@@ -441,6 +447,36 @@ class _FormScreenState extends State<FormScreen> {
                             border: Border.all(color: Colors.black54),
                             borderRadius: BorderRadius.circular(5)),
                         child: TextFormField(
+                          controller: addressController,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter a valid address';
+                            }
+                            return null;
+                          },
+                          decoration: const InputDecoration(
+                              contentPadding:
+                                  EdgeInsets.symmetric(horizontal: 5),
+                              labelText: 'Address',
+                              border: InputBorder.none,
+                              fillColor: Colors.black54,
+                              focusColor: Colors.black54),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Container(
+                        width: MediaQuery.of(context).size.width * 0.42,
+                        decoration: BoxDecoration(
+                            border: Border.all(color: Colors.black54),
+                            borderRadius: BorderRadius.circular(5)),
+                        child: TextFormField(
                           controller: ticketTypeController,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -608,8 +644,8 @@ class _FormScreenState extends State<FormScreen> {
     );
   }
 
-  writeData(artistname, eventname, section, row, seat, date, location, time,
-      ticketype, level, numticket, image) async {
+  writeData(artistname, eventname, section, row, seat, date, location, address,
+      time, ticketype, level, numticket, image) async {
     final pref = await SharedPreferences.getInstance();
     final token = pref.getInt('token');
     FormData newform = FormData(
@@ -621,6 +657,7 @@ class _FormScreenState extends State<FormScreen> {
         date: date,
         location: location,
         time: time,
+        address: address,
         ticketType: ticketype,
         level: level,
         image: image,

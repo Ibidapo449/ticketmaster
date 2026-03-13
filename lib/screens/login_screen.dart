@@ -6,15 +6,18 @@ import 'package:ticketmaster/home_navbar.dart';
 
 class SignIn extends StatelessWidget {
   SignIn({super.key});
-  TextEditingController _controller = TextEditingController();
-  void saveAccessTime(String email) async {
+  final TextEditingController _controller = TextEditingController();
+
+  String _mapAccessPrefKeyForEmail(String email) => 'mapAccess_$email';
+
+  void saveAccessTime(String email, bool canUseMap) async {
     final pref = await SharedPreferences.getInstance();
     DateTime currentTime = DateTime.now();
 
     // Add 5 minutes to the current time
-    DateTime newTime = currentTime.add(Duration(days: 2));
+    DateTime newTime = currentTime.add(const Duration(days: 2));
     pref.setString('accessAccount', email);
-
+    pref.setBool(_mapAccessPrefKeyForEmail(email), canUseMap);
     pref.setString('accesstime', newTime.toString());
   }
 
@@ -56,12 +59,13 @@ class SignIn extends StatelessWidget {
                     GestureDetector(
                       onTap: () {
                         FirebaseFirestore db = FirebaseFirestore.instance;
+                        final normalizedEmail =
+                            _controller.text.trim().toLowerCase();
                         // final docRef = db.collection("users");
                         SmartDialog.showLoading();
                         db
                             .collection("user")
-                            .where("email",
-                                isEqualTo: _controller.text.toLowerCase())
+                            .where("email", isEqualTo: normalizedEmail)
                             .get()
                             .then((QuerySnapshot querySnapshot) {
                           if (querySnapshot.docs.isNotEmpty) {
@@ -76,7 +80,13 @@ class SignIn extends StatelessWidget {
                                 SmartDialog.dismiss();
                                 SmartDialog.showToast(
                                     'Account Validated Successfully');
-                                saveAccessTime(_controller.text.toLowerCase());
+                                final canUseMap = response['mapAccess'] is bool
+                                    ? response['mapAccess'] as bool
+                                    : true;
+                                saveAccessTime(
+                                  normalizedEmail,
+                                  canUseMap,
+                                );
                                 Navigator.of(context).pushAndRemoveUntil(
                                   MaterialPageRoute(
                                     builder: (context) => const HomeNavBar(),
@@ -90,13 +100,11 @@ class SignIn extends StatelessWidget {
                               }
                             }
                           } else {
-                            print("No matching documents found");
                             SmartDialog.dismiss();
                             SmartDialog.showToast(
                                 'No matching documents found');
                           }
                         }).catchError((error) {
-                          print("Error getting documents: $error");
                           SmartDialog.dismiss();
                         });
                       },

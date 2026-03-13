@@ -319,7 +319,7 @@ class _AccountState extends State<Account> {
                                     width: 10,
                                   ),
                                   const Text(
-                                    "Saved Paymment Methods",
+                                    "Saved Payment Methods",
                                     style: TextStyle(
                                         fontWeight: FontWeight.w400,
                                         color: Color(0xff1e252d),

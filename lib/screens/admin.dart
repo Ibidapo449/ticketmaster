@@ -16,6 +16,7 @@ class _AdminPageState extends State<AdminPage> {
   Map<String, bool> editingStates = {};
   final TextEditingController newEmailController = TextEditingController();
   final TextEditingController newNameController = TextEditingController();
+  bool _newUserMapAccess = true;
 
   @override
   void dispose() {
@@ -32,13 +33,14 @@ class _AdminPageState extends State<AdminPage> {
   }
 
   // Function to update any field in Firebase
-  Future<void> updateUserField(String docId, String field, dynamic value) async {
+  Future<void> updateUserField(
+      String docId, String field, dynamic value) async {
     try {
       await FirebaseFirestore.instance
           .collection('user')
           .doc(docId)
           .update({field: value});
-      
+
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('$field updated successfully'),
@@ -60,18 +62,15 @@ class _AdminPageState extends State<AdminPage> {
   // Function to save all changes for a user
   Future<void> saveUserChanges(String docId, String email, String name) async {
     try {
-      await FirebaseFirestore.instance
-          .collection('user')
-          .doc(docId)
-          .update({
-        'email': email,
+      await FirebaseFirestore.instance.collection('user').doc(docId).update({
+        'email': email.trim().toLowerCase(),
         'name': name,
       });
-      
+
       setState(() {
         editingStates[docId] = false;
       });
-      
+
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('User information updated successfully'),
@@ -95,11 +94,15 @@ class _AdminPageState extends State<AdminPage> {
     await updateUserField(docId, 'access', newValue);
   }
 
+  Future<void> updateMapAccess(String docId, bool newValue) async {
+    await updateUserField(docId, 'mapAccess', newValue);
+  }
+
   // Function to add a new user
   Future<void> addNewUser() async {
-    final email = newEmailController.text.trim();
+    final email = newEmailController.text.trim().toLowerCase();
     final name = newNameController.text.trim();
-    
+
     if (email.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -117,7 +120,7 @@ class _AdminPageState extends State<AdminPage> {
           .collection('user')
           .where('email', isEqualTo: email)
           .get();
-      
+
       if (existingUsers.docs.isNotEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
@@ -134,11 +137,15 @@ class _AdminPageState extends State<AdminPage> {
         'email': email,
         'name': name.isEmpty ? 'New User' : name,
         'access': false,
+        'mapAccess': _newUserMapAccess,
       });
 
       // Clear the input fields
       newEmailController.clear();
       newNameController.clear();
+      setState(() {
+        _newUserMapAccess = true;
+      });
 
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -181,16 +188,13 @@ class _AdminPageState extends State<AdminPage> {
 
     if (confirmed == true) {
       try {
-        await FirebaseFirestore.instance
-            .collection('user')
-            .doc(docId)
-            .delete();
-        
+        await FirebaseFirestore.instance.collection('user').doc(docId).delete();
+
         // Clean up controllers for deleted user
         emailControllers.remove(docId);
         nameControllers.remove(docId);
         editingStates.remove(docId);
-        
+
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('User deleted successfully'),
@@ -243,7 +247,8 @@ class _AdminPageState extends State<AdminPage> {
                           decoration: const InputDecoration(
                             labelText: 'Name',
                             border: OutlineInputBorder(),
-                            contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                            contentPadding: EdgeInsets.symmetric(
+                                horizontal: 12, vertical: 8),
                           ),
                         ),
                       ),
@@ -255,7 +260,8 @@ class _AdminPageState extends State<AdminPage> {
                           decoration: const InputDecoration(
                             labelText: 'Email *',
                             border: OutlineInputBorder(),
-                            contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                            contentPadding: EdgeInsets.symmetric(
+                                horizontal: 12, vertical: 8),
                           ),
                           keyboardType: TextInputType.emailAddress,
                         ),
@@ -268,8 +274,29 @@ class _AdminPageState extends State<AdminPage> {
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.blue,
                           foregroundColor: Colors.white,
-                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 12),
                         ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                  Row(
+                    children: [
+                      const Text(
+                        'Enable Apple Map Access',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      CupertinoSwitch(
+                        value: _newUserMapAccess,
+                        onChanged: (value) {
+                          setState(() {
+                            _newUserMapAccess = value;
+                          });
+                        },
                       ),
                     ],
                   ),
@@ -277,7 +304,7 @@ class _AdminPageState extends State<AdminPage> {
               ),
             ),
           ),
-          
+
           // Styled Search Field
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -336,22 +363,28 @@ class _AdminPageState extends State<AdminPage> {
                     final email = userData['email'] ?? 'No email';
                     final name = userData['name'] ?? 'No name';
                     final access = userData['access'] ?? false;
-                    
+                    final mapAccess = userData['mapAccess'] is bool
+                        ? userData['mapAccess'] as bool
+                        : true;
+
                     // Initialize controllers if they don't exist
                     if (!emailControllers.containsKey(docId)) {
-                      emailControllers[docId] = TextEditingController(text: email);
+                      emailControllers[docId] =
+                          TextEditingController(text: email);
                     }
                     if (!nameControllers.containsKey(docId)) {
-                      nameControllers[docId] = TextEditingController(text: name);
+                      nameControllers[docId] =
+                          TextEditingController(text: name);
                     }
                     if (!editingStates.containsKey(docId)) {
                       editingStates[docId] = false;
                     }
-                    
+
                     final isEditing = editingStates[docId] ?? false;
 
                     return Card(
-                      margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: 8.0, vertical: 4.0),
                       child: Padding(
                         padding: const EdgeInsets.all(12.0),
                         child: Column(
@@ -362,7 +395,9 @@ class _AdminPageState extends State<AdminPage> {
                               children: [
                                 const SizedBox(
                                   width: 60,
-                                  child: Text('Name:', style: TextStyle(fontWeight: FontWeight.bold)),
+                                  child: Text('Name:',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold)),
                                 ),
                                 Expanded(
                                   child: isEditing
@@ -370,7 +405,9 @@ class _AdminPageState extends State<AdminPage> {
                                           controller: nameControllers[docId],
                                           decoration: const InputDecoration(
                                             border: OutlineInputBorder(),
-                                            contentPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                                            contentPadding:
+                                                EdgeInsets.symmetric(
+                                                    horizontal: 8, vertical: 4),
                                           ),
                                         )
                                       : Text(name),
@@ -378,13 +415,15 @@ class _AdminPageState extends State<AdminPage> {
                               ],
                             ),
                             const SizedBox(height: 8),
-                            
+
                             // Email field
                             Row(
                               children: [
                                 const SizedBox(
                                   width: 60,
-                                  child: Text('Email:', style: TextStyle(fontWeight: FontWeight.bold)),
+                                  child: Text('Email:',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold)),
                                 ),
                                 Expanded(
                                   child: isEditing
@@ -392,7 +431,9 @@ class _AdminPageState extends State<AdminPage> {
                                           controller: emailControllers[docId],
                                           decoration: const InputDecoration(
                                             border: OutlineInputBorder(),
-                                            contentPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                                            contentPadding:
+                                                EdgeInsets.symmetric(
+                                                    horizontal: 8, vertical: 4),
                                           ),
                                         )
                                       : Text(email),
@@ -400,13 +441,15 @@ class _AdminPageState extends State<AdminPage> {
                               ],
                             ),
                             const SizedBox(height: 8),
-                            
+
                             // Access toggle
                             Row(
                               children: [
                                 const SizedBox(
                                   width: 60,
-                                  child: Text('Access:', style: TextStyle(fontWeight: FontWeight.bold)),
+                                  child: Text('Access:',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold)),
                                 ),
                                 CupertinoSwitch(
                                   value: access,
@@ -415,7 +458,7 @@ class _AdminPageState extends State<AdminPage> {
                                   },
                                 ),
                                 const Spacer(),
-                                
+
                                 // Action buttons
                                 if (isEditing) ...[
                                   ElevatedButton.icon(
@@ -477,6 +520,23 @@ class _AdminPageState extends State<AdminPage> {
                                     ),
                                   ),
                                 ],
+                              ],
+                            ),
+                            const SizedBox(height: 8),
+                            Row(
+                              children: [
+                                const SizedBox(
+                                  width: 60,
+                                  child: Text('Map:',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold)),
+                                ),
+                                CupertinoSwitch(
+                                  value: mapAccess,
+                                  onChanged: (newValue) {
+                                    updateMapAccess(docId, newValue);
+                                  },
+                                ),
                               ],
                             ),
                           ],

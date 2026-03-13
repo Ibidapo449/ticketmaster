@@ -16,6 +16,7 @@ import 'package:ticketmaster/providers/event_providers.dart';
 import 'package:ticketmaster/screens/ticket_details_screen.dart';
 import 'package:ticketmaster/screens/widgets/ticket_pending_modal.dart';
 import 'package:ticketmaster/screens/widgets/ticket_successful_modal.dart';
+import 'package:ticketmaster/utils/general_admission_utils.dart';
 
 import 'widgets/sectionDisplayText.dart';
 
@@ -375,8 +376,10 @@ class _EventDetailsState extends State<MyTickets> {
                                         ),
                                       ),
                                       // If general admission, display one big field.
-                                      if (widget.row == 'GA' &&
-                                          widget.seat == '1')
+                                      if (hasGeneralAdmissionRule(
+                                        section: widget.section,
+                                        row: widget.row,
+                                      ))
                                         const Expanded(
                                           flex: 2,
                                           child: SizedBox(
@@ -1557,58 +1560,58 @@ class _EventDetailsState extends State<MyTickets> {
               const SizedBox(
                 height: 15,
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Container(
-                  height: 90,
-                  width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    border: Border.all(color: Colors.black54),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: Row(
-                      children: [
-                        const Column(
-                          children: [
-                            SizedBox(
-                              height: 30,
-                              width: 30,
-                              child: Icon(
-                                Icons.info_outline_rounded,
-                                color: Colors.grey,
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(
-                          width: 7,
-                        ),
-                        Column(
-                          children: [
-                            Expanded(
-                              child: SizedBox(
-                                width: MediaQuery.of(context).size.width * .75,
-                                // color: Colors.black,
-                                child: const FittedBox(
-                                  child: Text(
-                                    "Only transfer tickets to people you know and\ntrust to ensure everyone stays safe and\nsocially distanced.",
-                                    style: TextStyle(
-                                      color: Colors.black87,
-                                      fontSize: 18,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            )
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-              ),
+              // Padding(
+              //   padding: const EdgeInsets.symmetric(horizontal: 16),
+              //   child: Container(
+              //     height: 90,
+              //     width: MediaQuery.of(context).size.width,
+              //     decoration: BoxDecoration(
+              //       borderRadius: BorderRadius.circular(5),
+              //       border: Border.all(color: Colors.black54),
+              //     ),
+              //     child: Padding(
+              //       padding: const EdgeInsets.all(12.0),
+              //       child: Row(
+              //         children: [
+              //           const Column(
+              //             children: [
+              //               SizedBox(
+              //                 height: 30,
+              //                 width: 30,
+              //                 child: Icon(
+              //                   Icons.info_outline_rounded,
+              //                   color: Colors.grey,
+              //                 ),
+              //               ),
+              //             ],
+              //           ),
+              //           const SizedBox(
+              //             width: 7,
+              //           ),
+              //           Column(
+              //             children: [
+              //               Expanded(
+              //                 child: SizedBox(
+              //                   width: MediaQuery.of(context).size.width * .75,
+              //                   // color: Colors.black,
+              //                   child: const FittedBox(
+              //                     child: Text(
+              //                       "Only transfer tickets to people you know and\ntrust to ensure everyone stays safe and\nsocially distanced.",
+              //                       style: TextStyle(
+              //                         color: Colors.black87,
+              //                         fontSize: 18,
+              //                       ),
+              //                     ),
+              //                   ),
+              //                 ),
+              //               )
+              //             ],
+              //           )
+              //         ],
+              //       ),
+              //     ),
+              //   ),
+              // ),
               const SizedBox(
                 height: 10,
               ),

@@ -133,6 +133,7 @@ class FormData {
   String date;
   String location;
   String time;
+  String address;
   String ticketType;
   String level;
   String? image;
@@ -149,6 +150,7 @@ class FormData {
     required this.date,
     required this.location,
     required this.time,
+    required this.address,
     this.image,
     required this.ticketType,
     required this.level,
@@ -167,6 +169,7 @@ class FormData {
       'date': date,
       'location': location,
       'time': time,
+      'address': address,
       'image': image,
       'ticketType': ticketType,
       'level': level,

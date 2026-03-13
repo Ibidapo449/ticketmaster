@@ -6,6 +6,7 @@ import 'package:barcode/barcode.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:ticketmaster/model/EventInfo.dart';
+import 'package:ticketmaster/utils/general_admission_utils.dart';
 
 class BarcodeScreen extends StatefulWidget {
   final EventInfo event;
@@ -34,11 +35,15 @@ class _BarcodeScreenState extends State<BarcodeScreen>
   // --- BEGIN: Add index state for seat navigation ---
   int _index = 0;
   // --- END: index state ---
+  bool _isInWalletViewMode = false;
+  bool _isPageBlank = false;
+  static const String _barcodeBlankModeKey = 'barcode_page_blank_mode';
 
   @override
   void initState() {
     super.initState();
 
+    _loadBlankModePreference();
     _loadGACrossAxisAlignment();
     _scannerController = AnimationController(
       duration: const Duration(seconds: 2),
@@ -105,6 +110,27 @@ class _BarcodeScreenState extends State<BarcodeScreen>
     });
   }
 
+  Future<void> _loadBlankModePreference() async {
+    final prefs = await SharedPreferences.getInstance();
+    final savedValue = prefs.getBool(_barcodeBlankModeKey) ?? false;
+    if (!mounted) {
+      return;
+    }
+    setState(() {
+      _isPageBlank = savedValue;
+    });
+  }
+
+  Future<void> _setPageBlank(bool value) async {
+    if (mounted) {
+      setState(() {
+        _isPageBlank = value;
+      });
+    }
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_barcodeBlankModeKey, value);
+  }
+
   void _toggleGACrossAxisAlignment() {
     setState(() {
       _gaCrossAxisAlignment = _gaCrossAxisAlignment == CrossAxisAlignment.end
@@ -124,82 +150,102 @@ class _BarcodeScreenState extends State<BarcodeScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Color(0xFF1a1a2e),
-              Color(0xFF16213e),
-              Color(0xFF0f3460),
-            ],
-          ),
-        ),
+      body: GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onDoubleTap: () {
+          _setPageBlank(!_isPageBlank);
+        },
         child: Stack(
           children: [
-            // Background image with blur
-            Positioned.fill(
-              child: Image.network(
-                widget.event.imageUrl,
-                fit: BoxFit.cover,
-                color: Colors.black.withOpacity(0.7),
-                colorBlendMode: BlendMode.darken,
-              ),
-            ),
-            // Blur overlay
-            Positioned.fill(
-              child: Container(
-                color:
-                    Colors.black.withOpacity(0.4), // Semi-transparent overlay
-              ),
-            ),
-            // --- BEGIN: Bottom gradient overlay ---
-            Positioned(
-              left: 0,
-              right: 0,
-              bottom: 0,
-              height: 250, // Adjust height as needed for effect
-              child: IgnorePointer(
-                child: Container(
-                  height: MediaQuery.of(context).size.height * 0.2,
-                  decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.bottomCenter,
-                      end: Alignment.topCenter,
-                      colors: [
-                        // 50% opaque deep purple
-                        Color(0x804B0082),
-                        // 35% opaque electric blue
-                        Color(0x593AB8FF),
-                        // 25% opaque aqua
-                        Color(0x3F00E5FF),
-                        // fully transparent
-                        Colors.transparent,
-                      ],
-                      stops: [0.0, 0.4, 0.7, 1.0],
-                    ),
-                  ),
+            Container(
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Color(0xFF1a1a2e),
+                    Color(0xFF16213e),
+                    Color(0xFF0f3460),
+                  ],
                 ),
               ),
+              child: Stack(
+                children: [
+                  // Background image with blur
+                  Positioned.fill(
+                    child: Image.network(
+                      widget.event.imageUrl,
+                      fit: BoxFit.cover,
+                      color: Colors.black.withOpacity(0.7),
+                      colorBlendMode: BlendMode.darken,
+                    ),
+                  ),
+                  // Blur overlay
+                  Positioned.fill(
+                    child: Container(
+                      color: Colors.black
+                          .withOpacity(0.4), // Semi-transparent overlay
+                    ),
+                  ),
+                  // --- BEGIN: Bottom gradient overlay ---
+                  Positioned(
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    height: 250, // Adjust height as needed for effect
+                    child: IgnorePointer(
+                      child: Container(
+                        height: MediaQuery.of(context).size.height * 0.2,
+                        decoration: const BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.bottomCenter,
+                            end: Alignment.topCenter,
+                            colors: [
+                              // 50% opaque deep purple
+                              Color(0x804B0082),
+                              // 35% opaque electric blue
+                              Color(0x593AB8FF),
+                              // 25% opaque aqua
+                              Color(0x3F00E5FF),
+                              // fully transparent
+                              Colors.transparent,
+                            ],
+                            stops: [0.0, 0.4, 0.7, 1.0],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  // --- END: Bottom gradient overlay ---
+                  // Content
+                  Column(
+                    children: [
+                      _buildTopNavigationBar(),
+                      const SizedBox(height: 40),
+                      _buildTicketType(),
+                      const SizedBox(height: 60),
+                      _buildTicketDetails(),
+                      const SizedBox(height: 80),
+                      _buildBarcodeCard(),
+                      const SizedBox(height: 20),
+                      _buildAppleWalletButton(),
+                      const SizedBox(height: 40),
+                      _buildLevelType()
+                    ],
+                  ),
+                ],
+              ),
             ),
-            // --- END: Bottom gradient overlay ---
-            // Content
-            Column(
-              children: [
-                _buildTopNavigationBar(),
-                const SizedBox(height: 40),
-                _buildTicketType(),
-                const SizedBox(height: 60),
-                _buildTicketDetails(),
-                const SizedBox(height: 80),
-                _buildBarcodeCard(),
-                const SizedBox(height: 20),
-                _buildAppleWalletButton(),
-                const SizedBox(height: 40),
-                _buildLevelType()
-              ],
-            ),
+            if (_isPageBlank)
+              Positioned.fill(
+                child: GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onDoubleTap: () {
+                    _setPageBlank(false);
+                  },
+                  child: const ColoredBox(color: Colors.white),
+                ),
+              ),
           ],
         ),
       ),
@@ -299,13 +345,18 @@ class _BarcodeScreenState extends State<BarcodeScreen>
 
   Widget _buildTicketDetails() {
     // --- BEGIN: Copy logic from TicketCard _buildSeatInfo ---
+    final isGeneralAdmission = hasGeneralAdmissionRule(
+      section: widget.event.section,
+      row: widget.event.row,
+    );
+    final baseSeat = int.tryParse(widget.event.seat);
     final seatNumber = widget.event.seat == '0'
         ? ''
-        : widget.event.row == 'GA'
+        : isGeneralAdmission
             ? 'GA'
-            : (int.parse(widget.event.seat) + _index).toString();
-    final isGeneralAdmission =
-        widget.event.row == 'GA' && int.parse(widget.event.seat) == 1;
+            : baseSeat == null
+                ? widget.event.seat
+                : (baseSeat + _index).toString();
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 40),
       child: Container(
@@ -490,36 +541,50 @@ class _BarcodeScreenState extends State<BarcodeScreen>
   }
 
   Widget _buildAppleWalletButton() {
-    return Container(
-      height: 50,
-      width: MediaQuery.of(context).size.width * 0.55,
-      decoration: BoxDecoration(
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          _isInWalletViewMode = !_isInWalletViewMode;
+        });
+      },
+      child: Container(
+        height: 50,
+        width: MediaQuery.of(context).size.width * 0.55,
+        decoration: BoxDecoration(
           color: const Color.fromARGB(255, 23, 23, 23),
-          borderRadius: BorderRadius.circular(8)),
-      child: Center(
-          child: Padding(
-        padding: const EdgeInsets.all(4.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset(
-              "assets/images/applewallet.png",
-              height: 30,
-              width: 30,
-            ),
-            const SizedBox(
-              width: 15,
-            ),
-            const Text(
-              "Add to Apple Wallet",
-              style: TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white),
-            ),
-          ],
+          borderRadius: BorderRadius.circular(8),
         ),
-      )),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(4.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                if (!_isInWalletViewMode) ...[
+                  Image.asset(
+                    "assets/images/applewallet.png",
+                    height: 30,
+                    width: 30,
+                  ),
+                  const SizedBox(
+                    width: 15,
+                  ),
+                ],
+                Text(
+                  _isInWalletViewMode
+                      ? "View In Wallet"
+                      : "Add to Apple Wallet",
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

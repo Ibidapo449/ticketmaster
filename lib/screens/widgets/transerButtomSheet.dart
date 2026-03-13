@@ -9,13 +9,20 @@ import 'package:ticketmaster/providers/colorProvider.dart';
 import 'package:ticketmaster/screens/my_tickets.dart';
 import 'package:ticketmaster/screens/widgets/ticket_pending_modal.dart';
 import 'package:ticketmaster/screens/widgets/ticket_successful_modal.dart';
+import 'package:ticketmaster/utils/general_admission_utils.dart';
 
 import '../../model/EventInfo.dart' show EventInfo;
 
 /// Stateful bottom sheet handling transfer flow
 class TransferBottomSheet extends StatefulWidget {
   final EventInfo event;
-  const TransferBottomSheet({Key? key, required this.event}) : super(key: key);
+  final Future<void> Function()? onTransferSubmitted;
+
+  const TransferBottomSheet({
+    Key? key,
+    required this.event,
+    this.onTransferSubmitted,
+  }) : super(key: key);
 
   @override
   State<TransferBottomSheet> createState() => _TransferBottomSheetState();
@@ -37,6 +44,8 @@ class _TransferBottomSheetState extends State<TransferBottomSheet> {
   String _numberOfTicketSelected = '2 Ticket Selected';
   String _seat = '15, 16, 17, 18';
   bool _isDoubleTap = false;
+  bool _isSubmittingTransfer = false;
+
   @override
   void initState() {
     super.initState();
@@ -72,6 +81,36 @@ class _TransferBottomSheetState extends State<TransferBottomSheet> {
     });
   }
 
+  Future<void> _handleTransferSubmission() async {
+    if (_isSubmittingTransfer) {
+      return;
+    }
+
+    setState(() {
+      _isSubmittingTransfer = true;
+    });
+
+    await Future.delayed(const Duration(seconds: 3));
+
+    if (!mounted) {
+      return;
+    }
+
+    if (widget.onTransferSubmitted != null) {
+      await widget.onTransferSubmitted!();
+      return;
+    }
+
+    Navigator.of(context).pop();
+    AwesomeDialog(
+      context: context,
+      headerAnimationLoop: false,
+      animType: AnimType.bottomSlide,
+      dialogType: DialogType.noHeader,
+      body: const TicketTransferSuccessfullModal(),
+    ).show();
+  }
+
   @override
   Widget build(BuildContext context) {
     return FractionallySizedBox(
@@ -82,7 +121,10 @@ class _TransferBottomSheetState extends State<TransferBottomSheet> {
                 ? _buildSeatSelection(context)
                 : _stage == 2
                     ? _buildSelectManual(context)
-                    : const ManualEntryForm()),
+                    : ManualEntryForm(
+                        onTransferSubmit: _handleTransferSubmission,
+                        isSubmittingTransfer: _isSubmittingTransfer,
+                      )),
       ),
     );
   }
@@ -103,58 +145,58 @@ class _TransferBottomSheetState extends State<TransferBottomSheet> {
         const SizedBox(
           height: 15,
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Container(
-            height: 90,
-            width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5),
-              border: Border.all(color: Colors.black54),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Row(
-                children: [
-                  const Column(
-                    children: [
-                      SizedBox(
-                        height: 30,
-                        width: 30,
-                        child: Icon(
-                          Icons.info_outline_rounded,
-                          color: Colors.grey,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    width: 7,
-                  ),
-                  Column(
-                    children: [
-                      Expanded(
-                        child: SizedBox(
-                          width: MediaQuery.of(context).size.width * .75,
-                          // color: Colors.black,
-                          child: const FittedBox(
-                            child: Text(
-                              "Only transfer tickets to people you know and\ntrust to ensure everyone stays safe and\nsocially distanced.",
-                              style: TextStyle(
-                                color: Colors.black87,
-                                fontSize: 18,
-                              ),
-                            ),
-                          ),
-                        ),
-                      )
-                    ],
-                  )
-                ],
-              ),
-            ),
-          ),
-        ),
+        // Padding(
+        //   padding: const EdgeInsets.symmetric(horizontal: 16),
+        //   child: Container(
+        //     height: 90,
+        //     width: MediaQuery.of(context).size.width,
+        //     decoration: BoxDecoration(
+        //       borderRadius: BorderRadius.circular(5),
+        //       border: Border.all(color: Colors.black54),
+        //     ),
+        //     child: Padding(
+        //       padding: const EdgeInsets.all(12.0),
+        //       child: Row(
+        //         children: [
+        //           const Column(
+        //             children: [
+        //               SizedBox(
+        //                 height: 30,
+        //                 width: 30,
+        //                 child: Icon(
+        //                   Icons.info_outline_rounded,
+        //                   color: Colors.grey,
+        //                 ),
+        //               ),
+        //             ],
+        //           ),
+        //           const SizedBox(
+        //             width: 7,
+        //           ),
+        //           Column(
+        //             children: [
+        //               Expanded(
+        //                 child: SizedBox(
+        //                   width: MediaQuery.of(context).size.width * .75,
+        //                   // color: Colors.black,
+        //                   child: const FittedBox(
+        //                     child: Text(
+        //                       "Only transfer tickets to people you know and\ntrust to ensure everyone stays safe and\nsocially distanced.",
+        //                       style: TextStyle(
+        //                         color: Colors.black87,
+        //                         fontSize: 18,
+        //                       ),
+        //                     ),
+        //                   ),
+        //                 ),
+        //               )
+        //             ],
+        //           )
+        //         ],
+        //       ),
+        //     ),
+        //   ),
+        // ),
         const SizedBox(
           height: 10,
         ),
@@ -175,22 +217,36 @@ class _TransferBottomSheetState extends State<TransferBottomSheet> {
                       Text(
                         '${widget.event.section},',
                         style: TextStyle(
-                            color: Colors.black.withOpacity(.7), fontSize: 16),
+                            color: Colors.black.withOpacity(.7), fontSize: 15),
                       )
                     ],
                   ),
                   Row(
                     children: [
-                      Text(
-                        " Row ",
-                        style: TextStyle(
-                            color: Colors.black.withOpacity(.7), fontSize: 16),
-                      ),
-                      Text(
-                        widget.event.row,
-                        style: TextStyle(
-                            color: Colors.black.withOpacity(.7), fontSize: 16),
-                      )
+                      if (hasGeneralAdmissionRule(
+                        section: widget.event.section,
+                        row: widget.event.row,
+                      ))
+                        Text(
+                          " General Admission",
+                          style: TextStyle(
+                              color: Colors.black.withOpacity(.7),
+                              fontSize: 15),
+                        )
+                      else ...[
+                        Text(
+                          " Row ",
+                          style: TextStyle(
+                              color: Colors.black.withOpacity(.7),
+                              fontSize: 15),
+                        ),
+                        Text(
+                          widget.event.row,
+                          style: TextStyle(
+                              color: Colors.black.withOpacity(.7),
+                              fontSize: 16),
+                        ),
+                      ]
                     ],
                   ),
                 ],
@@ -212,7 +268,7 @@ class _TransferBottomSheetState extends State<TransferBottomSheet> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(
-                    height: 82,
+                    height: 90,
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: ListView.builder(
@@ -223,63 +279,66 @@ class _TransferBottomSheetState extends State<TransferBottomSheet> {
                         itemBuilder: (BuildContext context, int index) =>
                             Padding(
                           padding: const EdgeInsets.only(right: 20),
-                          child: Container(
-                            decoration: BoxDecoration(
-                                border: Border.all(color: Colors.grey),
-                                borderRadius: const BorderRadius.all(
-                                    Radius.circular(10))),
-                            height: 82,
-                            width: 80,
-                            child: Column(
-                              children: [
-                                Container(
-                                  decoration: BoxDecoration(
-                                      color: !colorProv.isPrimary
-                                          ? colorProv.currentColor
-                                          : Color(0xff0361cb),
-                                      borderRadius: BorderRadius.vertical(
-                                        top: Radius.circular(9),
-                                      )),
-                                  height: 30,
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          const Text(
-                                            "SEAT ",
-                                            style:
-                                                TextStyle(color: Colors.white),
-                                          ),
-                                          Text(
-                                            widget.event.seat == '1'
-                                                ? ''
-                                                : widget.event.seat == '-'
-                                                    ? widget.event.seat
-                                                    : (int.parse(widget
-                                                                .event.seat) +
-                                                            index)
-                                                        .toString(),
-                                            style: const TextStyle(
-                                                color: Colors.white),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Container(
-                                  color: Colors.transparent,
-                                  height: 50,
-                                  child: Center(
-                                    child: CustomCircleCheckbox(
-                                      isChecked: _checkboxStates[index],
-                                      onChanged: (v) => setState(
-                                          () => _checkboxStates[index] = v!),
+                          child: Card(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.grey),
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(10))),
+                              height: 82,
+                              width: 80,
+                              child: Column(
+                                children: [
+                                  Container(
+                                    decoration: BoxDecoration(
+                                        color: !colorProv.isPrimary
+                                            ? colorProv.currentColor
+                                            : Color(0xff0361cb),
+                                        borderRadius: BorderRadius.vertical(
+                                          top: Radius.circular(9),
+                                        )),
+                                    height: 30,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            const Text(
+                                              "SEAT ",
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                            Text(
+                                              widget.event.seat == '1'
+                                                  ? ''
+                                                  : widget.event.seat == '-'
+                                                      ? widget.event.seat
+                                                      : (int.parse(widget
+                                                                  .event.seat) +
+                                                              index)
+                                                          .toString(),
+                                              style: const TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                )
-                              ],
+                                  Container(
+                                    color: Colors.transparent,
+                                    height: 50,
+                                    child: Center(
+                                      child: CustomCircleCheckbox(
+                                        isChecked: _checkboxStates[index],
+                                        onChanged: (v) => setState(
+                                            () => _checkboxStates[index] = v!),
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
                             ),
                           ),
                         ),
@@ -338,15 +397,16 @@ class _TransferBottomSheetState extends State<TransferBottomSheet> {
                           GestureDetector(
                             onTap: _selectedCount > 0 ? _nextStage : null,
                             child: Text(
-                              "TRAN...ER TO",
+                              "TRANSFER TO",
                               style: TextStyle(
+                                fontWeight: FontWeight.bold,
                                 color: const Color(0xff0361cb).withOpacity(.8),
                               ),
                             ),
                           ),
                           const Icon(
                             Icons.keyboard_arrow_right,
-                            color: Colors.grey,
+                            color: const Color(0xff0361cb),
                             size: 25,
                           )
                         ],
@@ -739,14 +799,7 @@ class _TransferBottomSheetState extends State<TransferBottomSheet> {
                 onTap: () {
                   Timer(const Duration(milliseconds: 300), () {
                     if (!_isDoubleTap) {
-                      Navigator.of(context).pop();
-                      AwesomeDialog(
-                        context: context,
-                        headerAnimationLoop: false,
-                        animType: AnimType.bottomSlide,
-                        dialogType: DialogType.noHeader,
-                        body: const TicketTransferSuccessfullModal(),
-                      ).show();
+                      _handleTransferSubmission();
                     }
                   });
                 },
@@ -791,8 +844,13 @@ class _TransferBottomSheetState extends State<TransferBottomSheet> {
 }
 
 class ManualEntryForm extends StatefulWidget {
+  final Future<void> Function() onTransferSubmit;
+  final bool isSubmittingTransfer;
+
   const ManualEntryForm({
     super.key,
+    required this.onTransferSubmit,
+    required this.isSubmittingTransfer,
   });
 
   @override
@@ -805,6 +863,79 @@ class _ManualEntryFormState extends State<ManualEntryForm> {
 
   void _resetStage() {
     // define your stage reset logic here if needed
+  }
+
+  Future<bool> _showTransferConfirmationDialog() async {
+    final result = await showDialog<bool>(
+      context: context,
+      builder: (context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Container(
+            width: 330,
+            padding: const EdgeInsets.fromLTRB(24, 26, 24, 24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  width: 72,
+                  height: 72,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: const Color(0xFF2B72E5),
+                      width: 2,
+                    ),
+                  ),
+                  child: const Icon(
+                    Icons.warning_amber_rounded,
+                    size: 38,
+                    color: Color(0xFF2B72E5),
+                  ),
+                ),
+                const SizedBox(height: 18),
+                const Text(
+                  'Do you really want to transfer the ticket(s) to this recipient?',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xFF4A4A4A),
+                    height: 1.32,
+                  ),
+                ),
+                const SizedBox(height: 26),
+                SizedBox(
+                  width: 200,
+                  child: ElevatedButton(
+                    onPressed: () => Navigator.of(context).pop(true),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color.fromARGB(255, 1, 91, 194),
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(2),
+                      ),
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                    ),
+                    child: const Text(
+                      'Continue',
+                      style: TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+
+    return result ?? false;
   }
 
   @override
@@ -909,43 +1040,64 @@ class _ManualEntryFormState extends State<ManualEntryForm> {
                 ),
               ),
               GestureDetector(
-                onTap: () {
-                  Timer(const Duration(milliseconds: 300), () {
-                    if (!_isDoubleTap) {
-                      Navigator.of(context).pop();
-                      AwesomeDialog(
-                        context: context,
-                        headerAnimationLoop: false,
-                        animType: AnimType.bottomSlide,
-                        dialogType: DialogType.noHeader,
-                        body: const TicketTransferSuccessfullModal(),
-                      ).show();
-                    }
-                  });
-                },
-                onDoubleTap: () {
-                  _isDoubleTap = true;
-                  Navigator.of(context).pop();
-                  AwesomeDialog(
-                    context: context,
-                    headerAnimationLoop: false,
-                    animType: AnimType.bottomSlide,
-                    dialogType: DialogType.noHeader,
-                    body: const TicketTransferPendinglModal(),
-                  ).show();
-                  Future.delayed(const Duration(milliseconds: 300), () {
-                    _isDoubleTap = false;
-                  });
-                },
+                onTap: widget.isSubmittingTransfer
+                    ? null
+                    : () {
+                        Timer(const Duration(milliseconds: 300), () {
+                          if (!_isDoubleTap) {
+                            widget.onTransferSubmit();
+                          }
+                        });
+                      },
+                onLongPress: widget.isSubmittingTransfer
+                    ? null
+                    : () async {
+                        _isDoubleTap = true;
+                        final shouldContinue =
+                            await _showTransferConfirmationDialog();
+                        _isDoubleTap = false;
+                        if (!mounted || !shouldContinue) {
+                          return;
+                        }
+                        widget.onTransferSubmit();
+                      },
+                onDoubleTap: widget.isSubmittingTransfer
+                    ? null
+                    : () {
+                        _isDoubleTap = true;
+                        Navigator.of(context).pop();
+                        AwesomeDialog(
+                          context: context,
+                          headerAnimationLoop: false,
+                          animType: AnimType.bottomSlide,
+                          dialogType: DialogType.noHeader,
+                          body: const TicketTransferPendinglModal(),
+                        ).show();
+                        Future.delayed(const Duration(milliseconds: 300), () {
+                          _isDoubleTap = false;
+                        });
+                      },
                 child: Container(
                   height: 40,
-                  width: 210,
-                  decoration: BoxDecoration(color: colorProv.currentColor),
-                  child: const Center(
-                    child: Text(
-                      "Transfer Tickets",
-                      style: const TextStyle(color: Colors.white),
-                    ),
+                  width: 190,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(6),
+                      color: Colors.black),
+                  child: Center(
+                    child: widget.isSubmittingTransfer
+                        ? const SizedBox(
+                            width: 18,
+                            height: 18,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2.2,
+                              valueColor:
+                                  AlwaysStoppedAnimation<Color>(Colors.blue),
+                            ),
+                          )
+                        : const Text(
+                            "Transfer Tickets",
+                            style: TextStyle(color: Colors.white),
+                          ),
                   ),
                 ),
               ),

@@ -190,11 +190,12 @@ class _HomePageState extends State<HomePage>
                   location: '',
                   time: '',
                   ticketType: '',
+                  address: '',
                   level: '',
                   numberOfTicket: 1);
               context.read<FormDataProvider>().updateFormData(newdata);
               Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => FormScreen(),
+                builder: (context) => const FormScreen(),
               ));
             },
             child: Center(
@@ -223,14 +224,14 @@ class _HomePageState extends State<HomePage>
           ),
         ],
       ),
-      body: Container(
+      body: SizedBox(
         height: MediaQuery.of(context).size.height,
         child: Column(
           children: [
             Container(
                 width: MediaQuery.of(context).size.height,
                 decoration: const BoxDecoration(
-                  color: Color(0xff004ee9),
+                  color: Colors.black,
                 ),
                 child: Column(
                   children: [

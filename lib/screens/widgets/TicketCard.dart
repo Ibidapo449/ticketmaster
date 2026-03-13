@@ -10,6 +10,7 @@ import 'package:ticketmaster/screens/event_details_screen.dart';
 import 'package:ticketmaster/screens/widgets/TicketInfo.dart';
 import 'package:ticketmaster/screens/widgets/autoscrollText.dart';
 import 'package:ticketmaster/screens/widgets/sectionDisplayText.dart';
+import 'package:ticketmaster/utils/general_admission_utils.dart';
 
 import '../ticket_details_screen.dart';
 
@@ -164,15 +165,18 @@ class _TicketCardState extends State<TicketCard> {
 
   Widget _buildSeatInfo(BuildContext context) {
     final colorProv = context.watch<ColorProvider>();
+    final isGeneralAdmission = hasGeneralAdmissionRule(
+      section: widget.event.section,
+      row: widget.event.row,
+    );
+    final baseSeat = int.tryParse(widget.event.seat);
     final seatNumber = widget.event.seat == '0'
         ? ''
-        : widget.event.row == 'GA'
+        : isGeneralAdmission
             ? 'GA'
-            : (int.parse(widget.event.seat) + widget.index).toString();
-
-    // detect exact GA-1 case
-    final isGeneralAdmission =
-        widget.event.row == 'GA' && int.parse(widget.event.seat) == 1;
+            : baseSeat == null
+                ? widget.event.seat
+                : (baseSeat + widget.index).toString();
 
     return GestureDetector(
       onTap: () {
