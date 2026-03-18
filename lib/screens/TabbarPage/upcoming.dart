@@ -11,7 +11,8 @@ import 'package:ticketmaster/screens/form_screen.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 
 class Upcoming extends StatefulWidget {
-  const Upcoming({super.key});
+  final String searchQuery;
+  const Upcoming({super.key, this.searchQuery = ''});
 
   @override
   State<Upcoming> createState() => _UpcomingState();
@@ -231,17 +232,33 @@ class _UpcomingState extends State<Upcoming> {
                 ),
               );
             } else {
+              var docs = snapshot.data!.docs.toList();
+              if (widget.searchQuery.isNotEmpty) {
+                final query = widget.searchQuery.toLowerCase();
+                docs = docs.where((doc) {
+                  final data = doc.data() as Map<String, dynamic>;
+                  final artistName = (data['artistName'] ?? '').toString().toLowerCase();
+                  final eventName = (data['eventName'] ?? '').toString().toLowerCase();
+                  final location = (data['location'] ?? '').toString().toLowerCase();
+                  return artistName.contains(query) || eventName.contains(query) || location.contains(query);
+                }).toList();
+              }
+
+              final sortedDocs = docs
+                ..sort((a, b) => a['artistName']
+                    .toString()
+                    .toLowerCase()
+                    .compareTo(b['artistName'].toString().toLowerCase()));
+              
+              if (sortedDocs.isEmpty) {
+                return const Center(child: Text("No matching events found"));
+              }
+
               return ListView.builder(
                 padding: const EdgeInsets.symmetric(vertical: 12),
                 shrinkWrap: true,
-                itemCount: snapshot.data!.docs.length,
+                itemCount: sortedDocs.length,
                 itemBuilder: (context, index) {
-                  final sortedDocs = snapshot.data!.docs.toList()
-                    ..sort((a, b) => a['artistName']
-                        .toString()
-                        .toLowerCase()
-                        .compareTo(b['artistName'].toString().toLowerCase()));
-
                   return listItem(tickets: sortedDocs, index: index);
                 },
               );

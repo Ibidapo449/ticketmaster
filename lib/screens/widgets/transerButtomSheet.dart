@@ -1042,24 +1042,28 @@ class _ManualEntryFormState extends State<ManualEntryForm> {
               GestureDetector(
                 onTap: widget.isSubmittingTransfer
                     ? null
-                    : () {
+                    : () async {
+                        // _isDoubleTap = true;
+                        // final shouldContinue =
+                        //     await _showTransferConfirmationDialog();
+                        // _isDoubleTap = false;
+                        // if (!mounted || !shouldContinue) {
+                        //   return;
+                        // }
+                        // widget.onTransferSubmit();
+
                         Timer(const Duration(milliseconds: 300), () {
                           if (!_isDoubleTap) {
-                            widget.onTransferSubmit();
+                            Navigator.of(context).pop();
+                            AwesomeDialog(
+                              context: context,
+                              headerAnimationLoop: false,
+                              animType: AnimType.bottomSlide,
+                              dialogType: DialogType.noHeader,
+                              body: const TicketTransferSuccessfullModal(),
+                            ).show();
                           }
                         });
-                      },
-                onLongPress: widget.isSubmittingTransfer
-                    ? null
-                    : () async {
-                        _isDoubleTap = true;
-                        final shouldContinue =
-                            await _showTransferConfirmationDialog();
-                        _isDoubleTap = false;
-                        if (!mounted || !shouldContinue) {
-                          return;
-                        }
-                        widget.onTransferSubmit();
                       },
                 onDoubleTap: widget.isSubmittingTransfer
                     ? null

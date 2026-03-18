@@ -21,6 +21,8 @@ class _HomePageState extends State<HomePage>
   late TabController tabController;
   int visibleContainerIndex1 = 0;
   int pastEventsCount = 0; // Default value for past events count
+  bool _isSearching = false;
+  final TextEditingController _searchController = TextEditingController();
 
   @override
   void initState() {
@@ -112,6 +114,7 @@ class _HomePageState extends State<HomePage>
   @override
   void dispose() {
     tabController.dispose();
+    _searchController.dispose();
     super.dispose();
   }
 
@@ -125,9 +128,38 @@ class _HomePageState extends State<HomePage>
           Icons.ac_unit,
           color: Color.fromARGB(255, 11, 11, 11),
         ),
-        title: GestureDetector(
+        title: _isSearching
+            ? TextField(
+                controller: _searchController,
+                autofocus: true,
+                style: const TextStyle(color: Colors.white),
+                cursorColor: Colors.white,
+                decoration: InputDecoration(
+                  hintText: "Search events...",
+                  hintStyle: const TextStyle(color: Colors.white54),
+                  border: InputBorder.none,
+                  suffixIcon: IconButton(
+                    icon: const Icon(Icons.close, color: Colors.white),
+                    onPressed: () {
+                      setState(() {
+                        _isSearching = false;
+                        _searchController.clear();
+                      });
+                    },
+                  ),
+                ),
+                onChanged: (value) {
+                  setState(() {});
+                },
+              )
+            : GestureDetector(
           onTap: () {
             switchContainer1();
+          },
+          onLongPress: () {
+            setState(() {
+              _isSearching = true;
+            });
           },
           child: Row(
             children: [
@@ -261,7 +293,7 @@ class _HomePageState extends State<HomePage>
             Expanded(
                 child: TabBarView(
               controller: tabController,
-              children: const [Upcoming(), Past()],
+              children: [Upcoming(searchQuery: _searchController.text), const Past()],
             ))
           ],
         ),
