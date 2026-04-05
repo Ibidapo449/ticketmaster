@@ -1043,27 +1043,14 @@ class _ManualEntryFormState extends State<ManualEntryForm> {
                 onTap: widget.isSubmittingTransfer
                     ? null
                     : () async {
-                        // _isDoubleTap = true;
-                        // final shouldContinue =
-                        //     await _showTransferConfirmationDialog();
-                        // _isDoubleTap = false;
-                        // if (!mounted || !shouldContinue) {
-                        //   return;
-                        // }
-                        // widget.onTransferSubmit();
-
-                        Timer(const Duration(milliseconds: 300), () {
-                          if (!_isDoubleTap) {
-                            Navigator.of(context).pop();
-                            AwesomeDialog(
-                              context: context,
-                              headerAnimationLoop: false,
-                              animType: AnimType.bottomSlide,
-                              dialogType: DialogType.noHeader,
-                              body: const TicketTransferSuccessfullModal(),
-                            ).show();
+                        if (!_isDoubleTap) {
+                          final shouldContinue =
+                              await _showTransferConfirmationDialog();
+                          if (!mounted || !shouldContinue) {
+                            return;
                           }
-                        });
+                          await widget.onTransferSubmit();
+                        }
                       },
                 onDoubleTap: widget.isSubmittingTransfer
                     ? null
