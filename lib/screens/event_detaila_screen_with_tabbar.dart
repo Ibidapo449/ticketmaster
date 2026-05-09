@@ -55,6 +55,7 @@ class _EventDetailaScreenWithTabbarState
     extends State<EventDetailaScreenWithTabbar> with TickerProviderStateMixin {
   static const String _transferDisabledKey = 'event_tabbar_transfer_disabled';
   static const String _legacyMapAccessKey = 'mapAccess';
+  static const String _sellActiveKeyPrefix = 'event_tabbar_sell_active';
   static const double _expandedHeroHeight = 302.0;
   static const double _collapsedHeroBodyHeight = 72.0;
   static const double _heroImageHeight = 146.0;
@@ -84,6 +85,7 @@ class _EventDetailaScreenWithTabbarState
     _loadTransferState();
     _loadMapAccessState();
     _loadCustomOrderReference();
+    _loadSellState();
     _scheduleInitialShimmerExit();
   }
 
@@ -140,6 +142,43 @@ class _EventDetailaScreenWithTabbarState
 
     setState(() {
       _isTransferEnabled = transferEnabled;
+    });
+  }
+
+  String _sellStateStorageKey() {
+    final raw =
+        '${widget.artistName}_${widget.eventName}_${widget.date}_${widget.time}_${widget.location}'
+            .toLowerCase()
+            .replaceAll(RegExp(r'[^a-z0-9]+'), '_')
+            .replaceAll(RegExp(r'_+'), '_')
+            .trim();
+    final compact = raw.length > 48 ? raw.substring(0, 48) : raw;
+    return '${_sellActiveKeyPrefix}_${compact}_${raw.hashCode.abs()}';
+  }
+
+  Future<void> _loadSellState() async {
+    final prefs = await SharedPreferences.getInstance();
+    final isSellActive = prefs.getBool(_sellStateStorageKey()) ?? false;
+
+    if (!mounted) {
+      return;
+    }
+
+    setState(() {
+      _isSellActive = isSellActive;
+    });
+  }
+
+  Future<void> _setSellState(bool value) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_sellStateStorageKey(), value);
+
+    if (!mounted) {
+      return;
+    }
+
+    setState(() {
+      _isSellActive = value;
     });
   }
 
@@ -1324,11 +1363,20 @@ class _EventDetailaScreenWithTabbarState
   }
 
   Widget _buildDirectionsSection() {
+    final geocodeQuery =
+        widget.address.trim().isNotEmpty ? widget.address : widget.location;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _VenueDirectionsMap(
-          locationQuery: widget.address,
+          geocodeQuery: geocodeQuery,
+          pinTitle: widget.location.trim().isNotEmpty
+              ? widget.location
+              : geocodeQuery,
+          pinSubtitle: widget.address.trim().isNotEmpty &&
+                  widget.address.trim() != widget.location.trim()
+              ? widget.address
+              : null,
           hasMapAccess: _canUseAppleMap,
           isAccessLoading: _isResolvingMapAccess,
         ),
@@ -1730,10 +1778,8 @@ class _EventDetailaScreenWithTabbarState
               icon: Icons.north_east,
               enabled: _isTransferEnabled,
               isActive: _isTransferEnabled,
-              onTap: () {
-                setState(() {
-                  _isSellActive = false;
-                });
+              onTap: () async {
+                await _setSellState(false);
                 _startTransferFlow();
               },
             ),
@@ -1748,10 +1794,8 @@ class _EventDetailaScreenWithTabbarState
               label: 'Sell',
               icon: _isSellActive ? Icons.north_east : Icons.sell_outlined,
               isActive: _isSellActive,
-              onTap: () {
-                setState(() {
-                  _isSellActive = !_isSellActive;
-                });
+              onTap: () async {
+                await _setSellState(!_isSellActive);
               },
             ),
           ),
@@ -1796,12 +1840,16 @@ class _EventDetailaScreenWithTabbarState
 }
 
 class _VenueDirectionsMap extends StatefulWidget {
-  final String locationQuery;
+  final String geocodeQuery;
+  final String pinTitle;
+  final String? pinSubtitle;
   final bool hasMapAccess;
   final bool isAccessLoading;
 
   const _VenueDirectionsMap({
-    required this.locationQuery,
+    required this.geocodeQuery,
+    required this.pinTitle,
+    this.pinSubtitle,
     required this.hasMapAccess,
     required this.isAccessLoading,
   });
@@ -1822,13 +1870,13 @@ class _VenueDirectionsMapState extends State<_VenueDirectionsMap> {
   @override
   void didUpdateWidget(covariant _VenueDirectionsMap oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.locationQuery != widget.locationQuery) {
+    if (oldWidget.geocodeQuery != widget.geocodeQuery) {
       _resolvedLocationFuture = _resolveLocation();
     }
   }
 
   Future<_ResolvedVenueLocation?> _resolveLocation() async {
-    final query = widget.locationQuery.trim();
+    final query = widget.geocodeQuery.trim();
     if (query.isEmpty) {
       return null;
     }
@@ -1912,7 +1960,8 @@ class _VenueDirectionsMapState extends State<_VenueDirectionsMap> {
                   annotationId: apple_maps.AnnotationId('venue'),
                   position: target,
                   infoWindow: apple_maps.InfoWindow(
-                    title: widget.locationQuery,
+                    title: widget.pinTitle,
+                    snippet: widget.pinSubtitle,
                   ),
                   icon: apple_maps.BitmapDescriptor.markerAnnotationWithHue(
                     apple_maps.BitmapDescriptor.hueRed,
