@@ -37,6 +37,7 @@ class EventProvider extends ChangeNotifier {
   String eventName = '';
   String artistName = '';
   String time = '';
+  String address = '';
   String location = '';
   String image = '';
   String ticketType = '';
@@ -203,6 +204,7 @@ class EventProvider extends ChangeNotifier {
     eventName = prefs.getString('eventName') ?? 'N/A';
     artistName = prefs.getString('artistName') ?? 'N/A';
     time = prefs.getString('time') ?? 'N/A';
+    address = prefs.getString('address') ?? 'N/A';
     location = prefs.getString('location') ?? 'N/A';
     image = prefs.getString('image') ?? '';
     ticketType = prefs.getString('ticketType') ?? 'N/A';
@@ -230,6 +232,7 @@ class FormDataProvider extends ChangeNotifier {
       date: '',
       location: '',
       time: '',
+      address: '',
       ticketType: '',
       level: '',
       numberOfTicket: 1,
@@ -328,7 +331,7 @@ class FormDataProvider extends ChangeNotifier {
   Future<void> uploadbook() async {
     uploadimageerror = false;
     try {
-      final url = Uri.parse('https://api.cloudinary.com/v1_1/drvnpclui/upload');
+      final url = Uri.parse('https://api.cloudinary.com/v1_1/dt7jnnvfn/upload');
       final request = http.MultipartRequest('POST', url)
         ..fields['upload_preset'] = 'image_preset_ticket'
         ..files.add(await http.MultipartFile.fromPath('file', image!.path));

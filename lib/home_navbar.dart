@@ -21,8 +21,9 @@ class _HomeNavBarState extends State<HomeNavBar> {
   int _currentIndex = 0;
   final tabs = [
     const DiscoverPage(),
-    const SellPage(),
+    Container(),
     const HomePage(),
+    const SellPage(),
     const Account(),
   ];
   Timer? _usageTimer;
@@ -104,176 +105,112 @@ class _HomeNavBarState extends State<HomeNavBar> {
     _usageTimer!.cancel();
   }
 
+  Widget _buildNavItem({
+    required String iconPath,
+    required String label,
+    required int index,
+  }) {
+    bool isSelected = _currentIndex == index;
+
+    return Expanded(
+      child: GestureDetector(
+        onTap: () {
+          setState(() {
+            _currentIndex = index;
+          });
+        },
+        child: Container(
+          height: 45,
+          decoration: BoxDecoration(
+            // color: isSelected
+            //     ? const Color.fromARGB(255, 1, 114, 234).withOpacity(.3)
+            //     : Colors.transparent,
+            borderRadius: BorderRadius.circular(6),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                height: 24,
+                width: 24,
+                child: Image.asset(
+                  iconPath,
+                  color: iconPath.contains('sell')
+                      ? null
+                      : isSelected
+                          ? const Color.fromARGB(255, 14, 62, 125)
+                          : Colors.grey,
+                ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                label,
+                style: TextStyle(
+                  fontSize: 10,
+                  color: isSelected
+                      ? const Color.fromARGB(255, 14, 62, 125)
+                      : Colors.grey,
+                  fontWeight: isSelected ? FontWeight.w700 : FontWeight.normal,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     context.read<EventProvider>().loadSavedData();
     return Scaffold(
       body: tabs[_currentIndex],
       bottomNavigationBar: Container(
-        decoration:
-            BoxDecoration(border: Border.all(color: Colors.grey.shade300)),
-        height: 100,
-        child: BottomNavigationBar(
-          showUnselectedLabels: true,
-          showSelectedLabels: true,
-          type: BottomNavigationBarType.fixed,
-          elevation: 15,
-          backgroundColor: Colors.white,
-          selectedFontSize: 10,
-          unselectedFontSize: 10,
-          currentIndex: _currentIndex,
-          selectedItemColor: const Color(0xff0267d3).withOpacity(.9),
-          unselectedItemColor: Colors.grey,
-          enableFeedback: true,
-          onTap: (index) {
-            setState(() {
-              _currentIndex = index;
-            });
-          },
-          selectedLabelStyle: const TextStyle(
-            color: Color(0xff45688d),
-            fontSize: 12,
+        height: 80,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border(
+            top: BorderSide(color: Colors.grey.shade300, width: 1),
           ),
-          unselectedLabelStyle: const TextStyle(
-            color: Colors.grey,
-            fontSize: 12,
-          ),
-          items: [
-            BottomNavigationBarItem(
-              icon: ColorFiltered(
-                colorFilter:
-                    const ColorFilter.mode(Colors.grey, BlendMode.srcIn),
-                child: Padding(
-                  padding: const EdgeInsets.only(bottom: 5),
-                  child: Container(
-                    width: 25,
-                    height: 25,
-                    decoration: const BoxDecoration(
-                      image: DecorationImage(
-                          image: AssetImage(
-                            'assets/images/search.png',
-                          ),
-                          fit: BoxFit.cover),
-                    ),
-                  ),
-                ),
-              ),
-              activeIcon: ColorFiltered(
-                colorFilter:
-                    const ColorFilter.mode(Color(0xff0267d3), BlendMode.srcIn),
-                child: Padding(
-                  padding: const EdgeInsets.only(bottom: 5),
-                  child: Container(
-                    width: 25,
-                    height: 25,
-                    decoration: const BoxDecoration(
-                      image: DecorationImage(
-                          image: AssetImage(
-                            'assets/images/search.png',
-                          ),
-                          fit: BoxFit.cover),
-                    ),
-                  ),
-                ),
-              ),
-              label: 'Discover',
-            ),
-            BottomNavigationBarItem(
-              icon: Padding(
-                padding: const EdgeInsets.only(bottom: 5),
-                child: Container(
-                  width: 25,
-                  height: 25,
-                  decoration: const BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage(
-                          'assets/images/love.png',
-                        ),
-                        fit: BoxFit.cover),
-                  ),
-                ),
-              ),
-              label: 'Favourites',
-            ),
-            BottomNavigationBarItem(
-              icon: ColorFiltered(
-                colorFilter:
-                    const ColorFilter.mode(Colors.grey, BlendMode.srcIn),
-                child: Padding(
-                  padding: const EdgeInsets.only(bottom: 5),
-                  child: Container(
-                    width: 25,
-                    height: 25,
-                    decoration: const BoxDecoration(
-                      image: DecorationImage(
-                          image: AssetImage(
-                            'assets/images/myevent.png',
-                          ),
-                          fit: BoxFit.cover),
-                    ),
-                  ),
-                ),
-              ),
-              activeIcon: ColorFiltered(
-                colorFilter:
-                    const ColorFilter.mode(Color(0xff0267d3), BlendMode.srcIn),
-                child: Padding(
-                  padding: const EdgeInsets.only(bottom: 5),
-                  child: Container(
-                    width: 25,
-                    height: 25,
-                    decoration: const BoxDecoration(
-                      image: DecorationImage(
-                          image: AssetImage(
-                            'assets/images/myevent.png',
-                          ),
-                          fit: BoxFit.cover),
-                    ),
-                  ),
-                ),
-              ),
-              label: 'My Tickets',
-            ),
-            BottomNavigationBarItem(
-              activeIcon: ColorFiltered(
-                colorFilter:
-                    const ColorFilter.mode(Color(0xff0267d3), BlendMode.srcIn),
-                child: Padding(
-                  padding: const EdgeInsets.only(bottom: 5),
-                  child: Container(
-                    width: 25,
-                    height: 25,
-                    decoration: const BoxDecoration(
-                      image: DecorationImage(
-                          image: AssetImage(
-                            'assets/images/person.png',
-                          ),
-                          fit: BoxFit.cover),
-                    ),
-                  ),
-                ),
-              ),
-              icon: ColorFiltered(
-                colorFilter:
-                    const ColorFilter.mode(Colors.grey, BlendMode.srcIn),
-                child: Padding(
-                  padding: const EdgeInsets.only(bottom: 5),
-                  child: Container(
-                    width: 25,
-                    height: 25,
-                    decoration: const BoxDecoration(
-                      image: DecorationImage(
-                          image: AssetImage(
-                            'assets/images/person.png',
-                          ),
-                          fit: BoxFit.cover),
-                    ),
-                  ),
-                ),
-              ),
-              label: 'My Account',
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 10,
+              offset: const Offset(0, -2),
             ),
           ],
+        ),
+        child: Padding(
+          padding: const EdgeInsets.only(left: 10, right: 10, bottom: 25),
+          child: Row(
+            children: [
+              _buildNavItem(
+                iconPath: 'assets/images/search.png',
+                label: 'Discover',
+                index: 0,
+              ),
+              _buildNavItem(
+                iconPath: 'assets/images/love.png',
+                label: 'For You',
+                index: 1,
+              ),
+              _buildNavItem(
+                iconPath: 'assets/images/myevent.png',
+                label: 'My Tickets',
+                index: 2,
+              ),
+              _buildNavItem(
+                iconPath: 'assets/images/sell.png',
+                label: 'Sell',
+                index: 3,
+              ),
+              _buildNavItem(
+                iconPath: 'assets/images/person.png',
+                label: 'My Account',
+                index: 4,
+              ),
+            ],
+          ),
         ),
       ),
     );

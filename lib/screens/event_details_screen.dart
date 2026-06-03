@@ -9,6 +9,7 @@ import 'package:ticketmaster/providers/croppedImageProvider.dart';
 import 'package:ticketmaster/providers/event_providers.dart';
 import 'package:ticketmaster/screens/widgets/TicketCard.dart';
 import 'package:ticketmaster/screens/widgets/transerButtomSheet.dart';
+import 'package:ticketmaster/screens/widgets/authenticationBottomSheet.dart';
 
 /// Main Event Details screen
 class EventDetails extends StatefulWidget {
@@ -36,10 +37,12 @@ class _EventDetailsState extends State<EventDetails> {
   bool _colorSell = true;
   bool _transferSell = true;
   bool _switchTicketCountTitle = false;
+  bool _isAuthenticating = false;
 
   // Editable fields
   String _ticketSelectionText = '2 Ticket Selected';
   String _seatText = '15, 16, 17, 18';
+  String? _editText;
   late final TextEditingController _ticketTextController;
   late final TextEditingController _seatTextController;
 
@@ -50,8 +53,24 @@ class _EventDetailsState extends State<EventDetails> {
     _pageController = PageController(viewportFraction: 0.9);
     _ticketTextController = TextEditingController();
     _seatTextController = TextEditingController();
+    getColorState();
+    getTranferState();
+    _loadEditText();
     Future.microtask(() =>
         Provider.of<TimerProvider>(context, listen: false).loadCountdown());
+  }
+
+  Future<void> _loadEditText() async {
+    final prefs = await SharedPreferences.getInstance();
+    final text = prefs.getString('holdToEditText');
+    setState(() {
+      _editText = text;
+    });
+  }
+
+  Future<String?> _getHoldToEditText() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('holdToEditText');
   }
 
   @override
@@ -72,125 +91,273 @@ class _EventDetailsState extends State<EventDetails> {
 
   int visibleContainerIndex = 0;
 
+  void getTranferState() async {
+    final prefs = await SharedPreferences.getInstance();
+    final value = prefs.getBool('transferdeactivate');
+    setState(() => _transferSell = value ?? true);
+  }
+
+  void getColorState() async {
+    final prefs = await SharedPreferences.getInstance();
+    final value = prefs.getBool('selldeactivate');
+    setState(() => _colorSell = value ?? true);
+  }
+
   @override
   Widget build(BuildContext context) {
     final imageProv = context.watch<CroppedImageProvider>();
     final colorProv = context.watch<ColorProvider>();
     return Scaffold(
-      body: ListView(
-        // padding: const EdgeInsets.all(8.0),
+      body: Stack(
         children: [
-          AnimatedOpacity(
-            opacity: context.watch<EventProvider>().isSwitched2
-                ? widget.opacity1
-                : 1,
-            duration: const Duration(seconds: 1),
-            child: SizedBox(
-              height: imageProv.image == null
-                  ? MediaQuery.of(context).size.height * 0.64
-                  : MediaQuery.of(context).size.height * 0.6,
-              child: PageView.builder(
-                controller: _pageController,
-                onPageChanged: _onPageChanged,
-                itemCount: widget.event.ticketCount,
-                itemBuilder: (_, idx) => Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                  child: TicketCard(
-                    event: widget.event,
-                    index: idx,
-                    colorSell: _colorSell,
-                    transferSell: _transferSell,
-                    countdown: _countdown,
-                    ticketSelectionText: _ticketSelectionText,
-                    seatText: _seatText,
-                    switchTicketCountTitle: _switchTicketCountTitle,
-                    onToggleCountTitle: (val) {
-                      setState(() => _switchTicketCountTitle = val);
-                      _saveBoolPref('getcountEvent', val);
-                    },
-                    onColorSellToggle: (val) {
-                      setState(() => _colorSell = val);
-                      _saveBoolPref('selldeactivate', val);
-                    },
-                    onTransferToggle: (val) {
-                      setState(() => _transferSell = val);
-                      _saveBoolPref('transferdeactivate', val);
-                    },
+          ListView(
+            // padding: const EdgeInsets.all(8.0),
+            children: [
+              AnimatedOpacity(
+                opacity: context.watch<EventProvider>().isSwitched2
+                    ? widget.opacity1
+                    : 1,
+                duration: const Duration(seconds: 1),
+                child: SizedBox(
+                  height: imageProv.image == null
+                      ? MediaQuery.of(context).size.height * 0.64
+                      : MediaQuery.of(context).size.height * 0.62,
+                  child: PageView.builder(
+                    controller: _pageController,
+                    onPageChanged: _onPageChanged,
+                    itemCount: widget.event.ticketCount,
+                    itemBuilder: (_, idx) => Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                      child: TicketCard(
+                        event: widget.event,
+                        index: idx,
+                        colorSell: _colorSell,
+                        transferSell: _transferSell,
+                        countdown: _countdown,
+                        ticketSelectionText: _ticketSelectionText,
+                        seatText: _seatText,
+                        switchTicketCountTitle: _switchTicketCountTitle,
+                        onToggleCountTitle: (val) {
+                          setState(() => _switchTicketCountTitle = val);
+                          _saveBoolPref('getcountEvent', val);
+                        },
+                        onColorSellToggle: (val) {
+                          setState(() => _colorSell = val);
+                          _saveBoolPref('selldeactivate', val);
+                        },
+                        onTransferToggle: (val) {
+                          setState(() => _transferSell = val);
+                          _saveBoolPref('transferdeactivate', val);
+                        },
+                      ),
+                    ),
                   ),
                 ),
               ),
-            ),
+              const SizedBox(height: 20),
+              AnimatedOpacity(
+                opacity: widget.opacity2,
+                duration: const Duration(seconds: 1),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: List.generate(
+                    widget.event.ticketCount,
+                    (i) => _buildIndicator(i == _currentIndex, context),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              const SizedBox(height: 15),
+              AnimatedOpacity(
+                opacity: context.watch<EventProvider>().isSwitched2
+                    ? widget.opacity2
+                    : 1,
+                duration: const Duration(seconds: 1),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    _buildActionButton(
+                      label: 'Transfer',
+                      colorProv: colorProv,
+                      active: _transferSell,
+                      onTap: () => _startAuthenticationFlow(context),
+                      onDoubleTap: () {
+                        setState(() => _transferSell = !_transferSell);
+                        _saveBoolPref('transferdeactivate', _transferSell);
+                      },
+                    ),
+                    _buildActionButton(
+                      label: 'Sell',
+                      active: _colorSell,
+                      colorProv: colorProv,
+                      onTap: () {
+                        setState(() => _colorSell = !_colorSell);
+                        _saveBoolPref('selldeactivate', _colorSell);
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(
+                height: 35,
+              ),
+              imageProv.image == null
+                  ? const SizedBox()
+                  : AnimatedOpacity(
+                      duration: const Duration(seconds: 1),
+                      opacity: context.watch<EventProvider>().isSwitched2
+                          ? widget.opacity2
+                          : 1,
+                      child: Stack(
+                        children: [
+                          Container(
+                            // padding: EdgeInsets.symmetric(horizontal: 10),
+                            height: 250,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15)),
+                            child: ClipRRect(
+                                borderRadius: BorderRadius.circular(15),
+                                child: Image.file(imageProv.image!,
+                                    fit: BoxFit.cover)),
+                          ),
+                          GestureDetector(
+                            onLongPress: () async {
+                              final controller = TextEditingController(
+                                text: _editText ?? '',
+                              );
+                              final result = await showDialog<String>(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    title: const Text('Edit Text'),
+                                    content: TextField(
+                                      controller: controller,
+                                      autofocus: true,
+                                      decoration: const InputDecoration(
+                                        hintText: 'Enter text',
+                                      ),
+                                    ),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: const Text('Cancel'),
+                                      ),
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context)
+                                              .pop(controller.text.trim());
+                                        },
+                                        child: const Text('Save'),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                              if (result != null) {
+                                setState(() {
+                                  _editText = result.isEmpty ? null : result;
+                                });
+                                final prefs =
+                                    await SharedPreferences.getInstance();
+                                if (result.isEmpty) {
+                                  await prefs.remove('holdToEditText');
+                                } else {
+                                  await prefs.setString(
+                                      'holdToEditText', result);
+                                }
+                              }
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: FutureBuilder<String?>(
+                                future: _getHoldToEditText(),
+                                builder: (context, snapshot) {
+                                  final text = _editText ??
+                                      snapshot.data ??
+                                      'Hold to Edit';
+                                  return Text(
+                                    text.isEmpty ? 'Hold to Edit' : text,
+                                    style: const TextStyle(
+                                      fontSize: 25,
+                                      color: Color.fromARGB(255, 113, 113, 113),
+                                      // fontFamily: 'Poppins',
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+              const SizedBox(
+                height: 15,
+              ),
+              imageProv.image == null
+                  ? const SizedBox()
+                  : Container(
+                      decoration: BoxDecoration(
+                        color: colorProv.currentColor,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      margin: const EdgeInsets.symmetric(horizontal: 20),
+                      height: 45,
+                      child: Center(
+                          child: Text(
+                        'Get Directions',
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.w600),
+                      )),
+                    ),
+            ],
           ),
-          const SizedBox(height: 20),
-          AnimatedOpacity(
-            opacity: widget.opacity2,
-            duration: const Duration(seconds: 1),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: List.generate(
-                widget.event.ticketCount,
-                (i) => _buildIndicator(i == _currentIndex, context),
+
+          // Loading overlay during authentication
+          if (_isAuthenticating)
+            Container(
+              color: Colors.white.withOpacity(0.8),
+              child: Center(
+                child: CircularProgressIndicator.adaptive(
+                    backgroundColor: colorProv.currentColor),
               ),
             ),
-          ),
-          const SizedBox(
-            height: 15,
-          ),
-          const SizedBox(height: 15),
-          AnimatedOpacity(
-            opacity: context.watch<EventProvider>().isSwitched2
-                ? widget.opacity2
-                : 1,
-            duration: const Duration(seconds: 1),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                _buildActionButton(
-                  label: 'Transfer',
-                  colorProv: colorProv,
-                  active: _transferSell,
-                  onTap: () => _showTransferSheet(context),
-                  onDoubleTap: () {
-                    setState(() => _transferSell = !_transferSell);
-                    _saveBoolPref('transferdeactivate', _transferSell);
-                  },
-                ),
-                _buildActionButton(
-                  label: 'Sell',
-                  active: _colorSell,
-                  colorProv: colorProv,
-                  onTap: () {
-                    setState(() => _colorSell = !_colorSell);
-                    _saveBoolPref('selldeactivate', _colorSell);
-                  },
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(
-            height: 15,
-          ),
-          imageProv.image == null
-              ? const SizedBox()
-              : AnimatedOpacity(
-                  duration: const Duration(seconds: 1),
-                  opacity: context.watch<EventProvider>().isSwitched2
-                      ? widget.opacity2
-                      : 1,
-                  child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 10),
-                    height: 80,
-                    width: double.infinity,
-                    decoration:
-                        BoxDecoration(borderRadius: BorderRadius.circular(15)),
-                    child: ClipRRect(
-                        borderRadius: BorderRadius.circular(15),
-                        child: Image.file(imageProv.image!, fit: BoxFit.cover)),
-                  ),
-                )
         ],
       ),
     );
+  }
+
+  void _startAuthenticationFlow(BuildContext context) async {
+    // Show loading overlay for 3 seconds
+    setState(() {
+      _isAuthenticating = true;
+    });
+
+    await Future.delayed(const Duration(seconds: 3));
+
+    if (mounted) {
+      setState(() {
+        _isAuthenticating = false;
+      });
+
+      // Show authentication bottom sheet
+      showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        isDismissible: false,
+        enableDrag: false,
+        builder: (context) => AuthenticationBottomSheet(
+          onAuthenticationComplete: () {
+            _showTransferSheet(context);
+          },
+        ),
+      );
+    }
   }
 
   Widget _buildIndicator(bool isSelected, BuildContext context) {

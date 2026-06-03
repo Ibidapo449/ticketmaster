@@ -68,7 +68,7 @@ class _TransferAuthorizationPageState extends State<TransferAuthorizationPage> {
                 ),
                 const SizedBox(height: 24),
                 const Text(
-                  'The transfer of ticket(s) to the email below is\ncompleted and the ticket(s) are being\nprocessed.\nThe recipient will receive the ticket(s) within 1 - 3 hours',
+                  'The transfer of ticket(s) to the email below is completed and the ticket(s) are being processed.The recipient will receive the ticket(s) within 1 - 3 hours',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Colors.black,
@@ -76,7 +76,7 @@ class _TransferAuthorizationPageState extends State<TransferAuthorizationPage> {
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-                const SizedBox(height: 40),
+                const SizedBox(height: 20),
                 GestureDetector(
                   onLongPress: () {
                     setState(() {
@@ -141,7 +141,3 @@ class _TransferAuthorizationPageState extends State<TransferAuthorizationPage> {
     super.dispose();
   }
 }
-
-
-
-

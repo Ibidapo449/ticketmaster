@@ -137,223 +137,268 @@ class _DiscoverPageState extends State<DiscoverPage> {
         body: SingleChildScrollView(
           child: Column(
             children: [
-              Row(
-                children: [
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.5,
-                    height: 40,
-                    color: Colors.black,
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 15),
-                      child: Row(
-                        children: [
-                          GestureDetector(
-                            onLongPress: () {
-                              setState(() {
-                                iseditingCountry = true;
-                                editingCountryController.text =
-                                    context.read<EventProvider>().countryOn;
-                              });
-                            },
-                            child: iseditingCountry
-                                ? Container(
-                                    color: Colors.transparent,
-                                    width: 120,
-                                    child: TextField(
-                                      controller: editingCountryController,
-                                      style:
-                                          const TextStyle(color: Colors.grey),
-                                      onSubmitted: (newText) {
-                                        if (newText.isNotEmpty) {
-                                          _saveText(newText);
-                                          context
-                                              .read<EventProvider>()
-                                              .getCountry();
-                                          setState(() {
-                                            iseditingCountry = false;
-                                          });
-                                        } else {
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(
-                                            const SnackBar(
-                                              content: Text(
-                                                  'Contry cannot be empty'),
-                                              backgroundColor: Colors.red,
-                                            ),
-                                          );
-                                        }
-                                      },
-                                    ),
-                                  )
-                                : Text(
-                                    context.watch<EventProvider>().countryOn,
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.5,
-                    height: 40,
-                    color: Colors.black,
-                    child: const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 15),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'All Dates',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          Icon(
-                            Icons.keyboard_arrow_right,
-                            color: Colors.white,
-                            size: 30,
-                          )
-                        ],
-                      ),
-                    ),
-                  )
-                ],
-              ),
-              Container(
-                  color: Colors.black,
-                  child: const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 15),
-                    child: Divider(
-                      color: Colors.grey,
-                    ),
-                  )),
+              // Location and Dates Row
               Container(
                 color: Colors.black,
-                height: 55,
-                width: MediaQuery.of(context).size.width,
-                child: Center(
-                  child: Container(
-                    width: MediaQuery.of(context).size.width * 0.92,
-                    height: 40,
-                    color: Colors.white,
-                    child: const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 10),
-                      child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            'Search by Artsist, Event or Venue',
-                            style: TextStyle(color: Colors.grey),
-                          )),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                child: Row(
+                  children: [
+                    // Location Section
+                    Expanded(
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.location_on_outlined,
+                            color: Colors.white,
+                            size: 20,
+                          ),
+                          const SizedBox(width: 8),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'LOCATION',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w600,
+                                  letterSpacing: 1.2,
+                                ),
+                              ),
+                              const SizedBox(height: 2),
+                              GestureDetector(
+                                onLongPress: () {
+                                  setState(() {
+                                    iseditingCountry = true;
+                                    editingCountryController.text =
+                                        context.read<EventProvider>().countryOn;
+                                  });
+                                },
+                                child: iseditingCountry
+                                    ? TextField(
+                                        controller: editingCountryController,
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                        decoration: const InputDecoration(
+                                          border: InputBorder.none,
+                                          isDense: true,
+                                          contentPadding: EdgeInsets.zero,
+                                        ),
+                                        onSubmitted: (newText) {
+                                          if (newText.isNotEmpty) {
+                                            _saveText(newText);
+                                            context
+                                                .read<EventProvider>()
+                                                .getCountry();
+                                            setState(() {
+                                              iseditingCountry = false;
+                                            });
+                                          } else {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              const SnackBar(
+                                                content: Text(
+                                                    'Country cannot be empty'),
+                                                backgroundColor: Colors.red,
+                                              ),
+                                            );
+                                          }
+                                        },
+                                      )
+                                    : Text(
+                                        'City or Zip Code',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                      ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
+
+                    // Divider
+                    // Container(
+                    //   height: 40,
+                    //   width: 1,
+                    //   color: Colors.grey[600],
+                    // ),
+
+                    // Dates Section
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 16),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.calendar_today_outlined,
+                              color: Colors.white,
+                              size: 20,
+                            ),
+                            const SizedBox(width: 8),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'DATES',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w600,
+                                      letterSpacing: 1.2,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 2),
+                                  Text(
+                                    'All Dates',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Icon(
+                              Icons.keyboard_arrow_down,
+                              color: Colors.white,
+                              size: 24,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              // Search Input
+              Container(
+                color: Colors.black,
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Container(
+                  height: 50,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                  child: Row(
+                    children: [
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text(
+                              'SEARCH',
+                              style: TextStyle(
+                                color: Color.fromARGB(255, 7, 7, 7),
+                                fontSize: 12,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            const SizedBox(height: 2),
+                            Text(
+                              'Artist, Event or Venue',
+                              style: TextStyle(
+                                color: Colors.grey[600],
+                                fontSize: 16,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Icon(
+                        Icons.search,
+                        color: Colors.blue[600],
+                        size: 24,
+                      ),
+                      const SizedBox(width: 16),
+                    ],
                   ),
                 ),
               ),
+
+              // const SizedBox(height: 16),
+
+              // Category Buttons
               Container(
                 color: Colors.black,
-                height: 55,
-                width: MediaQuery.of(context).size.width,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
-                  child: Center(
-                    child: SizedBox(
-                      height: 30,
-                      child: ListView(
-                        scrollDirection: Axis.horizontal,
-                        children: [
-                          Container(
-                            height: 30,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                border: Border.all(color: Colors.white)),
-                            child: const Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 10),
-                              child: Center(
-                                  child: Text(
-                                'Concerts',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w500),
-                              )),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width * .95,
+                  height: 45,
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: [
+                      Container(
+                        height: 30,
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.white, width: 1),
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                        child: const Center(
+                          child: Text(
+                            'Concerts',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
                             ),
                           ),
-                          const SizedBox(
-                            width: 5,
-                          ),
-                          Container(
-                            height: 30,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                border: Border.all(color: Colors.white)),
-                            child: const Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 10),
-                              child: Center(
-                                  child: Text(
-                                'Sports',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w500),
-                              )),
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 5,
-                          ),
-                          Container(
-                            height: 30,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                border: Border.all(color: Colors.white)),
-                            child: const Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 10),
-                              child: Center(
-                                  child: Text(
-                                'Arts, Theater & Comedy',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w500),
-                              )),
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 5,
-                          ),
-                          Container(
-                            height: 30,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                border: Border.all(color: Colors.white)),
-                            child: const Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 10),
-                              child: Center(
-                                  child: Text(
-                                'Farmily',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w500),
-                              )),
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 5,
-                          ),
-                          Container(
-                            height: 30,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                border: Border.all(color: Colors.white)),
-                            child: const Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 10),
-                              child: Center(
-                                  child: Text(
-                                'Carnivals',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w500),
-                              )),
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
-                    ),
+                      const SizedBox(width: 8),
+                      Container(
+                        height: 30,
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.white, width: 1),
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                        child: const Center(
+                          child: Text(
+                            'Sports',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Container(
+                        height: 30,
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.white, width: 1),
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                        child: const Center(
+                          child: Text(
+                            'Arts, Theater & Comedy',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),

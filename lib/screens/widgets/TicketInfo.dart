@@ -8,14 +8,13 @@ import 'package:ticketmaster/providers/TimerProvider.dart';
 import 'package:ticketmaster/providers/colorProvider.dart';
 import 'package:ticketmaster/providers/event_providers.dart';
 import 'package:ticketmaster/screens/barcode_screen.dart';
-import 'package:ticketmaster/screens/event_details_screen.dart';
 import 'package:ticketmaster/screens/ticket_details_screen.dart';
 
 /// Widget displaying ticket details below banner
 class TicketInfoSection extends StatefulWidget {
   final EventInfo event;
 
-  TicketInfoSection({
+  const TicketInfoSection({
     Key? key,
     required this.event,
   }) : super(key: key);
@@ -33,34 +32,25 @@ class _TicketInfoSectionState extends State<TicketInfoSection> {
   TextEditingController nameController = TextEditingController();
   TextEditingController countController = TextEditingController();
 
-  // These are placeholders, you can set actual values/timers.
-
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       getTicketCountTitle();
       loadTicketInfo();
-      
-      // Initialize TimerProvider countdown
+
       final timerProvider = Provider.of<TimerProvider>(context, listen: false);
       await timerProvider.loadCountdown();
-      
-      // If no countdown is set, set a default 5-minute countdown
-       if (timerProvider.remainingTime <= Duration.zero) {
-         final pref = await SharedPreferences.getInstance();
-         final endTime = DateTime.now().add(Duration(minutes: 5)).millisecondsSinceEpoch;
-         await pref.setInt('countdownEndTime', endTime);
-         await timerProvider.loadCountdown();
-       }
-    });
-  }
 
-  void getTicketCountTitle() async {
-    final pref = await SharedPreferences.getInstance();
-    changeticketcount = pref.getBool("getcountEvent") ?? false;
-    setState(() {});
+      if (timerProvider.remainingTime <= Duration.zero) {
+        final pref = await SharedPreferences.getInstance();
+        final endTime = DateTime.now()
+            .add(const Duration(minutes: 5))
+            .millisecondsSinceEpoch;
+        await pref.setInt('countdownEndTime', endTime);
+        await timerProvider.loadCountdown();
+      }
+    });
   }
 
   @override
@@ -68,6 +58,12 @@ class _TicketInfoSectionState extends State<TicketInfoSection> {
     nameController.dispose();
     countController.dispose();
     super.dispose();
+  }
+
+  void getTicketCountTitle() async {
+    final pref = await SharedPreferences.getInstance();
+    changeticketcount = pref.getBool("getcountEvent") ?? false;
+    setState(() {});
   }
 
   void loadTicketInfo() async {
@@ -85,9 +81,8 @@ class _TicketInfoSectionState extends State<TicketInfoSection> {
     await pref.setInt('ticketCount', ticketCount);
   }
 
-  void saveTicketCountTitle(event) async {
+  void saveTicketCountTitle(bool event) async {
     final pref = await SharedPreferences.getInstance();
-
     pref.setBool("getcountEvent", event);
     getTicketCountTitle();
   }
@@ -135,8 +130,8 @@ class _TicketInfoSectionState extends State<TicketInfoSection> {
                   buildNotReadyContainer(colorProv),
                 if (visibleContainerIndex == 4)
                   ticketClaimedContainer(colorProv),
-                if (visibleContainerIndex == 5) ticketSentContainer(colorProv),
-                // Add more containers if needed
+                // if (visibleContainerIndex == 5)
+                //   ticketSentContainer(colorProv),
               ],
             ),
           ),
@@ -186,18 +181,19 @@ class _TicketInfoSectionState extends State<TicketInfoSection> {
               ),
               const SizedBox(height: 20),
               GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const TicketDetails(),
-                    ));
-                  },
-                  child: const Text(
-                    "Ticket Details",
-                    style: TextStyle(
-                        color: Color.fromARGB(255, 51, 90, 135),
-                        fontSize: 13,
-                        fontWeight: FontWeight.w600),
-                  )),
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const TicketDetails(),
+                  ));
+                },
+                child: const Text(
+                  "Ticket Details",
+                  style: TextStyle(
+                      color: Color.fromARGB(255, 51, 90, 135),
+                      fontSize: 13,
+                      fontWeight: FontWeight.w600),
+                ),
+              ),
             ],
           ),
         ),
@@ -205,124 +201,104 @@ class _TicketInfoSectionState extends State<TicketInfoSection> {
 
   Widget _timeCard(int time, String label) => Column(
         children: [
-          Text('$time',
-              style:
-                  const TextStyle(fontSize: 32, fontWeight: FontWeight.bold)),
+          Text(
+            '$time',
+            style: const TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+          ),
           const SizedBox(height: 4),
           Container(
-              decoration: BoxDecoration(border: Border.all(color: Colors.grey)),
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 1.5, vertical: 1),
-                child: Text(label, style: const TextStyle(fontSize: 14)),
-              )),
+            decoration: BoxDecoration(border: Border.all(color: Colors.grey)),
+            child: Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 1.5, vertical: 1),
+              child: Text(label, style: const TextStyle(fontSize: 14)),
+            ),
+          ),
         ],
       );
 
   Widget buildAppleWalletContainer(ColorProvider colorProv) => AnimatedOpacity(
         duration: const Duration(milliseconds: 500),
         opacity: 1.0,
-        child: Container(
-          color: Colors.transparent,
-          child: Column(
-            children: [
-              Text(
-                widget.event.level,
-                style:
-                    const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-              ),
-              const SizedBox(
-                height: 40,
-              ),
-              Container(
-                height: 40,
-                width: MediaQuery.of(context).size.width * 0.75,
-                decoration: BoxDecoration(
-                    color: colorProv.currentColor,
-                    borderRadius: BorderRadius.circular(2)),
-                child: Center(
-                    child: Padding(
+        child: Column(
+          children: [
+            const SizedBox(height: 10),
+            Text(
+              widget.event.level,
+              style:
+                  const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+            ),
+            const SizedBox(height: 40),
+            Container(
+              height: 40,
+              width: MediaQuery.of(context).size.width * 0.8,
+              decoration: BoxDecoration(
+                  color: Colors.black,
+                  borderRadius: BorderRadius.circular(2)),
+              child: Center(
+                child: Padding(
                   padding: const EdgeInsets.all(4.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Center(
-                          child: Container(
-                              height: 26,
-                              width: 26,
-                              decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.white),
-                                  borderRadius: BorderRadius.circular(13)),
-                              child: const Icon(
-                                Icons.check,
-                                size: 13,
-                                color: Colors.white,
-                              ))),
-                      const SizedBox(
-                        width: 15,
+                      Image.asset(
+                        "assets/images/applewallet.png",
+                        height: 30,
+                        width: 30,
                       ),
-                      const FittedBox(
-                        child: Text(
-                          "View in wallet",
-                          style: TextStyle(
-                              fontSize: 13,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white),
-                        ),
+                      const SizedBox(width: 15),
+                      const Text(
+                        "Add to Apple Wallet",
+                        style: TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
                       ),
                     ],
                   ),
-                )),
-              ),
-              const SizedBox(
-                height: 30,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 35),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => BarcodeScreen(
-                            event: widget.event,
-                          ),
-                        ));
-                      },
-                      child: Container(
-                        color: Colors.transparent,
-                        child: const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text(
-                            "View Barcode",
-                            style: TextStyle(
-                                color: Color.fromARGB(255, 51, 90, 135),
-                                fontSize: 13,
-                                fontWeight: FontWeight.w600),
-                          ),
-                        ),
-                      ),
-                    ),
-                    const Spacer(),
-                    GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => const TicketDetails(),
-                          ));
-                        },
-                        child: const Text(
-                          "Ticket Details",
-                          style: TextStyle(
-                              color: Color.fromARGB(255, 51, 90, 135),
-                              fontSize: 13,
-                              fontWeight: FontWeight.w600),
-                        ))
-                  ],
                 ),
-              )
-            ],
-          ),
+              ),
+            ),
+            const SizedBox(height: 30),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 35),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) =>
+                            BarcodeScreen(event: widget.event),
+                      ));
+                    },
+                    child: const Text(
+                      "View Barcode",
+                      style: TextStyle(
+                          color: Color.fromARGB(255, 51, 90, 135),
+                          fontSize: 13,
+                          fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                  const Spacer(),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const TicketDetails(),
+                      ));
+                    },
+                    child: const Text(
+                      "Ticket Details",
+                      style: TextStyle(
+                          color: Color.fromARGB(255, 51, 90, 135),
+                          fontSize: 13,
+                          fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       );
 
@@ -338,9 +314,7 @@ class _TicketInfoSectionState extends State<TicketInfoSection> {
                 style:
                     const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
               ),
-              const SizedBox(
-                height: 40,
-              ),
+              const SizedBox(height: 40),
               Container(
                 height: 40,
                 width: MediaQuery.of(context).size.width * 0.75,
@@ -348,42 +322,39 @@ class _TicketInfoSectionState extends State<TicketInfoSection> {
                     color: colorProv.currentColor,
                     borderRadius: BorderRadius.circular(2)),
                 child: Center(
-                    child: Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Center(
-                          child: Container(
-                              height: 26,
-                              width: 26,
-                              decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.white),
-                                  borderRadius: BorderRadius.circular(13)),
-                              child: const Icon(
-                                Icons.check,
-                                size: 13,
-                                color: Colors.white,
-                              ))),
-                      const SizedBox(
-                        width: 15,
-                      ),
-                      const FittedBox(
-                        child: Text(
-                          "View in wallet",
-                          style: TextStyle(
-                              fontSize: 13,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white),
+                  child: Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          height: 26,
+                          width: 26,
+                          decoration: BoxDecoration(
+                              border: Border.all(color: Colors.white),
+                              borderRadius: BorderRadius.circular(13)),
+                          child: const Icon(
+                            Icons.check,
+                            size: 13,
+                            color: Colors.white,
+                          ),
                         ),
-                      ),
-                    ],
+                        const SizedBox(width: 15),
+                        const FittedBox(
+                          child: Text(
+                            "View in wallet",
+                            style: TextStyle(
+                                fontSize: 13,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                )),
+                ),
               ),
-              const SizedBox(
-                height: 30,
-              ),
+              const SizedBox(height: 30),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 35),
                 child: Row(
@@ -392,51 +363,36 @@ class _TicketInfoSectionState extends State<TicketInfoSection> {
                     GestureDetector(
                       onTap: () {
                         Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => BarcodeScreen(
-                            event: widget.event,
-                          ),
+                          builder: (context) =>
+                              BarcodeScreen(event: widget.event),
                         ));
                       },
-                      child: GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => BarcodeScreen(
-                              event: widget.event,
-                            ),
-                          ));
-                        },
-                        child: Container(
-                          color: Colors.transparent,
-                          child: const Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Text(
-                              "View Barcode",
-                              style: TextStyle(
-                                  color: Color.fromARGB(255, 51, 90, 135),
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                          ),
-                        ),
+                      child: const Text(
+                        "View Barcode",
+                        style: TextStyle(
+                            color: Color.fromARGB(255, 51, 90, 135),
+                            fontSize: 13,
+                            fontWeight: FontWeight.w600),
                       ),
                     ),
                     const Spacer(),
                     GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => const TicketDetails(),
-                          ));
-                        },
-                        child: const Text(
-                          "Ticket Details",
-                          style: TextStyle(
-                              color: Color.fromARGB(255, 51, 90, 135),
-                              fontSize: 13,
-                              fontWeight: FontWeight.w600),
-                        ))
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => const TicketDetails(),
+                        ));
+                      },
+                      child: const Text(
+                        "Ticket Details",
+                        style: TextStyle(
+                            color: Color.fromARGB(255, 51, 90, 135),
+                            fontSize: 13,
+                            fontWeight: FontWeight.w600),
+                      ),
+                    ),
                   ],
                 ),
-              )
+              ),
             ],
           ),
         ),
@@ -607,6 +563,22 @@ class _TicketInfoSectionState extends State<TicketInfoSection> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) =>
+                            BarcodeScreen(event: widget.event),
+                      ));
+                    },
+                    child: const Text(
+                      "View Barcode",
+                      style: TextStyle(
+                          color: Color.fromARGB(255, 51, 90, 135),
+                          fontSize: 13,
+                          fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                  const Spacer(),
+                  GestureDetector(
                       onTap: () {
                         Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => const TicketDetails(),
@@ -629,136 +601,90 @@ class _TicketInfoSectionState extends State<TicketInfoSection> {
   Widget ticketClaimedContainer(ColorProvider colorProv) => AnimatedOpacity(
         duration: const Duration(milliseconds: 500),
         opacity: 1.0,
-        child: Container(
-          height: MediaQuery.of(context).size.height * 0.17,
-          color: Colors.transparent,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              GestureDetector(
-                onLongPress: () {
-                  setState(() {
-                    isEditingCount = true;
-                    countController.text = ticketCount.toString();
-                  });
-                },
-                child: isEditingCount
-                    ? Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            const SizedBox(
+              height: 50,
+            ),
+            Text(
+              widget.event.level,
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => BarcodeScreen(event: widget.event),
+                ));
+              },
+              child: Container(
+                height: 40,
+                width: MediaQuery.of(context).size.width * 0.75,
+                decoration: BoxDecoration(
+                    color: Colors.black,
+                    borderRadius: BorderRadius.circular(1)),
+                child: Center(
+                    child: Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Stack(
                         children: [
-                          SizedBox(
-                            width: 50,
-                            child: TextField(
-                              controller: countController,
-                              keyboardType: TextInputType.number,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(fontWeight: FontWeight.w700),
-                              decoration: InputDecoration(
-                                border: UnderlineInputBorder(),
-                                contentPadding: EdgeInsets.symmetric(vertical: 0),
-                              ),
-                              onSubmitted: (value) {
-                                int? newCount = int.tryParse(value);
-                                if (newCount != null && newCount > 0) {
-                                  ticketCount = newCount;
-                                  saveTicketInfo();
-                                }
-                                setState(() {
-                                  isEditingCount = false;
-                                });
-                              },
+                          Container(
+                            height: 17,
+                            width: 30,
+                            decoration: const BoxDecoration(
+                              image: DecorationImage(
+                                  image: AssetImage(
+                                'assets/images/smarticon.png',
+                              )),
                             ),
-                          ),
-                          Text(
-                            ' tickets claimed by',
-                            style: TextStyle(fontWeight: FontWeight.w700),
-                          ),
+                          )
                         ],
-                      )
-                    : Text(
-                        '$ticketCount tickets claimed by',
-                        style: TextStyle(fontWeight: FontWeight.w700),
                       ),
-              ),
-              SizedBox(height: 5),
-              GestureDetector(
-                onLongPress: () {
-                  setState(() {
-                    isEditingName = true;
-                    nameController.text = claimedByName;
-                  });
-                },
-                child: isEditingName
-                    ? SizedBox(
-                        width: 200,
-                        child: TextField(
-                          controller: nameController,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15),
-                          decoration: InputDecoration(
-                            border: UnderlineInputBorder(),
-                            contentPadding: EdgeInsets.symmetric(vertical: 0),
-                          ),
-                          onSubmitted: (value) {
-                            if (value.trim().isNotEmpty) {
-                              claimedByName = value.trim().toUpperCase();
-                              saveTicketInfo();
-                            }
-                            setState(() {
-                              isEditingName = false;
-                            });
-                          },
+                      const SizedBox(
+                        width: 8,
+                      ),
+                      const FittedBox(
+                        child: Text(
+                          "View Ticket",
+                          style: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.bold,
+                              color: Color.fromARGB(255, 236, 236, 236)),
                         ),
-                      )
-                    : Text(
-                        claimedByName,
-                        style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15),
                       ),
+                    ],
+                  ),
+                )),
               ),
-            ],
-          ),
-        ),
-      );
-  Widget ticketSentContainer(ColorProvider colorProv) => AnimatedOpacity(
-        duration: const Duration(milliseconds: 500),
-        opacity: 1.0,
-        child: Container(
-          height: MediaQuery.of(context).size.height * 0.17,
-          color: Colors.transparent,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(
-                height: 30,
-              ),
-              Text(
-                '$ticketCount tickets sent to',
-                style: TextStyle(fontWeight: FontWeight.w700),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Text(
-                claimedByName,
-                style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15),
-              ),
-              Text(
-                'Waiting for recipient to claim',
-                style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15),
-              ),
-              Spacer(),
-              Text(
-                'Cancel Tranfer',
-                style: TextStyle(
-                  fontWeight: FontWeight.w700,
-                  fontSize: 15,
-                  color: Color(0xff0361cb),
-                ),
-              ),
-            ],
-          ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const TicketDetails(),
+                      ));
+                    },
+                    child: const Text(
+                      "Ticket Details",
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600),
+                    ))
+              ],
+            )
+          ],
         ),
       );
 }

@@ -128,7 +128,7 @@ class _TransferTicketPageState extends State<TransferTicketPage> {
               height: 10,
             ),
             const Text(
-              'The ticket(s) will be permanently \ntransferred and available in the \n recipient account',
+              'The ticket(s) will be permanently transferred and available in the recipient account',
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: Colors.black,

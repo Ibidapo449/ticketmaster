@@ -1,7 +1,8 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ticketmaster/model/EventInfo.dart';
 import 'package:ticketmaster/providers/colorProvider.dart';
 import 'package:ticketmaster/providers/croppedImageProvider.dart';
@@ -9,9 +10,12 @@ import 'package:ticketmaster/screens/event_details_screen.dart';
 import 'package:ticketmaster/screens/widgets/TicketInfo.dart';
 import 'package:ticketmaster/screens/widgets/autoscrollText.dart';
 import 'package:ticketmaster/screens/widgets/sectionDisplayText.dart';
+import 'package:ticketmaster/utils/general_admission_utils.dart';
+
+import '../ticket_details_screen.dart';
 
 /// Individual ticket card
-class TicketCard extends StatelessWidget {
+class TicketCard extends StatefulWidget {
   final EventInfo event;
   final int index;
   final CountdownController countdown;
@@ -39,7 +43,43 @@ class TicketCard extends StatelessWidget {
     required this.onTransferToggle,
   }) : super(key: key);
 
+  @override
+  _TicketCardState createState() => _TicketCardState();
+}
+
+class _TicketCardState extends State<TicketCard> {
   int visibleContainerIndex = 1;
+  CrossAxisAlignment _gaCrossAxisAlignment = CrossAxisAlignment.end;
+
+  static const String _gaAlignmentKey = 'ga_cross_axis_alignment';
+
+  @override
+  void initState() {
+    super.initState();
+    _loadGACrossAxisAlignment();
+  }
+
+  Future<void> _loadGACrossAxisAlignment() async {
+    final prefs = await SharedPreferences.getInstance();
+    final value = prefs.getString(_gaAlignmentKey);
+    setState(() {
+      _gaCrossAxisAlignment = value == 'center'
+          ? CrossAxisAlignment.center
+          : CrossAxisAlignment.end;
+    });
+  }
+
+  Future<void> _toggleGACrossAxisAlignment() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _gaCrossAxisAlignment = _gaCrossAxisAlignment == CrossAxisAlignment.end
+          ? CrossAxisAlignment.center
+          : CrossAxisAlignment.end;
+    });
+    await prefs.setString(_gaAlignmentKey,
+        _gaCrossAxisAlignment == CrossAxisAlignment.center ? 'center' : 'end');
+  }
+
   @override
   Widget build(BuildContext context) {
     final colorProv = context.watch<ColorProvider>();
@@ -63,7 +103,7 @@ class TicketCard extends StatelessWidget {
                 _buildSeatInfo(context),
                 _buildImageBanner(context),
                 TicketInfoSection(
-                  event: event,
+                  event: widget.event,
                 ),
               ],
             ),
@@ -98,7 +138,7 @@ class TicketCard extends StatelessWidget {
           //I want to reduce the size of this text to show everything when it's long but max font-size is 16
           SizedBox(
             width: MediaQuery.of(context).size.width * .7,
-            child: AutoSizeText(event.ticketType,
+            child: AutoSizeText(widget.event.ticketType,
                 maxLines: 1,
                 maxFontSize: 16,
                 textAlign: TextAlign.center,
@@ -106,7 +146,11 @@ class TicketCard extends StatelessWidget {
                 style: const TextStyle(color: Colors.white, fontSize: 16)),
           ),
           GestureDetector(
-            onTap: () {},
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => const TicketDetails(),
+              ));
+            },
             child: SvgPicture.asset(
               'assets/images/info.svg',
               color: Colors.white,
@@ -121,14 +165,18 @@ class TicketCard extends StatelessWidget {
 
   Widget _buildSeatInfo(BuildContext context) {
     final colorProv = context.watch<ColorProvider>();
-    final seatNumber = event.seat == '0'
+    final isGeneralAdmission = hasGeneralAdmissionRule(
+      section: widget.event.section,
+      row: widget.event.row,
+    );
+    final baseSeat = int.tryParse(widget.event.seat);
+    final seatNumber = widget.event.seat == '0'
         ? ''
-        : event.row == 'GA'
+        : isGeneralAdmission
             ? 'GA'
-            : (int.parse(event.seat) + index).toString();
-
-    // detect exact GA-1 case
-    final isGeneralAdmission = event.row == 'GA' && int.parse(event.seat) == 1;
+            : baseSeat == null
+                ? widget.event.seat
+                : (baseSeat + widget.index).toString();
 
     return GestureDetector(
       onTap: () {
@@ -138,31 +186,35 @@ class TicketCard extends StatelessWidget {
         padding: const EdgeInsets.only(top: 3, bottom: 25),
         color: colorProv.currentColor,
         child: Row(
-          crossAxisAlignment: CrossAxisAlignment.end,
+          crossAxisAlignment: isGeneralAdmission
+              ? _gaCrossAxisAlignment
+              : CrossAxisAlignment.end,
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            Container(child: _infoColumn('SEC', event.section)),
-
+            Container(child: _infoColumn('SEC', widget.event.section)),
             // if GA-1, show single label; otherwise show ROW and SEAT columns
             ...(isGeneralAdmission
                 ? [
-                    const SizedBox(
-                      height: 25,
-                      child: Align(
-                        alignment: Alignment.centerRight,
-                        child: Text(
-                          'General Admission',
-                          style: TextStyle(
-                            fontSize: 21,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
+                    GestureDetector(
+                      onTap: _toggleGACrossAxisAlignment,
+                      child: const SizedBox(
+                        height: 25,
+                        child: Align(
+                          alignment: Alignment.centerRight,
+                          child: Text(
+                            'General Admission',
+                            style: TextStyle(
+                              fontSize: 21,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                       ),
                     )
                   ]
                 : [
-                    _infoColumn('ROW', event.row),
+                    _infoColumn('ROW', widget.event.row),
                     _infoColumn('SEAT', seatNumber),
                   ]),
           ],
@@ -183,7 +235,7 @@ class TicketCard extends StatelessWidget {
     final imageProv = context.watch<CroppedImageProvider>();
     return Stack(
       children: [
-        Image.network(event.imageUrl,
+        Image.network(widget.event.imageUrl,
             fit: BoxFit.cover,
             height: imageProv.image == null ? 230 : 220,
             width: double.infinity),
@@ -214,24 +266,25 @@ class TicketCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                event.eventName == ''
-                    ? Text(event.artistName,
+                widget.event.eventName == ''
+                    ? Text(widget.event.artistName,
                         textAlign: TextAlign.center,
                         style:
                             const TextStyle(color: Colors.white, fontSize: 18))
-                    : event.artistName == ''
-                        ? Text(event.eventName,
+                    : widget.event.artistName == ''
+                        ? Text(widget.event.eventName,
                             textAlign: TextAlign.center,
                             style: const TextStyle(
                                 color: Colors.white, fontSize: 18))
-                        : Text('${event.artistName} | ${event.eventName}',
+                        : Text(
+                            '${widget.event.artistName} | ${widget.event.eventName}',
                             textAlign: TextAlign.center,
                             style: const TextStyle(
                                 color: Colors.white, fontSize: 18)),
                 const SizedBox(height: 4),
                 FittedBox(
                   child: Text(
-                      '${event.date}  ${event.time} • ${event.location}',
+                      '${widget.event.date}  ${widget.event.time} • ${widget.event.location}',
                       style:
                           const TextStyle(color: Colors.white, fontSize: 14)),
                 ),

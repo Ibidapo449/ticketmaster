@@ -25,14 +25,14 @@ class TicketTransferPendinglModal extends StatelessWidget {
             decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 border: Border.all(
-                  color: Colors.transparent,
+                  color: Colors.blue,
                   // color: const Color(0xff006ce7),
                 )),
             child: const Center(
               child: Icon(
                 Icons.done,
                 size: 35,
-                color: Colors.transparent,
+                color: Colors.blue,
                 // color: Color(0xff006ce7),
               ),
             ),
