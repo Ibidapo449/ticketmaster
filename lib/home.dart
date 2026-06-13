@@ -20,7 +20,20 @@ class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
   late TabController tabController;
   int visibleContainerIndex1 = 0;
-  int pastEventsCount = 0; // Default value for past events count
+  int pastEventsCount = 0;
+
+  final List<Map<String, String>> _flags = [
+    {'emoji': '🇬🇧', 'label': 'UK'},
+    {'emoji': '🇨🇦', 'label': 'Canada'},
+    {'emoji': '🇺🇸', 'label': 'USA'},
+    {'emoji': '🇫🇷', 'label': 'France'},
+    {'emoji': '🇪🇸', 'label': 'Spain'},
+    {'emoji': '🇲🇽', 'label': 'Mexico'},
+    {'emoji': '🇩🇪', 'label': 'Germany'},
+    {'emoji': '🇳🇱', 'label': 'Netherlands'},
+    {'emoji': '🇮🇹', 'label': 'Italy'},
+    {'emoji': '🇮🇪', 'label': 'Ireland'},
+  ];
 
   @override
   void initState() {
@@ -102,7 +115,7 @@ class _HomePageState extends State<HomePage>
   }
 
   void switchContainer1() {
-    final newIndex = (visibleContainerIndex1 + 1) % 4;
+    final newIndex = (visibleContainerIndex1 + 1) % (_flags.length + 1);
     setState(() {
       visibleContainerIndex1 = newIndex;
     });
@@ -131,9 +144,7 @@ class _HomePageState extends State<HomePage>
           },
           child: Row(
             children: [
-              const SizedBox(
-                width: 80,
-              ),
+              const SizedBox(width: 80),
               const Text(
                 "My Events",
                 style: TextStyle(
@@ -141,39 +152,38 @@ class _HomePageState extends State<HomePage>
                     color: Colors.white,
                     fontWeight: FontWeight.bold),
               ),
-              const SizedBox(
-                width: 8,
+              const SizedBox(width: 8),
+              Stack(
+                children: [
+                  AnimatedOpacity(
+                    duration: const Duration(milliseconds: 500),
+                    opacity: visibleContainerIndex1 == 0 ? 1.0 : 0.0,
+                    child: Container(
+                      width: 20,
+                      height: 20,
+                      color: const Color(0xff1f262e),
+                    ),
+                  ),
+                  ..._flags.asMap().entries.map((entry) {
+                    final flagIndex = entry.key + 1;
+                    final emoji = entry.value['emoji']!;
+                    return AnimatedOpacity(
+                      duration: const Duration(milliseconds: 500),
+                      opacity:
+                          visibleContainerIndex1 == flagIndex ? 1.0 : 0.0,
+                      child: Container(
+                        width: 20,
+                        height: 20,
+                        alignment: Alignment.center,
+                        child: Text(
+                          emoji,
+                          style: const TextStyle(fontSize: 16),
+                        ),
+                      ),
+                    );
+                  }),
+                ],
               ),
-              Stack(children: [
-                AnimatedOpacity(
-                  duration: const Duration(milliseconds: 500),
-                  opacity: visibleContainerIndex1 == 0 ? 1.0 : 0.0,
-                  child: Container(
-                    color: const Color(0xff1f262e),
-                  ),
-                ),
-                AnimatedOpacity(
-                  duration: const Duration(milliseconds: 500),
-                  opacity: visibleContainerIndex1 == 1 ? 1.0 : 0.0,
-                  child: myContainer(
-                    image: 'assets/images/usa-icon.png',
-                  ),
-                ),
-                AnimatedOpacity(
-                  duration: const Duration(milliseconds: 500),
-                  opacity: visibleContainerIndex1 == 2 ? 1.0 : 0.0,
-                  child: myContainer(
-                    image: 'assets/images/Ellipse 2.png',
-                  ),
-                ),
-                AnimatedOpacity(
-                  duration: const Duration(milliseconds: 500),
-                  opacity: visibleContainerIndex1 == 3 ? 1.0 : 0.0,
-                  child: myContainer(
-                    image: 'assets/images/Ellipse 3.png',
-                  ),
-                ),
-              ]),
             ],
           ),
         ),
@@ -265,22 +275,6 @@ class _HomePageState extends State<HomePage>
             ))
           ],
         ),
-      ),
-    );
-  }
-
-  Container myContainer({
-    required String image,
-  }) {
-    return Container(
-      width: 20,
-      height: 20,
-      decoration: BoxDecoration(
-        image: DecorationImage(
-            image: AssetImage(
-              image,
-            ),
-            fit: BoxFit.cover),
       ),
     );
   }
