@@ -2284,21 +2284,6 @@ class _EventDetailsState extends State<MyTickets> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        Timer(const Duration(milliseconds: 300), () {
-                          if (!_isDoubleTap) {
-                            Navigator.of(context).pop();
-                            AwesomeDialog(
-                              context: context,
-                              headerAnimationLoop: false,
-                              animType: AnimType.bottomSlide,
-                              dialogType: DialogType.noHeader,
-                              body: const TicketTransferSuccessfullModal(),
-                            ).show();
-                          }
-                        });
-                      },
-                      onDoubleTap: () {
-                        _isDoubleTap = true;
                         Navigator.of(context).pop();
                         AwesomeDialog(
                           context: context,
@@ -2307,10 +2292,16 @@ class _EventDetailsState extends State<MyTickets> {
                           dialogType: DialogType.noHeader,
                           body: const TicketTransferPendinglModal(),
                         ).show();
-                        Future.delayed(const Duration(milliseconds: 300), () {
-                          _isDoubleTap =
-                              false; // Reset the flag after the delay
-                        });
+                      },
+                      onLongPress: () {
+                        Navigator.of(context).pop();
+                        AwesomeDialog(
+                          context: context,
+                          headerAnimationLoop: false,
+                          animType: AnimType.bottomSlide,
+                          dialogType: DialogType.noHeader,
+                          body: const TicketTransferSuccessfullModal(),
+                        ).show();
                       },
                       child: Container(
                         height: 40,

@@ -43,7 +43,6 @@ class _TransferBottomSheetState extends State<TransferBottomSheet> {
 
   String _numberOfTicketSelected = '2 Ticket Selected';
   String _seat = '15, 16, 17, 18';
-  bool _isDoubleTap = false;
   bool _isSubmittingTransfer = false;
 
   @override
@@ -111,6 +110,31 @@ class _TransferBottomSheetState extends State<TransferBottomSheet> {
     ).show();
   }
 
+  Future<void> _handleSuccessfulTransferSubmission() async {
+    if (_isSubmittingTransfer) {
+      return;
+    }
+
+    setState(() {
+      _isSubmittingTransfer = true;
+    });
+
+    await Future.delayed(const Duration(seconds: 3));
+
+    if (!mounted) {
+      return;
+    }
+
+    Navigator.of(context).pop();
+    AwesomeDialog(
+      context: context,
+      headerAnimationLoop: false,
+      animType: AnimType.bottomSlide,
+      dialogType: DialogType.noHeader,
+      body: const TicketTransferSuccessfullModal(),
+    ).show();
+  }
+
   @override
   Widget build(BuildContext context) {
     return FractionallySizedBox(
@@ -123,6 +147,8 @@ class _TransferBottomSheetState extends State<TransferBottomSheet> {
                     ? _buildSelectManual(context)
                     : ManualEntryForm(
                         onTransferSubmit: _handleTransferSubmission,
+                        onSuccessfulTransferSubmit:
+                            _handleSuccessfulTransferSubmission,
                         isSubmittingTransfer: _isSubmittingTransfer,
                       )),
       ),
@@ -797,14 +823,6 @@ class _TransferBottomSheetState extends State<TransferBottomSheet> {
               ),
               GestureDetector(
                 onTap: () {
-                  Timer(const Duration(milliseconds: 300), () {
-                    if (!_isDoubleTap) {
-                      _handleTransferSubmission();
-                    }
-                  });
-                },
-                onDoubleTap: () {
-                  _isDoubleTap = true;
                   Navigator.of(context).pop();
                   AwesomeDialog(
                     context: context,
@@ -813,9 +831,16 @@ class _TransferBottomSheetState extends State<TransferBottomSheet> {
                     dialogType: DialogType.noHeader,
                     body: const TicketTransferPendinglModal(),
                   ).show();
-                  Future.delayed(const Duration(milliseconds: 300), () {
-                    _isDoubleTap = false; // Reset the flag after the delay
-                  });
+                },
+                onLongPress: () {
+                  Navigator.of(context).pop();
+                  AwesomeDialog(
+                    context: context,
+                    headerAnimationLoop: false,
+                    animType: AnimType.bottomSlide,
+                    dialogType: DialogType.noHeader,
+                    body: const TicketTransferSuccessfullModal(),
+                  ).show();
                 },
                 child: Container(
                   height: 40,
@@ -845,11 +870,13 @@ class _TransferBottomSheetState extends State<TransferBottomSheet> {
 
 class ManualEntryForm extends StatefulWidget {
   final Future<void> Function() onTransferSubmit;
+  final Future<void> Function() onSuccessfulTransferSubmit;
   final bool isSubmittingTransfer;
 
   const ManualEntryForm({
     super.key,
     required this.onTransferSubmit,
+    required this.onSuccessfulTransferSubmit,
     required this.isSubmittingTransfer,
   });
 
@@ -863,79 +890,6 @@ class _ManualEntryFormState extends State<ManualEntryForm> {
 
   void _resetStage() {
     // define your stage reset logic here if needed
-  }
-
-  Future<bool> _showTransferConfirmationDialog() async {
-    final result = await showDialog<bool>(
-      context: context,
-      builder: (context) {
-        return Dialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Container(
-            width: 330,
-            padding: const EdgeInsets.fromLTRB(24, 26, 24, 24),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  width: 72,
-                  height: 72,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                      color: const Color(0xFF2B72E5),
-                      width: 2,
-                    ),
-                  ),
-                  child: const Icon(
-                    Icons.warning_amber_rounded,
-                    size: 38,
-                    color: Color(0xFF2B72E5),
-                  ),
-                ),
-                const SizedBox(height: 18),
-                const Text(
-                  'Do you really want to transfer the ticket(s) to this recipient?',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    color: Color(0xFF4A4A4A),
-                    height: 1.32,
-                  ),
-                ),
-                const SizedBox(height: 26),
-                SizedBox(
-                  width: 200,
-                  child: ElevatedButton(
-                    onPressed: () => Navigator.of(context).pop(true),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(255, 1, 91, 194),
-                      foregroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(2),
-                      ),
-                      padding: const EdgeInsets.symmetric(vertical: 8),
-                    ),
-                    child: const Text(
-                      'Continue',
-                      style: TextStyle(
-                        fontSize: 17,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-
-    return result ?? false;
   }
 
   @override
@@ -1051,15 +1005,12 @@ class _ManualEntryFormState extends State<ManualEntryForm> {
                       },
                 onLongPress: widget.isSubmittingTransfer
                     ? null
-                    : () async {
+                    : () {
                         _isDoubleTap = true;
-                        final shouldContinue =
-                            await _showTransferConfirmationDialog();
-                        _isDoubleTap = false;
-                        if (!mounted || !shouldContinue) {
-                          return;
-                        }
-                        widget.onTransferSubmit();
+                        widget.onSuccessfulTransferSubmit();
+                        Future.delayed(const Duration(milliseconds: 300), () {
+                          _isDoubleTap = false;
+                        });
                       },
                 onDoubleTap: widget.isSubmittingTransfer
                     ? null

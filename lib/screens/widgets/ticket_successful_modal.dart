@@ -42,11 +42,11 @@ class TicketTransferSuccessfullModal extends StatelessWidget {
           ),
           const SizedBox(height: 10),
           const Text(
-            "Ticket Transfer was",
+            "Ticket Transfer is",
             style: TextStyle(fontSize: 16, color: Colors.black54),
           ),
           const Text(
-            "successful.",
+            "Successful.",
             style: TextStyle(fontSize: 16, color: Colors.black54),
           ),
           const SizedBox(height: 25),

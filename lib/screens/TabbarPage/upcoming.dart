@@ -2,17 +2,17 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:ticketmaster/model/event_model.dart';
 import 'package:ticketmaster/providers/event_providers.dart';
 import 'package:ticketmaster/screens/event_detaila_screen_with_tabbar.dart';
 import 'package:ticketmaster/screens/form_screen.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
-import '../../providers/colorProvider.dart';
 
 class Upcoming extends StatefulWidget {
-  const Upcoming({super.key});
+  final String searchQuery;
+
+  const Upcoming({super.key, this.searchQuery = ''});
 
   @override
   State<Upcoming> createState() => _UpcomingState();
@@ -40,6 +40,24 @@ class _UpcomingState extends State<Upcoming> {
         .doc(token.toString())
         .collection("messages")
         .snapshots();
+  }
+
+  bool _matchesSearch(Map<String, dynamic> data, String query) {
+    final normalizedQuery = query.trim().toLowerCase();
+    if (normalizedQuery.isEmpty) {
+      return true;
+    }
+
+    final searchableValues = [
+      data['eventName'],
+      data['artistName'],
+      data['location'],
+      data['date'],
+    ];
+
+    return searchableValues.any(
+      (value) => value.toString().toLowerCase().contains(normalizedQuery),
+    );
   }
 
   Widget listItem({required List<QueryDocumentSnapshot> tickets, index}) {
@@ -207,33 +225,6 @@ class _UpcomingState extends State<Upcoming> {
     );
   }
 
-  Widget _buildMultipleTicketsDesign(
-      List<QueryDocumentSnapshot> tickets, int index, bool isSingleTicket) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      decoration: BoxDecoration(
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 8,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: ClipRRect(
-        child: Container(
-          height: MediaQuery.of(context).size.height * 0.4,
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              fit: BoxFit.cover,
-              image: NetworkImage(tickets[index]['image']),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final eventprovider = context.watch<EventProvider>();
@@ -270,18 +261,40 @@ class _UpcomingState extends State<Upcoming> {
                 ),
               );
             } else {
+              final sortedDocs = snapshot.data!.docs.toList()
+                ..sort((a, b) => a['artistName']
+                    .toString()
+                    .toLowerCase()
+                    .compareTo(b['artistName'].toString().toLowerCase()));
+              final filteredDocs = sortedDocs
+                  .where((doc) => _matchesSearch(
+                      doc.data() as Map<String, dynamic>, widget.searchQuery))
+                  .toList();
+
+              if (filteredDocs.isEmpty) {
+                return Padding(
+                  padding: const EdgeInsets.all(15),
+                  child: Container(
+                    height: MediaQuery.of(context).size.height * 0.3,
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Colors.black54),
+                        borderRadius: BorderRadius.circular(10)),
+                    child: Center(
+                      child: Text(
+                        'No events match "${widget.searchQuery.trim()}"',
+                      ),
+                    ),
+                  ),
+                );
+              }
+
               return ListView.builder(
                 padding: const EdgeInsets.symmetric(vertical: 12),
                 shrinkWrap: true,
-                itemCount: snapshot.data!.docs.length,
+                itemCount: filteredDocs.length,
                 itemBuilder: (context, index) {
-                  final sortedDocs = snapshot.data!.docs.toList()
-                    ..sort((a, b) => a['artistName']
-                        .toString()
-                        .toLowerCase()
-                        .compareTo(b['artistName'].toString().toLowerCase()));
-
-                  return listItem(tickets: sortedDocs, index: index);
+                  return listItem(tickets: filteredDocs, index: index);
                 },
               );
             }
