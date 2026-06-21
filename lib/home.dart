@@ -18,6 +18,10 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
   late TabController tabController;
+  final TextEditingController _eventSearchController = TextEditingController();
+  final FocusNode _eventSearchFocusNode = FocusNode();
+  bool _showEventSearch = false;
+  String _eventSearchQuery = '';
 
   @override
   void initState() {
@@ -27,6 +31,8 @@ class _HomePageState extends State<HomePage>
 
   @override
   void dispose() {
+    _eventSearchController.dispose();
+    _eventSearchFocusNode.dispose();
     tabController.dispose();
     super.dispose();
   }
@@ -37,6 +43,35 @@ class _HomePageState extends State<HomePage>
     setState(() {
       visibleContainerIndex1 = (visibleContainerIndex1 + 1) % 4;
     });
+  }
+
+  void _toggleEventSearch() {
+    setState(() {
+      _showEventSearch = !_showEventSearch;
+      if (!_showEventSearch) {
+        _eventSearchController.clear();
+        _eventSearchQuery = '';
+      }
+    });
+
+    if (_showEventSearch) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          _eventSearchFocusNode.requestFocus();
+        }
+      });
+    } else {
+      _eventSearchFocusNode.unfocus();
+    }
+  }
+
+  void _clearAndHideSearch() {
+    setState(() {
+      _showEventSearch = false;
+      _eventSearchController.clear();
+      _eventSearchQuery = '';
+    });
+    _eventSearchFocusNode.unfocus();
   }
 
   @override
@@ -121,6 +156,7 @@ class _HomePageState extends State<HomePage>
                 builder: (context) => FormScreen(),
               ));
             },
+            onLongPress: _toggleEventSearch,
             child: Center(
               child: Container(
                 decoration: BoxDecoration(
@@ -146,6 +182,39 @@ class _HomePageState extends State<HomePage>
         height: MediaQuery.of(context).size.height,
         child: Column(
           children: [
+            AnimatedSwitcher(
+              duration: const Duration(milliseconds: 220),
+              child: _showEventSearch
+                  ? Container(
+                      key: const ValueKey('event-search'),
+                      color: const Color(0xff1f262e),
+                      padding: const EdgeInsets.fromLTRB(12, 8, 12, 12),
+                      child: TextField(
+                        controller: _eventSearchController,
+                        focusNode: _eventSearchFocusNode,
+                        onChanged: (value) {
+                          setState(() {
+                            _eventSearchQuery = value;
+                          });
+                        },
+                        decoration: InputDecoration(
+                          hintText: 'Search events',
+                          prefixIcon: const Icon(Icons.search),
+                          suffixIcon: IconButton(
+                            onPressed: _clearAndHideSearch,
+                            icon: const Icon(Icons.close),
+                          ),
+                          filled: true,
+                          fillColor: Colors.white,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide.none,
+                          ),
+                        ),
+                      ),
+                    )
+                  : const SizedBox.shrink(),
+            ),
             Container(
                 width: MediaQuery.of(context).size.height,
                 decoration: const BoxDecoration(
@@ -172,7 +241,10 @@ class _HomePageState extends State<HomePage>
             Expanded(
                 child: TabBarView(
               controller: tabController,
-              children: const [Upcoming(), Past()],
+              children: [
+                Upcoming(searchQuery: _eventSearchQuery),
+                const Past()
+              ],
             ))
           ],
         ),
