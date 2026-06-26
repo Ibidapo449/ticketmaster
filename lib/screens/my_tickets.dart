@@ -16,6 +16,7 @@ import 'package:ticketmaster/providers/event_providers.dart';
 import 'package:ticketmaster/screens/ticket_details_screen.dart';
 import 'package:ticketmaster/screens/widgets/ticket_pending_modal.dart';
 import 'package:ticketmaster/screens/widgets/ticket_successful_modal.dart';
+import 'package:ticketmaster/screens/widgets/transfer_confirmation_modal.dart';
 import 'package:ticketmaster/utils/general_admission_utils.dart';
 
 import 'widgets/sectionDisplayText.dart';
@@ -2290,7 +2291,9 @@ class _EventDetailsState extends State<MyTickets> {
                           headerAnimationLoop: false,
                           animType: AnimType.bottomSlide,
                           dialogType: DialogType.noHeader,
-                          body: const TicketTransferPendinglModal(),
+                          body: TicketTransferConfirmationModal(
+                            onContinue: () async {},
+                          ),
                         ).show();
                       },
                       onLongPress: () {

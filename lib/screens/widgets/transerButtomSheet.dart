@@ -9,6 +9,7 @@ import 'package:ticketmaster/providers/colorProvider.dart';
 import 'package:ticketmaster/screens/my_tickets.dart';
 import 'package:ticketmaster/screens/widgets/ticket_pending_modal.dart';
 import 'package:ticketmaster/screens/widgets/ticket_successful_modal.dart';
+import 'package:ticketmaster/screens/widgets/transfer_confirmation_modal.dart';
 import 'package:ticketmaster/utils/general_admission_utils.dart';
 
 import '../../model/EventInfo.dart' show EventInfo;
@@ -997,11 +998,20 @@ class _ManualEntryFormState extends State<ManualEntryForm> {
                 onTap: widget.isSubmittingTransfer
                     ? null
                     : () {
-                        Timer(const Duration(milliseconds: 300), () {
-                          if (!_isDoubleTap) {
-                            widget.onTransferSubmit();
-                          }
-                        });
+                       
+
+                        AwesomeDialog(
+                          context: context,
+                          headerAnimationLoop: false,
+                          animType: AnimType.bottomSlide,
+                          dialogType: DialogType.noHeader,
+                          body: TicketTransferConfirmationModal(
+                            onContinue: () async {
+                             
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                        ).show();
                       },
                 onLongPress: widget.isSubmittingTransfer
                     ? null
